@@ -47,7 +47,10 @@ def load_data(data_type):
     Returns:
         dict: The stored data of the specified JSON file.
     """
-    with open(f"data/{data_type}.json", "r", encoding="utf-8") as file:
+
+    file_path = os.path.join("data", data_type)
+
+    with open(f"{file_path}.json", "r", encoding="utf-8") as file:
         return json.load(file)
 
 
@@ -71,7 +74,9 @@ def save_data(data_type, data):
             continue
         stored_data[record_id][field] = data[field]
 
-    with open(f"data/{data_type}.json", "w", encoding="utf-8") as file:
+    file_path = os.path.join("data", data_type)
+
+    with open(f"{file_path}.json", "w", encoding="utf-8") as file:
         json.dump(stored_data, file, indent=4, ensure_ascii=False)
 
 # ==============================
@@ -194,28 +199,29 @@ def display_table(name_column_1: str = "option", options_column_1="", name_colum
     table.add_column(name_column_1, min_width=4)
     table.add_column(name_column_2)
 
-    counter = 0
     if not options_column_1:
+
+        counter = 0
+
         for option in options_column_2:
             counter += 1
 
-            if option == "":
+            if option  == "":
                 counter = -1
 
             table.add_row(
                 Text(f"{str(counter)}.") if option else Text(""),
-            )
-        else:
-            table.add_row(
                 Text(str(option)),
             )
 
-    for option in options_column_2:
-        table.add_row(
-            Text(str(option)),
-        )
+    else:
+        for option_c1, option_c2 in zip(options_column_1, options_column_2):
+            table.add_row(str(option_c1), option_c2)
+
+
 
     return table
+
 
 def register_new_guest():
     guests = load_data("guests")
@@ -258,32 +264,43 @@ def register_new_event():
     events = load_data("events")
 
     while True:
-        name = get_input("What is the name of the event? (STOP to return) ")
-        date = get_input("What is the date of the event? (dd/mm/yyyy or today) ").lower()
+        print()
+        event_name = get_input("What is the name of the event? (STOP to return) ")
 
-        if name.lower() == "stop":
+        if event_name.lower() == "stop":
             return None
 
-        if date == "today":
-            date = datetime.datetime.now()
+        event_date = get_input("What is the date of the event? (dd/mm/yyyy or today) ").lower()
+
+        if event_date == "today":
+            event_date = datetime.datetime.now()
+
+        else:
+            event_date = datetime.datetime.strptime(event_date, "%d-%m-%Y")
+
 
         for event in events.values():
-            if event["date"] == date:
+            if event["date"] == event_date:
                 print()
-                print_message(f"An event is already registered for {date}.", "red")
+                print_message(f"An event is already registered for {event_date}.", "red")
                 print()
                 continue
         break
 
-    guests = load_data("guests")
+    persons = load_data("persons")
+
+    options = {}
+
+    for person in persons.keys():
+        name = f"{persons[person]["first_name"]} {persons[person]["surname"]}"
+        options[int(person)] = name
 
     options_column_1 = []
     options_column_2 = []
 
-    for guest in sorted(guests.keys()):
-        options_column_1.append(str(guest))
-        name = f"{guest["first_name"]} {guest["surname"]}"
-        options_column_2.append(guest[""])
+    for person_id, person_name in sorted(options.items()):
+        options_column_1.append(person_id)
+        options_column_2.append(person_name)
 
     console.print(
         Padding(display_table(name_column_1="ID", options_column_1=options_column_1, name_column_2= "Name", options_column_2=options_column_2, width = 70), (0, 0, 1, 5))
@@ -295,14 +312,14 @@ def register_new_event():
         guest = str(get_input("Type the ID of the guest you want to add to the event: (type 0 to continue) "))
         print()
         if guest == "0":
-            continue
+            break
         else:
             guests.append(guest)
 
     event = {
         "id": str(len(events) + 1),
-        "name": name,
-        "date": date,
+        "name": event_name,
+        "date": event_date,
         "guests": guests
     }
 
@@ -336,3 +353,4 @@ def display_page(location, title, content):
             ),
             (1, 5))
     )
+

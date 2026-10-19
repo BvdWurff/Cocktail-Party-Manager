@@ -22,7 +22,10 @@ from utils.utils import (
     clear_terminal,
     display_page,
     register_new_guest,
+    register_new_event,
 )
+
+from menus import main_menu
 
 # ==============================
 # CONSTANTS
@@ -125,12 +128,6 @@ def get_cocktail_by_id(api_key, url, cocktail_id):
         return None, None
 
 
-def get_order():
-    guest = get_input("Who is the cocktail for? ").lower()
-    cocktail = get_input("what cocktail do they want?  ").lower()
-
-
-
 def main():
     """
         Controls the main program flow.
@@ -140,6 +137,10 @@ def main():
     load_dotenv()
     api_key = os.getenv("API_KEY")
     url = "https://www.thecocktaildb.com/api/json/v1/"
+
+
+
+    main_menu()
 
     if not api_key:
         print_message("Fout: geen API Key gevonden", "red")
@@ -221,6 +222,8 @@ def main():
         clear_terminal()
 
         register_new_guest()
+
+        register_new_event()
 
 
 if __name__ == "__main__":

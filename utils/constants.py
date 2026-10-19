@@ -2,6 +2,6 @@
 # USER INTERFACE
 # ==============================
 
-INVALID_INPUT = f"\n{" " * 5}Ongeldige invoer. Probeer het opnieuw.\n"
-CONTINUE_PROMPT = "Druk op Enter om verder te gaan."
+INVALID_INPUT = f"\n{" " * 5}Invalid input. Please try again.\n"
+CONTINUE_PROMPT = "Press Enter to continue."
 SELECT_OPTION = "Select an option: "
