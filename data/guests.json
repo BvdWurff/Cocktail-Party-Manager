@@ -1,0 +1,22 @@
+{
+    "1": {
+        "first_name": "Bart",
+        "surname": "van der Wurff",
+        "active": true
+    },
+    "2": {
+        "first_name": "Mikey",
+        "surname": "Moonen",
+        "active": true
+    },
+    "3": {
+        "first_name": "Manon",
+        "surname": "Moonen",
+        "active": true
+    },
+    "4": {
+        "first_name": "Bjorn",
+        "surname": "Hupperts",
+        "active": true
+    }
+}

@@ -18,9 +18,10 @@ from utils.utils import (
     print_message,
     get_input,
     display_panel,
-    display_menu_table,
+    display_table,
     clear_terminal,
     display_page,
+    register_new_guest,
 )
 
 # ==============================
@@ -123,65 +124,11 @@ def get_cocktail_by_id(api_key, url, cocktail_id):
         print_message(f"Fout: {response.status_code} - {response.text}", "red")
         return None, None
 
-# def oz_to_ml(ingredients):
-    for ingredient, measure in ingredients.items():
-        if measure:
-            if any(unit in measure.lower() for unit in ("oz", "cup", "cl", "l")):
-                if "1/8" in measure[0:3]:
-                    quantity = 0.125
-                elif "1/4" in measure[0:3]:
-                    quantity = 0.25
-                elif "1/3" in measure[0:3]:
-                    quantity = 0.33
-                elif "1/2" in measure[0:3]:
-                    quantity = 0.5
-                    print(2)
-                elif "2/3" in measure[0:3]:
-                    quantity = 0.66
-                elif "3/4" in measure[0:3]:
-                    quantity = 0.75
 
-                else:
-                    quantity = float(measure.split()[0])
-                    if "1/8" in measure:
-                        quantity = 0.125
-                    elif "1/4" in measure:
-                        quantity = 0.25
-                    elif "1/3" in measure:
-                        quantity = 0.33
-                    elif "1/2" in measure:
-                        quantity = 0.5
-                        print(2)
-                    elif "2/3" in measure:
-                        quantity = 0.66
-                    elif "3/4" in measure:
-                        quantity = 0.75
+def get_order():
+    guest = get_input("Who is the cocktail for? ").lower()
+    cocktail = get_input("what cocktail do they want?  ").lower()
 
-                ml = 0
-
-                if "oz" in measure.lower():
-                    ml = round(float(quantity * 29.6), 0)
-
-                elif "cup" in measure.lower():
-                    ml = round(float(quantity * 236.6), 0)
-
-                elif "cl" in measure.lower():
-                    ml = round(float(quantity * 10), 0)
-
-                elif "l" in measure.lower():
-                    ml = round(float(quantity * 1000), 0)
-
-                ml = round(ml / 5) * 5  #round to the nearest multiple of 5
-
-                ingredients[ingredient] = f"{int(ml)} ml"
-
-            else:
-                continue
-
-        else:
-            ingredients[ingredient] = ""
-
-    return ingredients
 
 
 def main():
@@ -209,21 +156,22 @@ def main():
         print()
         print_message("The following cocktails were found:", "bright_white")
 
-        menu_options = []
+        options_column_1 = []
+        options_column_2 = []
 
         for cocktail in sorted(cocktails.keys()):
-            menu_options.append(str(cocktail))
+            options_column_2.append(str(cocktail))
 
         console.print(
-            Padding(display_menu_table(menu_options, column_2="Cocktails", width=70), (0, 0, 1, 5))
+            Padding(display_table(name_column_1="Options", options_column_1=options_column_1, name_column_2= "Cocktails", options_column_2=options_column_2, width = 70), (0, 0, 1, 5))
+
         )
 
-        menu_choice = get_menu_choice(range(0, len(menu_options) + 1)) - 1
-        cocktail = menu_options[menu_choice]
+        menu_choice = get_menu_choice(range(0, len(options_column_2) + 1)) - 1
+        cocktail = options_column_2[menu_choice]
         cocktail_id = cocktails.get(cocktail)
 
         instructions, ingredients = get_cocktail_by_id(api_key, url, cocktail_id)
-        print(ingredients)
         get_input(CONTINUE_PROMPT)
 
         # ingredients = oz_to_ml(ingredients)
@@ -266,13 +214,13 @@ def main():
             )
         )
 
-
         content = "- " + instructions.replace(". ", ".\n- ")
 
         display_panel(content, title="instructions")
 
+        clear_terminal()
 
-
+        register_new_guest()
 
 
 if __name__ == "__main__":
