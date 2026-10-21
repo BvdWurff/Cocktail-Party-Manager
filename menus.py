@@ -12,7 +12,15 @@ from rich.table import Table
 from rich.text import Text
 from rich.console import Console
 
-from orders import new_order
+from orders import (
+    new_order,
+    prepare_order,
+    cancel_order,
+)
+
+from persons import new_person
+from events import new_event
+
 
 
 
@@ -24,8 +32,6 @@ from utils.utils import (
     display_table,
     clear_terminal,
     display_page,
-    register_new_guest,
-    register_new_event,
 )
 
 # ==============================
@@ -143,10 +149,10 @@ def orders_menu():
             new_order()
 
         elif menu_choice == 2:
-            orders_menu()
+            prepare_order()
 
         elif menu_choice == 3:
-            events_menu()
+            cancel_order()
 
         else:
             break
@@ -171,7 +177,7 @@ def events_menu():
         menu_choice = get_menu_choice(range(0, 4))
 
         if menu_choice == 1:
-            cocktail_menu()
+            new_event()
 
         elif menu_choice == 2:
             orders_menu()
@@ -206,7 +212,7 @@ def admin_menu():
             cocktail_menu()
 
         elif menu_choice == 2:
-            orders_menu()
+            new_person(trigger="admin_menu")
 
         elif menu_choice == 3:
             events_menu()

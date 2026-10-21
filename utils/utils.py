@@ -54,17 +54,19 @@ def load_data(data_type):
         return json.load(file)
 
 
-def save_data(data_type, data):
+def save_data(data_type, data, record_id=""):
     """
     Saves data to the specified JSON file.
 
     Args:
         data_type (str): The name of the JSON file that needs to be updated.
         data (dict): The dictionary with data that has to be saved
+        record_id (str): Value to identify the record that has to be updated
     """
     stored_data = load_data(data_type)
 
-    record_id = data["id"]
+    if not record_id:
+        record_id = data["id"]
 
     if record_id not in stored_data:
         stored_data[record_id] = {}
@@ -223,109 +225,6 @@ def display_table(name_column_1: str = "option", options_column_1="", name_colum
     return table
 
 
-def register_new_guest():
-    guests = load_data("guests")
-
-    first_name = get_input("What is the first name of the guest? ")
-    surname = get_input("What is the surname of the guest? ")
-
-    for guest in guests.values():
-        if guest["first_name"].lower() == first_name.lower() and guest["surname"].lower() == surname.lower():
-            print()
-            print_message(f"A guest named {first_name} {surname} already exists.", "red")
-
-            while True:
-                print()
-                confirmation_choice = get_input("Are you sure you want to create another guest? (Yes/No) ").lower()
-
-                if confirmation_choice not in ("yes", "no"):
-                    print_message(INVALID_INPUT, "red")
-                    continue
-
-                if confirmation_choice == "yes":
-                    break
-
-                else:
-                    return None
-
-    guest = {
-        "id": str(len(guests) + 1),
-        "first_name": first_name,
-        "surname": surname,
-        "active": True
-    }
-
-    save_data("guests", guest)
-
-    return guest["id"]
-
-
-def register_new_event():
-    events = load_data("events")
-
-    while True:
-        print()
-        event_name = get_input("What is the name of the event? (STOP to return) ")
-
-        if event_name.lower() == "stop":
-            return None
-
-        event_date = get_input("What is the date of the event? (dd/mm/yyyy or today) ").lower()
-
-        if event_date == "today":
-            event_date = datetime.datetime.now()
-
-        else:
-            event_date = datetime.datetime.strptime(event_date, "%d-%m-%Y")
-
-
-        for event in events.values():
-            if event["date"] == event_date:
-                print()
-                print_message(f"An event is already registered for {event_date}.", "red")
-                print()
-                continue
-        break
-
-    persons = load_data("persons")
-
-    options = {}
-
-    for person in persons.keys():
-        name = f"{persons[person]["first_name"]} {persons[person]["surname"]}"
-        options[int(person)] = name
-
-    options_column_1 = []
-    options_column_2 = []
-
-    for person_id, person_name in sorted(options.items()):
-        options_column_1.append(person_id)
-        options_column_2.append(person_name)
-
-    console.print(
-        Padding(display_table(name_column_1="ID", options_column_1=options_column_1, name_column_2= "Name", options_column_2=options_column_2, width = 70), (0, 0, 1, 5))
-    )
-
-    guests = []
-
-    while True:
-        guest = str(get_input("Type the ID of the guest you want to add to the event: (type 0 to continue) "))
-        print()
-        if guest == "0":
-            break
-        else:
-            guests.append(guest)
-
-    event = {
-        "id": str(len(events) + 1),
-        "name": event_name,
-        "date": event_date,
-        "guests": guests
-    }
-
-    save_data("events", event)
-
-    return event["id"]
 
 
 
