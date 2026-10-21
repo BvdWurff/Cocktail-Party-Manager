@@ -51,10 +51,11 @@ console = Console(width=80)
 
 def main_menu():
     while True:
+        clear_terminal()
         content = f"""Welcome to the Cocktail Party Manager!
 
 For the best experience, it is recommended to run the program 
-in a [i]terminal[/] or to enable [i]Emulate terminal in output console[/] 
+in a [bright_white i]terminal[/] or to enable [bright_white i]Emulate terminal in output console[/] 
 in PyCharm."""
 
         display_page(location="Cocktail Party Manager",

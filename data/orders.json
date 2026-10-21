@@ -16,11 +16,5 @@
         "person": "1",
         "cocktail": "11007",
         "status": "ordered"
-    },
-    "4": {
-        "event": "1",
-        "person": "2",
-        "cocktail": "178358",
-        "status": "ordered"
     }
 }

@@ -104,12 +104,8 @@ def get_menu_choice(valid_choices):
         int: The validated menu choice.
     """
     while True:
-        try:
-            menu_choice = int(get_input(f"{SELECT_OPTION}"))
+        menu_choice = get_input(f"{SELECT_OPTION}", data_type=int)
 
-        except ValueError:
-            print_message(INVALID_INPUT, "red")
-            continue
 
         if menu_choice not in valid_choices:
             print_message(INVALID_INPUT, "red")
@@ -137,7 +133,7 @@ def print_message(message, color="", end="\n", indent=5):
     )
 
 
-def get_input(message, color="bright_white"):
+def get_input(message, data_type=str, color="bright_white"):
     """
     Requests user input using a formatted Rich prompt.
 
@@ -148,10 +144,23 @@ def get_input(message, color="bright_white"):
     Returns:
         str: The user's input.
     """
-    return console.input(f"{' ' * 5}[{color}]{message}[/]")
+    while True:
+        value = console.input(f"{' ' * 5}[{color}]{message}[/]")
+
+        try:
+            if data_type != "enter":
+                return data_type(value)
+
+            else:
+                return ""
+
+        except (ValueError, TypeError):
+            print_message(INVALID_INPUT, "red")
 
 
-def display_panel(content, border_style="bright_yellow", title_color="bright_white", title=""):
+
+
+def display_panel(content, border_style="bright_yellow", title_color="bright_white", title="", top_padding=0):
     """
     Displays content in a formatted Rich Panel.
 
@@ -166,11 +175,12 @@ def display_panel(content, border_style="bright_yellow", title_color="bright_whi
             Panel(
                 content,
                 border_style=border_style,
-                title=f"[bold {title_color}]{title}[/]",
+                title=f"[bold {title_color}]{title}[/]" if title else None,
                 title_align="left",
                 padding=(1, 2),
+                width=70,
             ),
-            (0, 5)
+            (top_padding, 0,0, 5)
         )
     )
     print()

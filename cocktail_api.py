@@ -24,11 +24,11 @@ def new_cocktail(cocktail_id, cocktail_name):
         response = requests.get(url, timeout=10)
 
     except requests.exceptions.ConnectionError:
-        get_input("Error: Cannot connect to TheCocktailDB.", "red")
+        get_input("Error: Cannot connect to TheCocktailDB.", color="red")
         return
 
     except requests.exceptions.Timeout:
-        get_input("Error: TheCocktailDB response timeout.", "red")
+        get_input("Error: TheCocktailDB response timeout.", color="red")
         return
 
     instructions = ""
@@ -67,10 +67,10 @@ def new_cocktail(cocktail_id, cocktail_name):
 
 
         else:
-            get_input(f"Fout: Cocktail not found", "red")
+            get_input(f"Error: Cocktail not found", color="red")
 
     else:
-        get_input(f"Fout: {response.status_code} - {response.text}", "red")
+        get_input(f"Error: {response.status_code} - {response.text}", color="red")
 
     return
 
@@ -78,40 +78,43 @@ def new_cocktail(cocktail_id, cocktail_name):
 def get_cocktails_by_name():
     clear_terminal()
 
-    cocktail = get_input("Which cocktail would you like to search for? ").lower()
+    while True:
+        cocktail = get_input("Which cocktail would you like to search for? ").lower()
 
-    url = URL + f"{API_KEY}/search.php?s={cocktail}"
+        url = URL + f"{API_KEY}/search.php?s={cocktail}"
 
-    try:
-        response = requests.get(url, timeout=10)
+        try:
+            response = requests.get(url, timeout=10)
 
-    except requests.exceptions.ConnectionError:
-        print_message("Fout: kan geen verbinding maken met TheCocktailDB.", "red")
-        return None
-
-    except requests.exceptions.Timeout:
-        print_message("Fout: TheCocktailDB reageert niet op tijd.", "red")
-        return None
-
-    if response.ok:
-        data = response.json()
-
-        cocktails = {}
-
-        if data["drinks"]:
-            for drink in data["drinks"]:
-                if "strDrink" in drink:
-                    cocktails[drink["strDrink"]] = drink["idDrink"]
-
-        else:
-            print_message(f"Fout: No cocktails with that name were found", "red")
+        except requests.exceptions.ConnectionError:
+            get_input("Error: Cannot connect to TheCocktailDB.", color="red")
             return None
 
-        return cocktails
+        except requests.exceptions.Timeout:
+            get_input("Error: TheCocktailDB response timeout.", color="red")
+            return None
 
-    else:
-        print_message(f"Fout: {response.status_code} - {response.text}", "red")
-        return None
+        if response.ok:
+            data = response.json()
+
+            cocktails = {}
+
+            if data["drinks"]:
+                for drink in data["drinks"]:
+                    if "strDrink" in drink:
+                        cocktails[drink["strDrink"]] = drink["idDrink"]
+
+            else:
+                print()
+                print_message(f"No cocktails with that name were found.", "red")
+                print()
+                continue
+
+            return cocktails
+
+        else:
+            get_input(f"Error: {response.status_code} - {response.text}", "red")
+            return None
 
 
 

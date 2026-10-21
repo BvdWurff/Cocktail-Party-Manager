@@ -1,0 +1,77 @@
+{
+    "1": {
+        "name": "Tequila",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "2": {
+        "name": "Blue Curacao",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "3": {
+        "name": "Lime juice",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "4": {
+        "name": "Salt",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "5": {
+        "name": "Mango",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "6": {
+        "name": "Mint",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "7": {
+        "name": "White Rum",
+        "quantity": 10,
+        "minimum_quantity": 10
+    },
+    "8": {
+        "name": "Ice",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "9": {
+        "name": "Soda Water",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "10": {
+        "name": "Triple sec",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "11": {
+        "name": "Lime",
+        "quantity":50,
+        "minimum_quantity": 10
+    },
+    "12": {
+        "name": "Lemon juice",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "13": {
+        "name": "Dark rum",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "14": {
+        "name": "Club soda",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "15": {
+        "name": "Angostura bitters",
+        "quantity": 0,
+        "minimum_quantity": 10
+    }
+}

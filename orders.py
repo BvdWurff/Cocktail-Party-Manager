@@ -14,7 +14,11 @@ from utils.utils import (
     print_message,
     clear_terminal,
     save_data,
+    display_panel,
+    get_menu_choice,
 )
+
+from inventory import check_cocktail_availability
 
 from cocktails import select_cocktail
 from persons import select_person
@@ -38,13 +42,11 @@ console = Console(width=80)
 
 
 def new_order():
+    current_event, current_event_id = select_event()
+
     while True:
-        current_event, current_event_id = select_event()
-
         person_id = select_person(current_event, current_event_id)
-
         cocktail_id = select_cocktail()
-
         orders = load_data("orders")
 
         order = {
@@ -54,11 +56,40 @@ def new_order():
             "cocktail": cocktail_id,
             "status": "ordered"
         }
+        low_on_stock = check_cocktail_availability(cocktail_id)
 
-        save_data("orders", order)
+        if low_on_stock:
+            print_message("Cocktail cannot be ordered.", "red")
+            print()
+            print_message(f"The following ingredients are low on stock:")
+            for ingredient in low_on_stock:
+                print_message(f" - {ingredient}")
 
-        get_input("New order successfully placed.", "green")
-        order.clear()
+            print()
+            get_input("Click Enter to select another cocktail.")
+            continue
+
+        else:
+            save_data("orders", order)
+
+            print()
+            print_message("New order successfully placed.", color="green")
+            print()
+
+            options_column_2 = ["New order", "Back to orders menu"]
+
+            console.print(
+                Padding(display_table(options_column_2 = options_column_2, width=70), (0, 0, 1, 5))
+            )
+
+            menu_choice = get_menu_choice(range(1, 2))
+
+            if menu_choice == 1:
+                order.clear()
+                continue
+
+            else:
+                return
 
 
 def prepare_order():

@@ -33,5 +33,17 @@
             "Soda Water": "Top"
         },
         "active": true
+    },
+    "15841": {
+        "name": "Mojito Extra",
+        "Instructions": "Put mint with lemon juice in a glas, mash the mint with a spoon, ice, rum & fill up with club soda. Top it with Angostura.",
+        "ingredients": {
+            "Mint": "1/2 handful ",
+            "Lemon juice": "3 cl ",
+            "Dark rum": "1/8 L Jamaican ",
+            "Club soda": "1/8 L ",
+            "Angostura bitters": "8 drops "
+        },
+        "active": true
     }
 }

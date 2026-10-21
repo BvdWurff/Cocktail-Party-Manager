@@ -91,7 +91,7 @@ def new_event(trigger=""):
     guests = []
 
     while True:
-        guest = str(get_input("Type the ID of the guest you want to add to the event: (type 0 to continue) "))
+        guest = get_input("Type the ID of the guest you want to add to the event: (type 0 to continue) ")
         print()
         if guest == "0":
             break

@@ -9,6 +9,8 @@ from cocktail_api import (
     get_cocktails_by_name,
 )
 
+from inventory import check_cocktail_availability
+
 from utils.utils import (
     load_data,
     save_data,
@@ -44,8 +46,11 @@ def select_cocktail():
         options_column_2 = []
         cocktail_ids = []
 
-        for cocktail_id, cocktail in cocktails.items():
-            if cocktail["active"]:
+        for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda item: item[1]["name"].casefold()):
+            low_on_stock = check_cocktail_availability(cocktail_id)
+            print(low_on_stock)
+
+            if cocktail["active"] and not low_on_stock:
                 cocktail_ids.append(cocktail_id)
                 options_column_2.append(cocktail["name"])
 
@@ -55,7 +60,7 @@ def select_cocktail():
         console.print(
             Padding(display_table(name_column_1="Options", options_column_1=options_column_1,
                                   name_column_2="Cocktails", options_column_2=options_column_2, width=70),
-                    (0, 0, 1, 5))
+                    (1, 0, 1, 5))
         )
 
         menu_choice = get_menu_choice(range(0, len(options_column_2) + 1))
@@ -69,15 +74,13 @@ def select_cocktail():
                 print()
                 print_message("The following cocktails were found:", "bright_white")
 
-                options_column_1 = []
                 options_column_2 = []
 
-                for cocktail in sorted(cocktails.keys()):
+                for cocktail, cocktail_id in sorted(cocktails.items(), key=lambda item: item[0].casefold()):
                     options_column_2.append(str(cocktail))
 
                 console.print(
-                    Padding(display_table(name_column_1="Options", options_column_1=options_column_1,
-                                          name_column_2="Cocktails", options_column_2=options_column_2, width=70),
+                    Padding(display_table(name_column_1="Option", name_column_2="Cocktail", options_column_2=options_column_2, width=70),
                             (0, 0, 1, 5))
                 )
 
