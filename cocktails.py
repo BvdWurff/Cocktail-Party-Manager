@@ -36,11 +36,21 @@ from utils.constants import (
 console = Console(width=80)
 
 
+def all_available_cocktails():
+    pass
+
+
 def select_cocktail():
     while True:
         clear_terminal()
-
         cocktails = load_data("cocktails")
+
+        content = f"A list of all the available cocktails."
+
+        display_page(location="Cocktails",
+                     title="Available Cocktails",
+                     content=content
+                     )
 
         options_column_1 = []
         options_column_2 = []
@@ -48,22 +58,21 @@ def select_cocktail():
 
         for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda item: item[1]["name"].casefold()):
             low_on_stock = check_cocktail_availability(cocktail_id)
-            print(low_on_stock)
 
             if cocktail["active"] and not low_on_stock:
                 cocktail_ids.append(cocktail_id)
                 options_column_2.append(cocktail["name"])
 
         options_column_2.append("")
-        options_column_2.append("Cocktail not on list.")
+        options_column_2.append("Cocktail not on list")
 
         console.print(
-            Padding(display_table(name_column_1="Options", options_column_1=options_column_1,
-                                  name_column_2="Cocktails", options_column_2=options_column_2, width=70),
-                    (1, 0, 1, 5))
+            Padding(display_table(name_column_1="Option", options_column_1=options_column_1,
+                                  name_column_2="Cocktail", options_column_2=options_column_2, width=70),
+                    (0, 0, 1, 5))
         )
 
-        menu_choice = get_menu_choice(range(0, len(options_column_2) + 1))
+        menu_choice = get_menu_choice(range(0, len(options_column_2) -1))
         cocktail_id = cocktail_ids[menu_choice - 1]
 
         if menu_choice == 0:
@@ -95,6 +104,8 @@ def select_cocktail():
 
 
 def show_cocktail(cocktail, ingredients, instructions):
+    clear_terminal()
+
     location = "Cocktails"
     title = cocktail
     content = f"Ingredients and instructions for a [blue]{cocktail}[/]"

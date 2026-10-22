@@ -15,6 +15,8 @@ from utils.utils import (
     print_message,
     save_data,
     clear_terminal,
+    get_menu_choice,
+    display_page,
 )
 
 # ==============================
@@ -37,13 +39,22 @@ console = Console(width=80)
 # LOAD DATA
 # ==============================
 
+
 def new_event(trigger=""):
+    content = """Here you can create a new event.
+
+Type [red]Stop[/] to exit the registration process."""
+
+    display_page(location="Events",
+                 title="Create event",
+                 content=content
+                 )
+
     events = load_data("events")
     today = datetime.datetime.now()
 
     while True:
-        print()
-        event_name = get_input("What is the name of the event? (Type STOP to return) ")
+        event_name = get_input("What is the name of the event? ")
 
         if event_name.lower() == "stop":
             return None
@@ -54,7 +65,10 @@ def new_event(trigger=""):
         else:
             event_date = get_input("What is the date of the event? (dd/mm/yyyy or today) ").lower()
 
-            if event_date == "today":
+            if event_date.lower() == "stop":
+                return None
+
+            elif event_date == "today":
                 event_date = today
 
             else:
@@ -65,38 +79,54 @@ def new_event(trigger=""):
                     print()
                     print_message(f"An event is already registered for {event_date}.", "red")
                     print()
-                    continue
+                    get_input("Press Enter to return to the events menu")
+
+                    return None
+
+            event_date = event_date.strftime("%d-%m-%Y")
+
         break
-
-
-    persons = load_data("persons")
-
-    options = {}
-
-    for person in persons.keys():
-        name = f"{persons[person]["first_name"]} {persons[person]["surname"]}"
-        options[int(person)] = name
-
-    options_column_1 = []
-    options_column_2 = []
-
-    for person_id, person_name in sorted(options.items()):
-        options_column_1.append(person_id)
-        options_column_2.append(person_name)
-
-    console.print(
-        Padding(display_table(name_column_1="ID", options_column_1=options_column_1, name_column_2= "Name", options_column_2=options_column_2, width = 70), (0, 0, 1, 5))
-    )
 
     guests = []
 
     while True:
-        guest = get_input("Type the ID of the guest you want to add to the event: (type 0 to continue) ")
-        print()
-        if guest == "0":
+        content = f"Here you can add guests to the event."
+
+        display_page(location="Events",
+                     title="Add guests",
+                     content=content
+                     )
+
+        persons = load_data("persons")
+
+        options = {}
+
+        for person in persons.keys():
+            if person not in guests:
+                name = f"{persons[person]["first_name"]} {persons[person]["surname"]}"
+                options[int(person)] = name
+
+        options_column_2 = []
+        guests_ids = []
+
+        for person_id, person_name in sorted(options.items()):
+            guests_ids.append(person_id)
+            options_column_2.append(person_name)
+
+        options_column_2.append("")
+        options_column_2.append("Continue")
+
+        console.print(
+            Padding(display_table(name_column_2="Name", options_column_2=options_column_2, width=70), (0, 0, 1, 5))
+        )
+
+        menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
+        guest_id = guests_ids[menu_choice - 1]
+
+        if menu_choice == 0:
             break
         else:
-            guests.append(guest)
+            guests.append(str(guest_id))
 
     event = {
         "id": str(len(events) + 1),

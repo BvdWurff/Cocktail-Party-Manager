@@ -58,7 +58,7 @@ def new_cocktail(cocktail_id, cocktail_name):
             cocktail = {
                 "id": cocktail_id,
                 "name": cocktail_name,
-                "Instructions": instructions,
+                "instructions": instructions,
                 "ingredients": ingredients,
                 "active": True
             }
@@ -73,6 +73,14 @@ def new_cocktail(cocktail_id, cocktail_name):
         get_input(f"Error: {response.status_code} - {response.text}", color="red")
 
     return
+
+
+def get_cocktails_by_ingredient():
+    pass
+
+
+def lucky_shot():
+    pass
 
 
 def get_cocktails_by_name():

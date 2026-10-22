@@ -14,15 +14,13 @@ from rich.console import Console
 
 from orders import (
     new_order,
-    prepare_order,
-    cancel_order,
+    get_next_order,
+    all_open_orders,
+    process_order,
 )
 
 from persons import new_person
 from events import new_event
-
-
-
 
 from utils.utils import (
     get_menu_choice,
@@ -32,6 +30,14 @@ from utils.utils import (
     display_table,
     clear_terminal,
     display_page,
+)
+
+from cocktails import all_available_cocktails
+
+from cocktail_api import (
+    get_cocktails_by_name,
+    get_cocktails_by_ingredient,
+    lucky_shot,
 )
 
 # ==============================
@@ -100,7 +106,7 @@ def cocktail_menu():
                      content=content
                      )
 
-        menu_options = ["Search by name", "Search by ingredient", "Lucky 'shot'", "Rank a cocktail", "All time favorites", "", "Back"]
+        menu_options = ["All available cocktails", "Find new cocktails", "Rank a cocktail", "All-time favorites", "", "Back"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -109,7 +115,7 @@ def cocktail_menu():
         menu_choice = get_menu_choice(range(0, 6))
 
         if menu_choice == 1:
-            cocktail_menu()
+            all_available_cocktails()
 
         elif menu_choice == 2:
             orders_menu()
@@ -138,7 +144,7 @@ def orders_menu():
                      content=content
                      )
 
-        menu_options = ["New order", "Prepare order", "Cancel order", "", "Back"]
+        menu_options = ["New order", "Next open order", "All open orders", "", "Back to main menu"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -150,10 +156,16 @@ def orders_menu():
             new_order()
 
         elif menu_choice == 2:
-            prepare_order()
+            order_id, order = get_next_order()
+            if order_id == 0:
+                continue
+            process_order(order_id, order)
 
         elif menu_choice == 3:
-            cancel_order()
+            order_id, order =all_open_orders()
+            if order_id == 0:
+                continue
+            process_order(order_id, order)
 
         else:
             break
@@ -169,7 +181,7 @@ def events_menu():
                      content=content
                      )
 
-        menu_options = ["New event", "Add guest", "Switch event", "", "Back"]
+        menu_options = ["New event", "All events", "", "Back"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -255,6 +267,38 @@ def stats_menu():
 
         elif menu_choice == 3:
             events_menu()
+
+        else:
+            break
+
+    return
+
+
+def find_new_cocktails_menu():
+    while True:
+        content = "Here you can search for new cocktails and get recipes."
+
+        display_page(location="Cocktail Party Manager",
+                     title="Cocktails",
+                     content=content
+                     )
+
+        menu_options = ["Search by name", "Search by ingredient", "Lucky 'shot'", "", "Back"]
+
+        console.print(
+            Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
+        )
+
+        menu_choice = get_menu_choice(range(0, 4))
+
+        if menu_choice == 1:
+            get_cocktails_by_name()
+
+        elif menu_choice == 2:
+            get_cocktails_by_ingredient()
+
+        elif menu_choice == 3:
+            lucky_shot()
 
         else:
             break

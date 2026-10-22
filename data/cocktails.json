@@ -1,7 +1,7 @@
 {
     "11007": {
-        "name": "margarita",
-        "Instructions": "",
+        "name": "Margarita",
+        "instructions": "",
         "ingredients": {
             "Tequila": "1 1/2 oz",
             "Triple sec": "1/2 oz",
@@ -12,7 +12,7 @@
     },
     "11118": {
         "name": "Blue Margarita",
-        "Instructions": "Rub rim of cocktail glass with lime juice. Dip rim in coarse salt. Shake tequila, blue curacao, and lime juice with ice, strain into the salt-rimmed glass, and serve.",
+        "instructions": "Rub rim of cocktail glass with lime juice. Dip rim in coarse salt. Shake tequila, blue curacao, and lime juice with ice, strain into the salt-rimmed glass, and serve.",
         "ingredients": {
             "Tequila": "1 1/2 oz ",
             "Blue Curacao": "1 oz ",
@@ -23,7 +23,7 @@
     },
     "178358": {
         "name": "Mango Mojito",
-        "Instructions": "Squeeze the juice from 1½ limes and blend with the mango to give a smooth purée.\nCut the rest of the limes into quarters, and then cut each wedge in half again. Put 2 pieces of lime in a highball glass for each person and add 1 teaspoon of caster sugar and 5-6 mint leaves to each glass. Squish everything together with a muddler or the end of a rolling pin to release all the flavours from the lime and mint.\nDivide the mango purée between the glasses and add 30ml white rum and a handful of crushed ice to each one, stirring well to mix everything together. Top up with soda water to serve and garnish with extra mint, if you like.",
+        "instructions": "Squeeze the juice from 1½ limes and blend with the mango to give a smooth purée.\nCut the rest of the limes into quarters, and then cut each wedge in half again. Put 2 pieces of lime in a highball glass for each person and add 1 teaspoon of caster sugar and 5-6 mint leaves to each glass. Squish everything together with a muddler or the end of a rolling pin to release all the flavours from the lime and mint.\nDivide the mango purée between the glasses and add 30ml white rum and a handful of crushed ice to each one, stirring well to mix everything together. Top up with soda water to serve and garnish with extra mint, if you like.",
         "ingredients": {
             "Lime": "3",
             "Mango": "Garnish with",
@@ -36,7 +36,7 @@
     },
     "15841": {
         "name": "Mojito Extra",
-        "Instructions": "Put mint with lemon juice in a glas, mash the mint with a spoon, ice, rum & fill up with club soda. Top it with Angostura.",
+        "instructions": "Put mint with lemon juice in a glas, mash the mint with a spoon, ice, rum & fill up with club soda. Top it with Angostura.",
         "ingredients": {
             "Mint": "1/2 handful ",
             "Lemon juice": "3 cl ",
