@@ -26,6 +26,7 @@ from utils.utils import (
 from utils.constants import (
     SELECT_OPTION,
     INVALID_INPUT,
+    CONTINUE_PROMPT,
 )
 
 # ==============================
@@ -40,6 +41,30 @@ console = Console(width=80)
 # ==============================
 
 
+def show_todays_event():
+    events = load_data("events")
+    today = datetime.date.today().strftime("%d-%m-%Y")
+    todays_event = ""
+
+    for event in events.values():
+        if event["date"] == today:
+            todays_event = event["date"]
+            break
+
+
+    if todays_event:
+        print(todays_event)
+    else:
+        print("No even created for today.")
+
+    get_input(CONTINUE_PROMPT)
+
+
+
+def show_all_events():
+    pass
+
+
 def new_event(trigger=""):
     content = """Here you can create a new event.
 
@@ -51,7 +76,7 @@ Type [red]Stop[/] to exit the registration process."""
                  )
 
     events = load_data("events")
-    today = datetime.datetime.now()
+    today = datetime.date.today().strftime("%d-%m-%Y")
 
     while True:
         event_name = get_input("What is the name of the event? ")
@@ -63,34 +88,48 @@ Type [red]Stop[/] to exit the registration process."""
             event_date = today
 
         else:
-            event_date = get_input("What is the date of the event? (dd/mm/yyyy or today) ").lower()
+            while True:
+                event_date = get_input("What is the date of the event? (dd-mm-yyyy or today) ").lower()
 
-            if event_date.lower() == "stop":
-                return None
-
-            elif event_date == "today":
-                event_date = today
-
-            else:
-                event_date = datetime.datetime.strptime(event_date, "%d-%m-%Y")
-
-            for event in events.values():
-                if event["date"] == event_date:
-                    print()
-                    print_message(f"An event is already registered for {event_date}.", "red")
-                    print()
-                    get_input("Press Enter to return to the events menu")
-
+                if event_date == "stop":
                     return None
 
-            event_date = event_date.strftime("%d-%m-%Y")
+                elif event_date == "today":
+                    event_date = today
+
+                else:
+                    try:
+                        parsed_date = datetime.datetime.strptime(event_date, "%d-%m-%Y")
+
+                        if parsed_date.date() < datetime.date.today():
+                            print()
+                            print_message("The event date cannot be in the past.", "red")
+                            print()
+                            continue
+
+                        event_date = parsed_date.strftime("%d-%m-%Y")
+
+                    except ValueError:
+                        print_message(INVALID_INPUT, "red")
+                        continue
+
+                break
+
+        for event in events.values():
+            if event["date"] == event_date:
+                print()
+                print_message(f"An event is already registered for {event_date}.", "red")
+                print()
+                get_input("Press Enter to return to the events menu")
+
+                return None
 
         break
 
     guests = []
 
     while True:
-        content = f"Here you can add guests to the event."
+        content = f"Here you can select guests you want to add the event."
 
         display_page(location="Events",
                      title="Add guests",
@@ -102,14 +141,14 @@ Type [red]Stop[/] to exit the registration process."""
         options = {}
 
         for person in persons.keys():
-            if person not in guests:
+            if person not in guests and persons[person]["active"] == True:
                 name = f"{persons[person]["first_name"]} {persons[person]["surname"]}"
                 options[int(person)] = name
 
         options_column_2 = []
         guests_ids = []
 
-        for person_id, person_name in sorted(options.items()):
+        for person_id, person_name in sorted(options.items(), key=lambda item: item[1].casefold()):
             guests_ids.append(person_id)
             options_column_2.append(person_name)
 

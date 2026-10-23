@@ -20,7 +20,11 @@ from orders import (
 )
 
 from persons import new_person
-from events import new_event
+from events import (
+    new_event,
+    show_todays_event,
+    show_all_events,
+)
 
 from utils.utils import (
     get_menu_choice,
@@ -181,7 +185,7 @@ def events_menu():
                      content=content
                      )
 
-        menu_options = ["New event", "All events", "", "Back"]
+        menu_options = ["New event", "Today's event", "All events", "", "Back"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -193,10 +197,10 @@ def events_menu():
             new_event()
 
         elif menu_choice == 2:
-            orders_menu()
+            show_todays_event()
 
         elif menu_choice == 3:
-            events_menu()
+            show_all_events()
 
         else:
             break
