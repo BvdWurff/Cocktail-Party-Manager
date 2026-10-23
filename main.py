@@ -2,38 +2,28 @@
 # FUNCTION IMPORTS
 # ==============================
 
-import os
-import requests
-from dotenv import load_dotenv
+import datetime
 
 from rich import box
-from rich.padding import Padding
 from rich.table import Table
 from rich.text import Text
 from rich.console import Console
-
+from rich.padding import Padding
 
 from utils.utils import (
-    get_menu_choice,
-    print_message,
-    get_input,
-    display_panel,
-    display_table,
-    clear_terminal,
+    load_data,
+    save_data,
     display_page,
+    get_menu_choice,
+    display_table,
+    get_input, clear_terminal,
 )
 
 from menus import main_menu
 
-# ==============================
-# CONSTANTS
-# ==============================
-
 from utils.constants import (
     CONTINUE_PROMPT,
 )
-
-
 # ==============================
 # CONFIGURATION
 # ==============================
@@ -41,17 +31,89 @@ from utils.constants import (
 console = Console(width=80)
 
 
+def update_events():
+    events = load_data("events")
+    today = datetime.date.today()
+
+    current_event = {}
+    current_event_id = ""
+
+    for event_id, event in events.items():
+        if not event["active"]:
+            continue
+
+        event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y").date()
+
+        current = event_date == today
+        active = event_date >= today
+
+        event_update = {
+            "id": event_id,
+            "name": event["name"],
+            "date": event["date"],
+            "current": current,
+            "active": active,
+            "guests": event["guests"]
+        }
+
+        if event["current"] != current or event["active"] != active:
+            save_data("events", event_update)
+
+        if current:
+            current_event = event_update
+            current_event_id = event_update["id"]
+    return current_event, current_event_id
+
 
 def main():
     """
         Controls the main program flow.
     """
+    current_event, current_event_id = update_events()
 
+    content = f"""Welcome to [bright_yellow]the Cocktail Party Manager[/]!
 
-    main_menu()
+For the best experience, it is recommended to run the program 
+in a [green]terminal[/] or to enable [green]Emulate terminal in output console[/] 
+in PyCharm."""
 
+    display_page(location="Cocktail Party Manager",
+                 title="Welcome",
+                 content=content
+                 )
 
+    get_input(CONTINUE_PROMPT)
 
+    while True:
+        main_menu(current_event, current_event_id)
+
+        content = "Are you sure you want to exit [bright_yellow]the Cocktail Party Manager[/]?"
+
+        display_page(location="Cocktail Party Manager",
+                     title="Exit confirmation",
+                     content=content
+                     )
+
+        options_column_2 = ["Yes", "No"]
+
+        console.print(
+            Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
+        )
+
+        menu_choice = get_menu_choice(range(1, 3))
+
+        if menu_choice == 2:
+            continue
+
+        else:
+            content = ("Thank you for using [bright_yellow]the Cocktail Party Manager[/].\n\n"
+                       "[blue]Until we drink again![/]")
+
+            display_page(location="Cocktail Party Manager",
+                         title="Exit",
+                         content=content
+                         )
+            break
 
 if __name__ == "__main__":
     main()

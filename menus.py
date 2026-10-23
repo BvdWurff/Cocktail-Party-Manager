@@ -2,14 +2,7 @@
 # FUNCTION IMPORTS
 # ==============================
 
-import os
-import requests
-from dotenv import load_dotenv
-
-from rich import box
 from rich.padding import Padding
-from rich.table import Table
-from rich.text import Text
 from rich.console import Console
 
 from orders import (
@@ -28,15 +21,16 @@ from events import (
 
 from utils.utils import (
     get_menu_choice,
-    print_message,
-    get_input,
-    display_panel,
     display_table,
     clear_terminal,
     display_page,
 )
 
-from cocktails import all_available_cocktails
+from cocktails import (
+    all_available_cocktails,
+    rank_a_cocktail,
+    show_cocktail_ranking
+)
 
 from cocktail_api import (
     get_cocktails_by_name,
@@ -48,32 +42,23 @@ from cocktail_api import (
 # CONSTANTS
 # ==============================
 
-from utils.constants import (
-    CONTINUE_PROMPT,
-)
-
-
 # ==============================
 # CONFIGURATION
 # ==============================
 
 console = Console(width=80)
 
-def main_menu():
+def main_menu(current_event, current_event_id):
     while True:
         clear_terminal()
-        content = f"""Welcome to the Cocktail Party Manager!
-
-For the best experience, it is recommended to run the program 
-in a [bright_white i]terminal[/] or to enable [bright_white i]Emulate terminal in output console[/] 
-in PyCharm."""
+        content = "Discover cocktails, take orders, manage events, keep track of your inventory or see statistics.\n\nSelect an option below to get started."
 
         display_page(location="Cocktail Party Manager",
                      title="Main menu",
                      content=content
                      )
 
-        menu_options = ["Cocktails", "Orders", "Events", "Admin", "Statistics", "", "Stop"]
+        menu_options = ["Cocktails", "Orders", "Events", "Admin", "Statistics", "", "Exit"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -82,26 +67,27 @@ in PyCharm."""
         menu_choice = get_menu_choice(range(0, 6))
 
         if menu_choice == 1:
-            cocktail_menu()
+            cocktail_menu(current_event, current_event_id)
 
         elif menu_choice == 2:
-            orders_menu()
+            orders_menu(current_event, current_event_id)
 
         elif menu_choice == 3:
-            events_menu()
+            events_menu(current_event, current_event_id)
 
         elif menu_choice == 4:
             admin_menu()
 
         elif menu_choice == 5:
-            stats_menu()
+            stats_menu(current_event, current_event_id)
 
         else:
             break
 
     return
 
-def cocktail_menu():
+
+def cocktail_menu(current_event, current_event_id):
     while True:
         content = "Here you can find your favorite cocktails and get recipes."
 
@@ -110,7 +96,7 @@ def cocktail_menu():
                      content=content
                      )
 
-        menu_options = ["All available cocktails", "Find new cocktails", "Rank a cocktail", "All-time favorites", "", "Back"]
+        menu_options = ["All available cocktails", "Find new cocktails", "Rank a cocktail", "All-time favorites", "", "Back to main menu"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -122,13 +108,13 @@ def cocktail_menu():
             all_available_cocktails()
 
         elif menu_choice == 2:
-            orders_menu()
+            find_new_cocktails_menu()
 
         elif menu_choice == 3:
-            events_menu()
+            rank_a_cocktail(current_event, current_event_id)
 
         elif menu_choice == 4:
-            admin_menu()
+            show_cocktail_ranking()
 
         elif menu_choice == 5:
             stats_menu()
@@ -139,7 +125,7 @@ def cocktail_menu():
     return
 
 
-def orders_menu():
+def orders_menu(current_event, current_event_id):
     while True:
         content = "Here you can manage your orders."
 
@@ -176,7 +162,7 @@ def orders_menu():
 
     return
 
-def events_menu():
+def events_menu(current_event, current_event_id):
     while True:
         content = "Here you can manage your events."
 
@@ -185,7 +171,7 @@ def events_menu():
                      content=content
                      )
 
-        menu_options = ["New event", "Today's event", "All events", "", "Back"]
+        menu_options = ["New event", "Today's event", "All events", "", "Back to main menu"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -217,7 +203,7 @@ def admin_menu():
                      content=content
                      )
 
-        menu_options = ["Inventory", "Guests", "Events", "Cocktails", "Shopping lists", "", "Back"]
+        menu_options = ["Inventory", "Guests", "Events", "Cocktails", "Shopping lists", "", "Back to main menu"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -246,7 +232,7 @@ def admin_menu():
     return
 
 
-def stats_menu():
+def stats_menu(current_event, current_event_id):
     while True:
         content = "Here you can look into statistics"
 
@@ -255,7 +241,7 @@ def stats_menu():
                      content=content
                      )
 
-        menu_options = ["Guests", "Events", "Cocktails", "", "Back"]
+        menu_options = ["Guests", "Events", "Cocktails", "", "Back to main menu"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -287,7 +273,7 @@ def find_new_cocktails_menu():
                      content=content
                      )
 
-        menu_options = ["Search by name", "Search by ingredient", "Lucky 'shot'", "", "Back"]
+        menu_options = ["Search by name", "Search by ingredient", "Lucky 'shot'", "", "Back to cocktail menu"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))

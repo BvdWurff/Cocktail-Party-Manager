@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 # ==============================
 
 INVALID_INPUT = f"\n{" " * 5}[red]Invalid input. Please try again.[/]\n"
-CONTINUE_PROMPT = "Press Enter to continue."
+CONTINUE_PROMPT = "Press [green]Enter[/] to continue."
 SELECT_OPTION = "Select an option: "
 
 URL = "https://www.thecocktaildb.com/api/json/v1/"

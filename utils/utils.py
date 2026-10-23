@@ -147,6 +147,11 @@ def get_input(message, data_type=str, color="bright_white"):
     while True:
         value = console.input(f"{' ' * 5}[{color}]{message}[/]")
 
+        if data_type == float:
+            str(value)
+            value = value.replace(",",".")
+            value = round(float(value), 1)
+
         try:
             if data_type != "enter":
                 return data_type(value)
@@ -233,11 +238,6 @@ def display_table(name_column_1: str = "option", options_column_1="", name_colum
 
 
     return table
-
-
-
-
-
 
 
 def display_page(location, title, content):

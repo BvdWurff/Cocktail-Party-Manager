@@ -8,7 +8,7 @@ from rich.table import Table
 from rich import box
 
 from inventory import check_cocktail_availability
-from persons import select_person
+from persons import select_guest
 from events import select_event
 
 from cocktails import (
@@ -196,7 +196,7 @@ def new_order():
     current_event, current_event_id = select_event()
 
     while True:
-        person_id = select_person(current_event, current_event_id)
+        person_id = select_guest(current_event, current_event_id)
         if not person_id:
             return
 
@@ -220,7 +220,7 @@ def new_order():
                 print_message(f" - {ingredient}")
 
             print()
-            get_input("Click Enter to select another cocktail.")
+            get_input("Click [green]Enter[/] to select another cocktail.")
             continue
 
         else:

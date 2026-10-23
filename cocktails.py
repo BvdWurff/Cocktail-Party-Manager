@@ -1,3 +1,5 @@
+import datetime
+
 from rich import box
 from rich.table import Table
 from rich.text import Text
@@ -8,6 +10,8 @@ from cocktail_api import (
     new_cocktail,
     get_cocktails_by_name,
 )
+
+from persons import select_guest
 
 from inventory import check_cocktail_availability
 
@@ -37,39 +41,235 @@ console = Console(width=80)
 
 
 def all_available_cocktails():
-    pass
+    while True:
+        cocktails = load_data("cocktails")
+
+        content = "Browse all available cocktails and explore their recipes and ingredients."
+
+        display_page(location="Cocktails",
+                     title="All available cocktails",
+                     content=content
+                     )
+
+        options_column_2 = []
+        cocktail_ids = []
+
+        for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda item: item[1]["name"].casefold()):
+            if cocktail["active"]:
+                cocktail_ids.append(cocktail_id)
+                options_column_2.append(cocktail["name"])
+
+        options_column_2.append("")
+        options_column_2.append("Back to cocktail menu")
+
+        console.print(
+            Padding(display_table(name_column_2="Cocktail", options_column_2=options_column_2, width=70), (0, 0, 1, 5))
+        )
+
+        menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
+        cocktail_id = cocktail_ids[menu_choice - 1]
+
+        if menu_choice == 0:
+            break
+
+        else:
+            cocktail_name = cocktails[cocktail_id]["name"]
+            ingredients = cocktails[cocktail_id]["ingredients"]
+            instructions = cocktails[cocktail_id]["instructions"]
+            show_cocktail(cocktail_name, ingredients, instructions)
+
+            get_input("Press [green]Enter[/] to return to All available cocktails.")
+            continue
+    return
 
 
-def select_cocktail():
+
+
+
+
+
+def rank_a_cocktail(current_event, current_event_id):
+    guest_id = ""
+    cocktail_id = ""
+    today = datetime.date.today().strftime("%d-%m-%Y")
+
+    while True:
+        rankings = load_data("rankings")
+        content = "Here you can rank the cocktails you drank."
+
+        display_page(location="Cocktails",
+                     title="Rank a cocktail",
+                     content=content
+                     )
+
+        if not guest_id and not cocktail_id:
+            get_input("press [green]Enter[/] to select a guest.")
+
+        if not guest_id:
+            guest_id = select_guest(current_event, current_event_id)
+            if not guest_id:
+                break
+            continue
+
+        if not cocktail_id:
+            cocktail_id = select_cocktail(trigger="rank_a_cocktail")
+            if not cocktail_id:
+                break
+            continue
+
+        while True:
+            score = float(get_input("How would you rate this cocktail (1–10)? ", float))
+
+            if 1 <= score <= 10:
+                break
+
+            else:
+                print(1)
+                print_message(INVALID_INPUT)
+                continue
+
+        update_id = str(len(rankings) + 1)
+        for ranking_id, ranking in rankings.items():
+            if ranking["person"] == guest_id and ranking["cocktail"] == cocktail_id:
+                update_id = ranking_id
+                break
+
+
+        update_ranking = {
+            "id": update_id,
+            "cocktail": cocktail_id,
+            "person": guest_id,
+            "date": today,
+            "score": score
+        }
+
+        save_data("rankings", update_ranking)
+
+        print()
+        print_message("Your rating has been saved successfully!", "green")
+
+        options_column_2 = ["Rank another cocktail", "View ranking", "", "Back to cocktail menu"]
+
+        console.print(
+            Padding(display_table(options_column_2=options_column_2, width=70), (1, 0, 1, 5))
+        )
+
+        menu_choice = get_menu_choice(range(0, 3))
+
+        if menu_choice == 1:
+            guest_id = ""
+            cocktail_id = ""
+            continue
+
+        elif menu_choice == 2:
+            show_cocktail_ranking()
+            break
+
+        break
+
+    return
+
+
+def show_cocktail_ranking():
+    rankings = load_data("rankings")
+    cocktails = load_data("cocktails")
+
+    content = "Discover the all-time favorite cocktails, ranked by their average rating."
+
+    display_page(location="Cocktails",
+                 title="All-time favorites",
+                 content=content
+                 )
+
+    total_scores = {}
+    number_of_ratings = {}
+    average_scores = {}
+
+    for ranking in rankings.values():
+        cocktail = cocktails[ranking["cocktail"]]["name"]
+        if cocktail in total_scores.keys():
+            score = total_scores[cocktail] + ranking["score"]
+            number = number_of_ratings[cocktail] + 1
+        else:
+            score = ranking["score"]
+            number = 1
+
+        total_scores[cocktail] = score
+        number_of_ratings[cocktail] = number
+
+    for cocktail, score in total_scores.items():
+        number = number_of_ratings[cocktail]
+        average_score = round(score / number, 1)
+        average_scores[cocktail] = average_score
+
+    options_column_1 = []
+    options_column_2 = []
+    options_column_3 = []
+    options_column_4 = []
+
+    counter = 0
+
+    for cocktail, score in sorted(average_scores.items(), reverse=True, key=lambda item: item[1]):
+        counter += 1
+        options_column_1.append(counter)
+        options_column_2.append(cocktail)
+        options_column_3.append(score)
+        options_column_4.append(number_of_ratings[cocktail])
+
+    table = Table(
+        box=box.SQUARE,
+        expand=True,
+        header_style="bold bright_white",
+        border_style="bright_yellow",
+        padding=(0, 1),
+        width=70
+    )
+
+    table.add_column("Place")
+    table.add_column("Cocktail")
+    table.add_column("Score")
+    table.add_column("Votes")
+
+    for option_c1, option_c2, option_c3, option_c4 in zip(options_column_1, options_column_2, options_column_3, options_column_4):
+        table.add_row(str(option_c1), option_c2, str(option_c3), str(option_c4))
+
+    console.print(
+        Padding(table, (0, 0, 1, 5))
+    )
+
+    get_input("Press [green]Enter[/] to return to the cocktail menu.")
+
+    return
+
+
+
+def select_cocktail(trigger=""):
     while True:
         clear_terminal()
         cocktails = load_data("cocktails")
 
-        content = f"A list of all the available cocktails."
+        content = "A list of all the available cocktails."
 
         display_page(location="Cocktails",
                      title="Available Cocktails",
                      content=content
                      )
 
-        options_column_1 = []
         options_column_2 = []
         cocktail_ids = []
 
         for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda item: item[1]["name"].casefold()):
-            low_on_stock = check_cocktail_availability(cocktail_id)
 
-            if cocktail["active"] and not low_on_stock:
+            if cocktail["active"] and (trigger or not check_cocktail_availability(cocktail_id)):
                 cocktail_ids.append(cocktail_id)
                 options_column_2.append(cocktail["name"])
 
-        options_column_2.append("")
-        options_column_2.append("Cocktail not on list")
+        if not trigger:
+            options_column_2.append("")
+            options_column_2.append("Cocktail not on list")
 
         console.print(
-            Padding(display_table(name_column_1="Option", options_column_1=options_column_1,
-                                  name_column_2="Cocktail", options_column_2=options_column_2, width=70),
-                    (0, 0, 1, 5))
+            Padding(display_table(name_column_2="Cocktail", options_column_2=options_column_2, width=70), (0, 0, 1, 5))
         )
 
         menu_choice = get_menu_choice(range(0, len(options_column_2) -1))

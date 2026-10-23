@@ -46,15 +46,9 @@ def show_todays_event():
     today = datetime.date.today().strftime("%d-%m-%Y")
     todays_event = ""
 
-    for event in events.values():
-        if event["date"] == today:
-            todays_event = event["date"]
-            break
-
-
-    if todays_event:
-        print(todays_event)
-    else:
+    for event_id in events.values():
+        if event_id["date"] == today:
+            return event_id, events[event_id]
         print("No even created for today.")
 
     get_input(CONTINUE_PROMPT)
@@ -120,7 +114,7 @@ Type [red]Stop[/] to exit the registration process."""
                 print()
                 print_message(f"An event is already registered for {event_date}.", "red")
                 print()
-                get_input("Press Enter to return to the events menu")
+                get_input("Press [green]Enter[/] to return to the events menu")
 
                 return None
 
@@ -206,14 +200,14 @@ def select_event():
 
                 if not current_event:
                     print()
-                    get_input("No event was created. Press Enter to return to the orders menu.")
+                    get_input("No event was created. Press [green]Enter[/] to return to the orders menu.")
                     return
 
                 continue
 
             else:
                 print()
-                get_input("Press Enter to return to the orders menu.")
+                get_input("Press [green]Enter[/] to return to the orders menu.")
                 return
 
         return current_event, current_event_id
