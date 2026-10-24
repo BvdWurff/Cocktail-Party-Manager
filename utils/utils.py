@@ -81,6 +81,16 @@ def save_data(data_type, data, record_id=""):
     with open(f"{file_path}.json", "w", encoding="utf-8") as file:
         json.dump(stored_data, file, indent=4, ensure_ascii=False)
 
+
+def update_record(data_type, record_id, key, new_value):
+    data = load_data(data_type)
+    record = data[record_id]
+    record[key] = new_value
+
+    save_data("data_type", record, record_id)
+
+    return
+
 # ==============================
 # GENERAL UTILITIES
 # ==============================
@@ -262,4 +272,57 @@ def display_page(location, title, content):
             ),
             (1, 5))
     )
+
+def unit_converter():
+
+    content = "Convert different units of measurement to milliliters (ml).\n\n"\
+              "Select the unit you would like to convert."
+
+    display_page(location="Cocktail Party Manager",
+                 title="Unit converter",
+                 content=content
+                 )
+
+    options_column_2 = ["(fl) oz", "cup", "L (liter)", "cl (centiliter)", "tsp (teaspoon)", "tbsp (tablespoon)", "", "Back"]
+
+    console.print(
+        Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
+    )
+
+    while True:
+        menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
+        if menu_choice == 0:
+            break
+
+        factor = float(0)
+
+        match menu_choice:
+            case 1:
+                factor = 29,5735
+            case 2:
+                factor = 236,5882
+            case 3:
+                factor = 1000
+            case 4:
+                factor = 10
+            case 5:
+                factor = 4,9289
+            case 6:
+                factor = 14,7868
+
+        volume = float(get_input("What is the volume of the unit you want to conver? ", float))
+        print()
+        volume_ml = volume * factor
+        print_message(f"[purple]{volume} {options_column_2[menu_choice]}[/] is [blue]{volume_ml} ml[/]")
+        print()
+        continue
+
+    return
+
+
+
+
+
+
+
 

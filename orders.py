@@ -7,7 +7,10 @@ from rich.padding import Padding
 from rich.table import Table
 from rich import box
 
-from inventory import check_cocktail_availability
+from inventory import (
+    check_cocktail_availability,
+)
+
 from persons import select_guest
 from events import select_event
 
@@ -25,6 +28,8 @@ from utils.utils import (
     save_data,
     get_menu_choice,
     display_page,
+    update_record,
+    unit_converter,
 )
 
 
@@ -42,17 +47,6 @@ from utils.constants import (
 # ==============================
 
 console = Console(width=80)
-
-
-def update_order(order_id, status):
-    orders = load_data("orders")
-    order = orders[order_id]
-    order[status] = status
-
-    save_data("orders", order, order_id)
-
-    return
-
 
 def get_next_order():
     orders = load_data("orders")
@@ -136,8 +130,12 @@ def all_open_orders():
 
 
 def process_order(order_id, order):
+    if not order:
+        return
+
     persons = load_data("persons")
     cocktails = load_data("cocktails")
+    inventory = load_data("inventory")
 
     guest_name = f"{persons[order["person"]]["first_name"]} {persons[order["person"]]["surname"]}"
     cocktail_name = cocktails[order["cocktail"]]["name"]
@@ -159,32 +157,42 @@ Cocktail:   [blue]{cocktail_name}[/]"""
     menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
 
     if menu_choice == 1:
-        ingredients = cocktails[order["cocktail"]]["ingredients"]
-        instructions = cocktails[order["cocktail"]]["instructions"]
-        show_cocktail(cocktail_name, ingredients, instructions)
+        while True:
+            ingredients = cocktails[order["cocktail"]]["ingredients"]
+            instructions = cocktails[order["cocktail"]]["instructions"]
+            show_cocktail(cocktail_name, ingredients, instructions)
 
-        options_column_2 = ["Cocktail served", "Order cancelled", "", "Back to order menu"]
+            options_column_2 = ["Cocktail served", "Order cancelled", "Unit converter", "", "Back to order menu"]
 
-        console.print(
-            Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-        )
+            console.print(
+                Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
+            )
 
-        menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
+            menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
 
-        if menu_choice == 1:
-            update_order(order_id, "served")
-            print_message("Order successfully served", "green")
-            print()
-            get_input(CONTINUE_PROMPT)
+            if menu_choice == 1:
+                for ingredient in ingredients.keys():
+                    for item_id, item in inventory.items():
+                        if ingredient == item["name"]:
+                            quantity = item["quantity"]
+                            quantity -= 1
 
-        elif menu_choice == 2:
-            update_order(order_id, "cancelled")
-            print_message("Order successfully cancelled", "green")
-            print()
-            get_input(CONTINUE_PROMPT)
+                            update_record("inventory", item_id, "quantity", quantity)
+
+                update_record("order", order_id, "status", "served")
+
+                print_message("Order successfully served", "green")
+                print()
+                get_input(CONTINUE_PROMPT)
+                return
+
+            elif menu_choice == 3:
+                unit_converter()
+                continue
+
 
     elif menu_choice == 2:
-        update_order(order_id, "cancelled")
+        update_record("order", order_id, "status", "cancelled")
         print_message("Order successfully cancelled", "green")
         print()
         get_input(CONTINUE_PROMPT)
@@ -194,6 +202,9 @@ Cocktail:   [blue]{cocktail_name}[/]"""
 
 def new_order():
     current_event, current_event_id = select_event()
+    if not current_event:
+        return
+
 
     while True:
         person_id = select_guest(current_event, current_event_id)
@@ -220,7 +231,7 @@ def new_order():
                 print_message(f" - {ingredient}")
 
             print()
-            get_input("Click [green]Enter[/] to select another cocktail.")
+            get_input("Click [blue]Enter[/] to select another cocktail.")
             continue
 
         else:
@@ -245,5 +256,5 @@ def new_order():
                 order.clear()
                 continue
 
-            else:
-                return
+            break
+    return

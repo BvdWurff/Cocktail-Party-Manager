@@ -78,7 +78,7 @@ def all_available_cocktails():
             instructions = cocktails[cocktail_id]["instructions"]
             show_cocktail(cocktail_name, ingredients, instructions)
 
-            get_input("Press [green]Enter[/] to return to All available cocktails.")
+            get_input("Press [blue]Enter[/] to return to All available cocktails.")
             continue
     return
 
@@ -103,7 +103,7 @@ def rank_a_cocktail(current_event, current_event_id):
                      )
 
         if not guest_id and not cocktail_id:
-            get_input("press [green]Enter[/] to select a guest.")
+            get_input("press [blue]Enter[/] to select a guest.")
 
         if not guest_id:
             guest_id = select_guest(current_event, current_event_id)
@@ -237,7 +237,7 @@ def show_cocktail_ranking():
         Padding(table, (0, 0, 1, 5))
     )
 
-    get_input("Press [green]Enter[/] to return to the cocktail menu.")
+    get_input("Press [blue]Enter[/] to return to the cocktail menu.")
 
     return
 

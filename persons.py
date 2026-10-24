@@ -46,14 +46,14 @@ Type [red]Stop[/] to exit the registration process."""
 
             if first_name.lower() == "stop":
                 print()
-                get_input("Press [green]Enter[/] to exit the registration process.")
+                get_input("Press [blue]Enter[/] to exit the registration process.")
                 return None
 
             surname = get_input("What is the surname of the guest? ")
 
             if surname.lower() == "stop":
                 print()
-                get_input("Press [green]Enter[/] to exit the registration process.")
+                get_input("Press [blue]Enter[/] to exit the registration process.")
                 return None
 
             persons = load_data("persons")
@@ -94,7 +94,7 @@ Type [red]Stop[/] to exit the registration process."""
 
         if trigger == "new_order":
             print()
-            get_input("Press [green]Enter[/] to return to the order process.")
+            get_input("Press [blue]Enter[/] to return to the order process.")
 
             return person["id"]
 
@@ -117,8 +117,6 @@ Type [red]Stop[/] to exit the registration process."""
 
 
 def select_guest(current_event, current_event_id):
-    clear_terminal()
-
     content = f"A list off all the guests, linked to the current event."
 
     display_page(location="Guests",

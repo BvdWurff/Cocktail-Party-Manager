@@ -78,5 +78,12 @@ def check_cocktail_availability(cocktail_id):
 
     return low_on_stock
 
+def update_inventory(item_id, key, new_value):
+    inventory = load_data("inventory")
+    item = inventory[item_id]
+    item[key] = new_value
+
+    save_data("inventory", item)
+
 
 

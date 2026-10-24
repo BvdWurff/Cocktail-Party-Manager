@@ -1,22 +1,22 @@
 {
     "1": {
         "name": "Tequila",
-        "quantity": 50,
+        "quantity": 49,
         "minimum_quantity": 10
     },
     "2": {
         "name": "Blue Curacao",
-        "quantity": 50,
+        "quantity": 49,
         "minimum_quantity": 10
     },
     "3": {
         "name": "Lime juice",
-        "quantity": 50,
+        "quantity": 49,
         "minimum_quantity": 10
     },
     "4": {
         "name": "Salt",
-        "quantity": 50,
+        "quantity": 49,
         "minimum_quantity": 10
     },
     "5": {
@@ -51,7 +51,7 @@
     },
     "11": {
         "name": "Lime",
-        "quantity":50,
+        "quantity": 50,
         "minimum_quantity": 10
     },
     "12": {

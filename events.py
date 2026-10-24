@@ -114,7 +114,7 @@ Type [red]Stop[/] to exit the registration process."""
                 print()
                 print_message(f"An event is already registered for {event_date}.", "red")
                 print()
-                get_input("Press [green]Enter[/] to return to the events menu")
+                get_input("Press [blue]Enter[/] to return to the events menu")
 
                 return None
 
@@ -200,14 +200,14 @@ def select_event():
 
                 if not current_event:
                     print()
-                    get_input("No event was created. Press [green]Enter[/] to return to the orders menu.")
-                    return
+                    get_input("No event was created. Press [blue]Enter[/] to return to the orders menu.")
+                    return {}, ""
 
                 continue
 
             else:
                 print()
-                get_input("Press [green]Enter[/] to return to the orders menu.")
-                return
+                get_input("Press [blue]Enter[/] to return to the orders menu.")
+                return {}, ""
 
         return current_event, current_event_id
