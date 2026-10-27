@@ -12,6 +12,12 @@ from utils.utils import (
     display_page,
 )
 
+from events import (
+    get_current_event,
+    add_guest_to_event,
+    get_event_guests,
+)
+
 from utils.constants import (
     INVALID_INPUT,
 )
@@ -113,7 +119,11 @@ Type [red]Stop[/] to exit the registration process."""
     return created_guests_ids
 
 
-def select_guest(current_event, current_event_id, trigger=""):
+def select_guest(trigger=""):
+    current_event, current_event_id = get_current_event()
+    if current_event is None:
+        return None
+
     if trigger == "new_order":
         content = "Select the guest you want to place an order for."
 
@@ -125,7 +135,7 @@ def select_guest(current_event, current_event_id, trigger=""):
                  content=content
                  )
 
-    options_column_2, guest_ids = get_guests_event(current_event)
+    options_column_2, guest_ids = get_event_guests()
 
     options_column_2.append("")
     options_column_2.append("Guest not on list")
@@ -138,86 +148,8 @@ def select_guest(current_event, current_event_id, trigger=""):
     guest_id = guest_ids[menu_choice - 1]
 
     if menu_choice == 0:
-        guest_id = add_guest_to_event(current_event, current_event_id, trigger="new_order")
-
-    return str(guest_id)
-
-
-def add_guest_to_event(current_event, current_event_id, trigger=""):
-    clear_terminal()
-
-    persons = load_data("persons")
-    options = {}
-
-    for person_id in persons:
-        if person_id not in current_event["guests"]:
-            guest = persons.get(str(person_id))
-
-            if guest["active"]:
-                name = f"{guest['first_name']} {guest['surname']}"
-                options[int(person_id)] = name
-
-    options_column_2 = []
-    guests_ids = []
-
-    for guest_id, guest_name in sorted(options.items(), key=lambda item: item[1].casefold()):
-        guests_ids.append(guest_id)
-        options_column_2.append(guest_name)
-
-    if len(options_column_2) == 0:
-        guest_id = new_person("new_order")
-
+        guest_id = add_guest_to_event()
         if guest_id is None:
             return None
 
-    else:
-        options_column_2.append("")
-        options_column_2.append("Guest not on list")
-
-        if trigger == "new_order":
-            content = f"Select the guest you want to add to the event."
-
-            display_page(location="Events",
-                         title="Add guests",
-                         content=content
-                         )
-
-        console.print(
-            Padding(display_table(name_column_2="Name", options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-        )
-
-        menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
-        guest_id = guests_ids[menu_choice - 1]
-
-        if menu_choice == 0:
-            guest_id = new_person("new_order")
-
-            if guest_id is None:
-                return None
-
-    current_event["guests"].append(str(guest_id))
-
-    save_data("events", current_event, record_id=str(current_event_id))
-
-    return guest_id
-
-
-def get_guests_event(current_event):
-    persons = load_data("persons")
-    options = {}
-
-    for guest_id in current_event["guests"]:
-        guest = persons.get(str(guest_id))
-
-        if guest["active"]:
-            name = f"{guest['first_name']} {guest['surname']}"
-            options[int(guest_id)] = name
-
-    guest_names = []
-    guest_ids = []
-
-    for guest_id, guest_name in sorted(options.items(), key=lambda item: item[1].casefold()):
-        guest_ids.append(guest_id)
-        guest_names.append(guest_name)
-
-    return guest_names, guest_ids
+    return str(guest_id)

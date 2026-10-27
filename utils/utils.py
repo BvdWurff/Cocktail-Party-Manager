@@ -13,13 +13,15 @@ from rich.table import Table
 from rich import box
 from rich.text import Text
 
+
 # ==============================
 # CONSTANTS
 # ==============================
 
 from utils.constants import (
     SELECT_OPTION,
-    INVALID_INPUT, CONTINUE_PROMPT,
+    INVALID_INPUT,
+    CONTINUE_PROMPT,
 )
 
 # ==============================
@@ -90,6 +92,7 @@ def update_record(data_type, record_id, key, new_value):
 # ==============================
 # GENERAL UTILITIES
 # ==============================
+
 
 def clear_terminal():
     """

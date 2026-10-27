@@ -73,5 +73,25 @@
         "name": "Angostura bitters",
         "quantity": 0,
         "minimum_quantity": 10
+    },
+    "16": {
+        "name": "Vodka",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "17": {
+        "name": "Tomato juice",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "18": {
+        "name": "Worcestershire sauce",
+        "quantity": 50,
+        "minimum_quantity": 10
+    },
+    "19": {
+        "name": "Tabasco sauce",
+        "quantity": 50,
+        "minimum_quantity": 10
     }
 }

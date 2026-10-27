@@ -4,9 +4,6 @@
 
 import datetime
 
-from rich import box
-from rich.table import Table
-from rich.text import Text
 from rich.console import Console
 from rich.padding import Padding
 
@@ -16,7 +13,7 @@ from utils.utils import (
     display_page,
     get_menu_choice,
     display_table,
-    get_input, clear_terminal,
+    get_input,
 )
 
 from menus import main_menu
@@ -34,9 +31,6 @@ console = Console(width=80)
 def update_events():
     events = load_data("events")
     today = datetime.date.today()
-
-    current_event = {}
-    current_event_id = ""
 
     for event_id, event in events.items():
         if not event["active"]:
@@ -59,17 +53,14 @@ def update_events():
         if event["current"] != current or event["active"] != active:
             save_data("events", event_update)
 
-        if current:
-            current_event = event_update
-            current_event_id = event_update["id"]
-    return current_event, current_event_id
+    return
 
 
 def main():
     """
         Controls the main program flow.
     """
-    current_event, current_event_id = update_events()
+    update_events()
 
     content = f"""Welcome to [bright_yellow]the Cocktail Party Manager[/]!
 
@@ -85,7 +76,7 @@ in PyCharm."""
     get_input(CONTINUE_PROMPT)
 
     while True:
-        main_menu(current_event, current_event_id)
+        main_menu()
 
         content = "Are you sure you want to exit [bright_yellow]the Cocktail Party Manager[/]?"
 

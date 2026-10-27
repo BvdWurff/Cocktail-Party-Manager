@@ -48,7 +48,7 @@ from cocktail_api import (
 
 console = Console(width=80)
 
-def main_menu(current_event, current_event_id):
+def main_menu():
     while True:
         content = "Discover cocktails, take orders, manage events, keep track of your inventory or see statistics.\n\nSelect an option below to get started."
 
@@ -66,19 +66,19 @@ def main_menu(current_event, current_event_id):
         menu_choice = get_menu_choice(range(0, 6))
 
         if menu_choice == 1:
-            cocktail_menu(current_event, current_event_id)
+            cocktail_menu()
 
         elif menu_choice == 2:
-            orders_menu(current_event, current_event_id)
+            orders_menu()
 
         elif menu_choice == 3:
-            current_event, current_event_id = events_menu(current_event, current_event_id)
+            events_menu()
 
         elif menu_choice == 4:
             admin_menu()
 
         elif menu_choice == 5:
-            stats_menu(current_event, current_event_id)
+            stats_menu()
 
         else:
             break
@@ -86,7 +86,7 @@ def main_menu(current_event, current_event_id):
     return
 
 
-def cocktail_menu(current_event, current_event_id):
+def cocktail_menu():
     while True:
         content = "Here you can find your favorite cocktails and get recipes."
 
@@ -110,7 +110,7 @@ def cocktail_menu(current_event, current_event_id):
             find_new_cocktails_menu()
 
         elif menu_choice == 3:
-            rank_a_cocktail(current_event, current_event_id)
+            rank_a_cocktail()
 
         elif menu_choice == 4:
             show_cocktail_ranking()
@@ -124,7 +124,7 @@ def cocktail_menu(current_event, current_event_id):
     return
 
 
-def orders_menu(current_event, current_event_id):
+def orders_menu():
     while True:
         content = "Here you can manage your orders."
 
@@ -142,18 +142,20 @@ def orders_menu(current_event, current_event_id):
         menu_choice = get_menu_choice(range(0, 4))
 
         if menu_choice == 1:
-            new_order(current_event, current_event_id)
+            new_order()
 
         elif menu_choice == 2:
             order_id, order = get_next_order()
-            if order_id == 0:
+            if order_id is None:
                 continue
+
             process_order(order_id, order)
 
         elif menu_choice == 3:
-            order_id, order =all_open_orders()
-            if order_id == 0:
+            order_id, order = all_open_orders()
+            if order_id is None:
                 continue
+
             process_order(order_id, order)
 
         else:
@@ -161,7 +163,7 @@ def orders_menu(current_event, current_event_id):
 
     return
 
-def events_menu(current_event, current_event_id):
+def events_menu():
     while True:
         content = "Here you can manage your events."
 
@@ -170,7 +172,7 @@ def events_menu(current_event, current_event_id):
                      content=content
                      )
 
-        menu_options = ["New event", "Today's event", "All active events", "", "Back to main menu"]
+        menu_options = ["New event", "Current event", "All active events", "", "Back to main menu"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -182,7 +184,7 @@ def events_menu(current_event, current_event_id):
             new_event()
 
         elif menu_choice == 2:
-            current_event, current_event_id = show_event(current_event_id)
+            show_event()
 
         elif menu_choice == 3:
             show_all_events()
@@ -190,7 +192,7 @@ def events_menu(current_event, current_event_id):
         else:
             break
 
-    return current_event, current_event_id
+    return
 
 
 def admin_menu():
@@ -234,7 +236,7 @@ def admin_menu():
     return
 
 
-def stats_menu(current_event, current_event_id):
+def stats_menu():
     while True:
         content = "Here you can look into statistics"
 

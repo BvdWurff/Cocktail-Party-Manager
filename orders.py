@@ -12,7 +12,9 @@ from inventory import (
 )
 
 from persons import select_guest
-from events import select_event
+from events import (
+    get_current_event,
+)
 
 from cocktails import (
     select_cocktail,
@@ -52,7 +54,7 @@ def get_next_order():
         if orders[order_id]["status"] == "ordered":
             return order_id, orders[order_id]
 
-    return 0, {}
+    return None, None
 
 
 def all_open_orders():
@@ -120,15 +122,13 @@ def all_open_orders():
     order_id = order_ids[menu_choice - 1]
 
     if menu_choice == 0:
-        return order_id, {}
+        return None, None
 
     else:
         return order_id, orders[order_id]
 
 
 def process_order(order_id, order):
-    if not order:
-        return
 
     persons = load_data("persons")
     cocktails = load_data("cocktails")
@@ -207,16 +207,14 @@ Cocktail:   [blue]{cocktail_name}[/]"""
     return
 
 
-def new_order(current_event, current_event_id):
-    if not current_event:
-        current_event, current_event_id = select_event()
-        if not current_event:
-            return
-
+def new_order():
+    current_event, current_event_id = get_current_event()
+    if current_event is None:
+        return
 
     while True:
-        person_id = select_guest(current_event, current_event_id, "new_order")
-        if not person_id:
+        person_id = select_guest("new_order")
+        if person_id is None:
             return
 
         cocktail_id = select_cocktail()

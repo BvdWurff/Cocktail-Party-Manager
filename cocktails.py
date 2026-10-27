@@ -15,6 +15,8 @@ from persons import select_guest
 
 from inventory import check_cocktail_availability
 
+from events import get_current_event
+
 from utils.utils import (
     load_data,
     save_data,
@@ -25,6 +27,7 @@ from utils.utils import (
     display_table,
     clear_terminal,
     display_page,
+
 )
 
 from utils.constants import (
@@ -82,13 +85,13 @@ def all_available_cocktails():
 
 
 
+def rank_a_cocktail():
+    current_event, current_event_id = get_current_event()
+    if current_event is None:
+        return
 
-
-
-
-def rank_a_cocktail(current_event, current_event_id):
-    guest_id = ""
-    cocktail_id = ""
+    guest_id = None
+    cocktail_id = None
     today = datetime.date.today().strftime("%d-%m-%Y")
 
     while True:
@@ -100,18 +103,18 @@ def rank_a_cocktail(current_event, current_event_id):
                      content=content
                      )
 
-        if not guest_id and not cocktail_id:
+        if guest_id is None and cocktail_id is None:
             get_input("press [blue]Enter[/] to select a guest.")
 
-        if not guest_id:
-            guest_id = select_guest(current_event, current_event_id)
-            if not guest_id:
+        if guest_id is None:
+            guest_id = select_guest()
+            if guest_id is None:
                 break
             continue
 
-        if not cocktail_id:
+        if cocktail_id is None:
             cocktail_id = select_cocktail(trigger="rank_a_cocktail")
-            if not cocktail_id:
+            if cocktail_id is None:
                 break
             continue
 
