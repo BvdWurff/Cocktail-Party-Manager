@@ -15,15 +15,15 @@ from orders import (
 from persons import new_person
 from events import (
     new_event,
-    show_todays_event,
+    show_event,
     show_all_events,
 )
 
 from utils.utils import (
     get_menu_choice,
     display_table,
-    clear_terminal,
     display_page,
+    unit_converter,
 )
 
 from cocktails import (
@@ -50,7 +50,6 @@ console = Console(width=80)
 
 def main_menu(current_event, current_event_id):
     while True:
-        clear_terminal()
         content = "Discover cocktails, take orders, manage events, keep track of your inventory or see statistics.\n\nSelect an option below to get started."
 
         display_page(location="Cocktail Party Manager",
@@ -73,7 +72,7 @@ def main_menu(current_event, current_event_id):
             orders_menu(current_event, current_event_id)
 
         elif menu_choice == 3:
-            events_menu(current_event, current_event_id)
+            current_event, current_event_id = events_menu(current_event, current_event_id)
 
         elif menu_choice == 4:
             admin_menu()
@@ -117,7 +116,7 @@ def cocktail_menu(current_event, current_event_id):
             show_cocktail_ranking()
 
         elif menu_choice == 5:
-            stats_menu()
+            pass
 
         else:
             break
@@ -143,7 +142,7 @@ def orders_menu(current_event, current_event_id):
         menu_choice = get_menu_choice(range(0, 4))
 
         if menu_choice == 1:
-            new_order()
+            new_order(current_event, current_event_id)
 
         elif menu_choice == 2:
             order_id, order = get_next_order()
@@ -171,7 +170,7 @@ def events_menu(current_event, current_event_id):
                      content=content
                      )
 
-        menu_options = ["New event", "Today's event", "All events", "", "Back to main menu"]
+        menu_options = ["New event", "Today's event", "All active events", "", "Back to main menu"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -183,7 +182,7 @@ def events_menu(current_event, current_event_id):
             new_event()
 
         elif menu_choice == 2:
-            show_todays_event()
+            current_event, current_event_id = show_event(current_event_id)
 
         elif menu_choice == 3:
             show_all_events()
@@ -191,7 +190,7 @@ def events_menu(current_event, current_event_id):
         else:
             break
 
-    return
+    return current_event, current_event_id
 
 
 def admin_menu():
@@ -203,7 +202,7 @@ def admin_menu():
                      content=content
                      )
 
-        menu_options = ["Inventory", "Guests", "Events", "Cocktails", "Shopping lists", "", "Back to main menu"]
+        menu_options = ["Inventory", "Guests", "Events", "Cocktails", "Unit convertor", "Shopping lists", "", "Back to main menu"]
 
         console.print(
             Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
@@ -212,19 +211,22 @@ def admin_menu():
         menu_choice = get_menu_choice(range(0, 5))
 
         if menu_choice == 1:
-            cocktail_menu()
+            pass
 
         elif menu_choice == 2:
             new_person(trigger="admin_menu")
 
         elif menu_choice == 3:
-            events_menu()
+            pass
 
         elif menu_choice == 4:
-            admin_menu()
+            pass
 
         elif menu_choice == 5:
-            stats_menu()
+            unit_converter()
+
+        elif menu_choice == 6:
+            pass
 
         else:
             break
@@ -250,13 +252,13 @@ def stats_menu(current_event, current_event_id):
         menu_choice = get_menu_choice(range(0, 5))
 
         if menu_choice == 1:
-            cocktail_menu()
+            pass
 
         elif menu_choice == 2:
-            orders_menu()
+            pass
 
         elif menu_choice == 3:
-            events_menu()
+            pass
 
         else:
             break

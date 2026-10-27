@@ -24,7 +24,6 @@ from utils.utils import (
     load_data,
     display_table,
     print_message,
-    clear_terminal,
     save_data,
     get_menu_choice,
     display_page,
@@ -37,9 +36,7 @@ from utils.utils import (
 # CONSTANTS
 # ==============================
 
-from utils.constants import (
-    CONTINUE_PROMPT,
-)
+
 
 
 # ==============================
@@ -156,7 +153,10 @@ Cocktail:   [blue]{cocktail_name}[/]"""
 
     menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
 
-    if menu_choice == 1:
+    if menu_choice == 0:
+        return
+
+    elif menu_choice == 1:
         while True:
             ingredients = cocktails[order["cocktail"]]["ingredients"]
             instructions = cocktails[order["cocktail"]]["instructions"]
@@ -183,31 +183,39 @@ Cocktail:   [blue]{cocktail_name}[/]"""
 
                 print_message("Order successfully served", "green")
                 print()
-                get_input(CONTINUE_PROMPT)
-                return
+                get_input()
+
+            elif menu_choice == 2:
+                update_record("orders", order_id, "status", "cancelled")
+                print_message("Order successfully cancelled", "green")
+                print()
+                get_input()
 
             elif menu_choice == 3:
                 unit_converter()
+
                 continue
 
+            break
 
     elif menu_choice == 2:
-        update_record("order", order_id, "status", "cancelled")
+        update_record("orders", order_id, "status", "cancelled")
         print_message("Order successfully cancelled", "green")
         print()
-        get_input(CONTINUE_PROMPT)
+        get_input()
 
     return
 
 
-def new_order():
-    current_event, current_event_id = select_event()
+def new_order(current_event, current_event_id):
     if not current_event:
-        return
+        current_event, current_event_id = select_event()
+        if not current_event:
+            return
 
 
     while True:
-        person_id = select_guest(current_event, current_event_id)
+        person_id = select_guest(current_event, current_event_id, "new_order")
         if not person_id:
             return
 

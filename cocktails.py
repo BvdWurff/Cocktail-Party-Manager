@@ -29,8 +29,6 @@ from utils.utils import (
 
 from utils.constants import (
     INVALID_INPUT,
-    SELECT_OPTION,
-    CONTINUE_PROMPT,
 )
 
 # ==============================
@@ -248,7 +246,7 @@ def select_cocktail(trigger=""):
         clear_terminal()
         cocktails = load_data("cocktails")
 
-        content = "A list of all the available cocktails."
+        content = "Select the cocktail you want to order."
 
         display_page(location="Cocktails",
                      title="Available Cocktails",

@@ -4,15 +4,11 @@
 
 import os
 import subprocess
-import datetime
 import json
-import copy
 
 from rich.console import Console
 from rich.padding import Padding
 from rich.panel import Panel
-from rich.live import Live
-from rich.spinner import Spinner
 from rich.table import Table
 from rich import box
 from rich.text import Text
@@ -23,7 +19,7 @@ from rich.text import Text
 
 from utils.constants import (
     SELECT_OPTION,
-    INVALID_INPUT,
+    INVALID_INPUT, CONTINUE_PROMPT,
 )
 
 # ==============================
@@ -87,7 +83,7 @@ def update_record(data_type, record_id, key, new_value):
     record = data[record_id]
     record[key] = new_value
 
-    save_data("data_type", record, record_id)
+    save_data(data_type, record, record_id)
 
     return
 
@@ -143,7 +139,7 @@ def print_message(message, color="", end="\n", indent=5):
     )
 
 
-def get_input(message, data_type=str, color="bright_white"):
+def get_input(message=CONTINUE_PROMPT, data_type=str, color="bright_white"):
     """
     Requests user input using a formatted Rich prompt.
 
@@ -274,22 +270,22 @@ def display_page(location, title, content):
     )
 
 def unit_converter():
-
-    content = "Convert different units of measurement to milliliters (ml).\n\n"\
-              "Select the unit you would like to convert."
-
-    display_page(location="Cocktail Party Manager",
-                 title="Unit converter",
-                 content=content
-                 )
-
-    options_column_2 = ["(fl) oz", "cup", "L (liter)", "cl (centiliter)", "tsp (teaspoon)", "tbsp (tablespoon)", "", "Back"]
-
-    console.print(
-        Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-    )
-
     while True:
+        content = "Convert different units of measurement to milliliters (ml)."
+
+        display_page(location="Cocktail Party Manager",
+                     title="Unit converter",
+                     content=content
+                     )
+
+        print_message("Select the unit you would like to convert:\n")
+
+        options_column_2 = ["oz (fl oz)", "cup", "liter (L)", "centiliter (cl)", "teaspoon (tsp)", "tablespoon (tbsp)", "", "Back"]
+
+        console.print(
+            Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
+        )
+
         menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
         if menu_choice == 0:
             break
@@ -298,23 +294,24 @@ def unit_converter():
 
         match menu_choice:
             case 1:
-                factor = 29,5735
+                factor = 29.5735
             case 2:
-                factor = 236,5882
+                factor = 236.5882
             case 3:
                 factor = 1000
             case 4:
                 factor = 10
             case 5:
-                factor = 4,9289
+                factor = 4.9289
             case 6:
-                factor = 14,7868
+                factor = 14.7868
 
-        volume = float(get_input("What is the volume of the unit you want to conver? ", float))
+        volume = float(get_input("What is the volume of the unit you want to convert? ", float))
         print()
-        volume_ml = volume * factor
-        print_message(f"[purple]{volume} {options_column_2[menu_choice]}[/] is [blue]{volume_ml} ml[/]")
+        volume_ml = int(volume * factor)
+        print_message(f"[purple]{volume} {options_column_2[menu_choice -1]}[/] is [blue]{volume_ml} ml[/]")
         print()
+        get_input()
         continue
 
     return
