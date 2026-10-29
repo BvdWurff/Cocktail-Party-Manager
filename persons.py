@@ -1,13 +1,9 @@
-from rich.console import Console
-from rich.padding import Padding
-
 from utils.utils import (
     display_table,
     load_data,
     save_data,
     get_input,
     print_message,
-    clear_terminal,
     get_menu_choice,
     display_page,
 )
@@ -21,13 +17,6 @@ from events import (
 from utils.constants import (
     INVALID_INPUT,
 )
-
-# ==============================
-# CONFIGURATION
-# ==============================
-
-console = Console(width=80)
-
 
 
 def new_person(trigger=""):
@@ -103,13 +92,14 @@ Type [red]Stop[/] to exit the registration process."""
 
         else:
             created_guests_ids.append(person["id"])
-            options_column_2 = ["Create another account", "Back"]
 
-            console.print(
-                Padding(display_table(name_column_2="Name", options_column_2=options_column_2, width=70), (1, 0, 1, 5))
-            )
+            columns = {
+                "Name": ["Create another account", "Back"]
+            }
 
-            menu_choice = get_menu_choice(range(1, 3))
+            display_table(columns, auto_number=True)
+
+            menu_choice = get_menu_choice(range(1, len(columns["Name"]) + 1))
 
             if menu_choice == 1:
                 continue
@@ -135,16 +125,18 @@ def select_guest(trigger=""):
                  content=content
                  )
 
-    options_column_2, guest_ids = get_event_guests()
+    guest_names, guest_ids = get_event_guests()
 
-    options_column_2.append("")
-    options_column_2.append("Guest not on list")
+    guest_names.append("")
+    guest_names.append("Guest not on list")
 
-    console.print(
-        Padding(display_table(name_column_2="Name", options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-    )
+    columns = {
+        "Name": guest_names
+    }
 
-    menu_choice = get_menu_choice(range(0, len(options_column_2) -1))
+    display_table(columns, auto_number=True)
+
+    menu_choice = get_menu_choice(range(0, len(columns["Name"]) -1))
     guest_id = guest_ids[menu_choice - 1]
 
     if menu_choice == 0:

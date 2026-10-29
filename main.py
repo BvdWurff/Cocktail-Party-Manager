@@ -4,9 +4,6 @@
 
 import datetime
 
-from rich.console import Console
-from rich.padding import Padding
-
 from utils.utils import (
     load_data,
     save_data,
@@ -21,11 +18,6 @@ from menus import main_menu
 from utils.constants import (
     CONTINUE_PROMPT,
 )
-# ==============================
-# CONFIGURATION
-# ==============================
-
-console = Console(width=80)
 
 
 def update_events():
@@ -85,13 +77,13 @@ in PyCharm."""
                      content=content
                      )
 
-        options_column_2 = ["Yes", "No"]
+        columns = {
+            "Action": ["Yes", "No"]
+        }
 
-        console.print(
-            Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(1, 3))
+        menu_choice = get_menu_choice(range(1, len(columns["Action"]) + 1))
 
         if menu_choice == 2:
             continue

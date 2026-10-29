@@ -2,9 +2,6 @@
 # FUNCTION IMPORTS
 # ==============================
 
-from rich.padding import Padding
-from rich.console import Console
-
 from orders import (
     new_order,
     get_next_order,
@@ -38,15 +35,6 @@ from cocktail_api import (
     lucky_shot,
 )
 
-# ==============================
-# CONSTANTS
-# ==============================
-
-# ==============================
-# CONFIGURATION
-# ==============================
-
-console = Console(width=80)
 
 def main_menu():
     while True:
@@ -57,13 +45,13 @@ def main_menu():
                      content=content
                      )
 
-        menu_options = ["Cocktails", "Orders", "Events", "Admin", "Statistics", "", "Exit"]
+        columns = {
+            "Menu": ["Cocktails", "Orders", "Events", "Admin", "Statistics", "", "Exit"]
+        }
 
-        console.print(
-            Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, 6))
+        menu_choice = get_menu_choice(range(0, len(columns["Menu"]) - 1))
 
         if menu_choice == 1:
             cocktail_menu()
@@ -95,13 +83,13 @@ def cocktail_menu():
                      content=content
                      )
 
-        menu_options = ["All available cocktails", "Find new cocktails", "Rank a cocktail", "All-time favorites", "", "Back to main menu"]
+        columns = {
+            "Action": ["All available cocktails", "Find new cocktails", "Rank a cocktail", "All-time favorites", "", "Back to main menu"]
+        }
 
-        console.print(
-            Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, 6))
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
             all_available_cocktails()
@@ -133,13 +121,13 @@ def orders_menu():
                      content=content
                      )
 
-        menu_options = ["New order", "Next open order", "All open orders", "", "Back to main menu"]
+        columns = {
+            "Action": ["New order", "Next open order", "All open orders", "", "Back to main menu"]
+        }
 
-        console.print(
-            Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, 4))
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
             new_order()
@@ -172,13 +160,13 @@ def events_menu():
                      content=content
                      )
 
-        menu_options = ["New event", "Current event", "All active events", "", "Back to main menu"]
+        columns = {
+            "Action": ["New event", "Current event", "Upcoming events", "Past events",  "", "Back to main menu"]
+        }
 
-        console.print(
-            Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, 4))
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
             new_event()
@@ -187,7 +175,10 @@ def events_menu():
             show_event()
 
         elif menu_choice == 3:
-            show_all_events()
+            show_all_events("upcoming")
+
+        elif menu_choice == 4:
+            show_all_events("past")
 
         else:
             break
@@ -204,13 +195,13 @@ def admin_menu():
                      content=content
                      )
 
-        menu_options = ["Inventory", "Guests", "Events", "Cocktails", "Unit convertor", "Shopping lists", "", "Back to main menu"]
+        columns = {
+            "Action": ["Inventory", "Guests", "Events", "Cocktails", "Unit convertor", "Shopping lists", "", "Back to main menu"]
+        }
 
-        console.print(
-            Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, 5))
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
             pass
@@ -245,13 +236,13 @@ def stats_menu():
                      content=content
                      )
 
-        menu_options = ["Guests", "Events", "Cocktails", "", "Back to main menu"]
+        columns = {
+            "Action": ["Guests", "Events", "Cocktails", "", "Back to main menu"]
+        }
 
-        console.print(
-            Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, 5))
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
             pass
@@ -277,13 +268,13 @@ def find_new_cocktails_menu():
                      content=content
                      )
 
-        menu_options = ["Search by name", "Search by ingredient", "Lucky 'shot'", "", "Back to cocktail menu"]
+        columns = {
+            "Action": ["Search by name", "Search by ingredient", "Lucky 'shot'", "", "Back to cocktail menu"]
+        }
 
-        console.print(
-            Padding(display_table(options_column_2=menu_options, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, 4))
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
             get_cocktails_by_name()

@@ -1,37 +1,7 @@
-from rich import box
-from rich.table import Table
-from rich.text import Text
-from rich.console import Console
-from rich.padding import Padding
-
-from cocktail_api import (
-    new_cocktail,
-    get_cocktails_by_name,
-)
-
 from utils.utils import (
     load_data,
     save_data,
-    get_menu_choice,
-    print_message,
-    get_input,
-    display_panel,
-    display_table,
-    clear_terminal,
-    display_page,
 )
-
-from utils.constants import (
-    INVALID_INPUT,
-    SELECT_OPTION,
-    CONTINUE_PROMPT,
-)
-
-# ==============================
-# CONFIGURATION
-# ==============================
-
-console = Console(width=80)
 
 
 def check_cocktail_availability(cocktail_id):

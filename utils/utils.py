@@ -11,7 +11,6 @@ from rich.padding import Padding
 from rich.panel import Panel
 from rich.table import Table
 from rich import box
-from rich.text import Text
 
 
 # ==============================
@@ -199,19 +198,14 @@ def display_panel(content, border_style="bright_yellow", title_color="bright_whi
     )
     print()
 
-def display_table(name_column_1: str = "option", options_column_1="", name_column_2: str = "action", options_column_2="", width=64):
+
+def display_table(columns: dict, auto_number=False):
     """
-    Creates a formatted Rich Table containing numbered menu options.
+    Creates and displays a formatted Rich Table with dynamically defined columns.
 
     Args:
-        name_column_1 (int): Display name of column 1
-        options_column_1 (list): Options to display in column 1
-        name_column_2 (int): Display name of column 2
-        options_column_2 (list): Options to display in column 2
-        width (int): The width of the table.
-
-    Returns:
-        Table: The formatted Rich menu table.
+        columns (dict): Dictionary containing column names and their values.
+        auto_number (bool): Automatically generate a numbered option column.
     """
     table = Table(
         box=box.SQUARE,
@@ -219,34 +213,34 @@ def display_table(name_column_1: str = "option", options_column_1="", name_colum
         header_style="bold bright_white",
         border_style="bright_yellow",
         padding=(0, 1),
-        width=width
+        width=70
     )
 
-    table.add_column(name_column_1, min_width=4)
-    table.add_column(name_column_2)
+    if auto_number:
+        first_column = next(iter(columns.values()))
 
-    if not options_column_1:
-
+        option_numbers = []
         counter = 0
 
-        for option in options_column_2:
+        for option in first_column:
             counter += 1
 
-            if option  == "":
+            if option == "":
                 counter = -1
 
-            table.add_row(
-                Text(f"{str(counter)}.") if option else Text(""),
-                Text(str(option)),
-            )
+            option_numbers.append(f"{counter}." if option else "")
 
-    else:
-        for option_c1, option_c2 in zip(options_column_1, options_column_2):
-            table.add_row(str(option_c1), option_c2)
+        columns = {"Option": option_numbers, **columns}
 
+    for column_name in columns:
+        table.add_column(column_name)
 
+    for row in zip(*columns.values(), strict=True):
+        table.add_row(*(str(value) for value in row))
 
-    return table
+    console.print(
+        Padding(table, (0, 0, 1, 5))
+    )
 
 
 def display_page(location, title, content):
@@ -283,13 +277,13 @@ def unit_converter():
 
         print_message("Select the unit you would like to convert:\n")
 
-        options_column_2 = ["oz (fl oz)", "cup", "liter (L)", "centiliter (cl)", "teaspoon (tsp)", "tablespoon (tbsp)", "", "Back"]
+        columns = {
+            "Unit": ["oz (fl oz)", "cup", "liter (L)", "centiliter (cl)", "teaspoon (tsp)", "tablespoon (tbsp)", "", "Back"]
+        }
 
-        console.print(
-            Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
+        menu_choice = get_menu_choice(range(0, len(columns["Unit"]) - 1))
         if menu_choice == 0:
             break
 
@@ -312,7 +306,7 @@ def unit_converter():
         volume = float(get_input("What is the volume of the unit you want to convert? ", float))
         print()
         volume_ml = int(volume * factor)
-        print_message(f"[purple]{volume} {options_column_2[menu_choice -1]}[/] is [blue]{volume_ml} ml[/]")
+        print_message(f"[purple]{volume} {columns["Unit"][menu_choice -1]}[/] is [blue]{volume_ml} ml[/]")
         print()
         get_input()
         continue

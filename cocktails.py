@@ -1,11 +1,5 @@
 import datetime
 
-from rich import box
-from rich.table import Table
-from rich.text import Text
-from rich.console import Console
-from rich.padding import Padding
-
 from cocktail_api import (
     new_cocktail,
     get_cocktails_by_name,
@@ -25,7 +19,6 @@ from utils.utils import (
     get_input,
     display_panel,
     display_table,
-    clear_terminal,
     display_page,
 
 )
@@ -33,12 +26,6 @@ from utils.utils import (
 from utils.constants import (
     INVALID_INPUT,
 )
-
-# ==============================
-# CONFIGURATION
-# ==============================
-
-console = Console(width=80)
 
 
 def all_available_cocktails():
@@ -52,22 +39,24 @@ def all_available_cocktails():
                      content=content
                      )
 
-        options_column_2 = []
+        cocktail_names = []
         cocktail_ids = []
 
         for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda item: item[1]["name"].casefold()):
             if cocktail["active"]:
                 cocktail_ids.append(cocktail_id)
-                options_column_2.append(cocktail["name"])
+                cocktail_names.append(cocktail["name"])
 
-        options_column_2.append("")
-        options_column_2.append("Back to cocktail menu")
+        cocktail_names.append("")
+        cocktail_names.append("Back to cocktail menu")
 
-        console.print(
-            Padding(display_table(name_column_2="Cocktail", options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-        )
+        columns = {
+            "Cocktail": cocktail_names
+        }
 
-        menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Cocktail"]) - 1))
         cocktail_id = cocktail_ids[menu_choice - 1]
 
         if menu_choice == 0:
@@ -149,13 +138,15 @@ def rank_a_cocktail():
         print()
         print_message("Your rating has been saved successfully!", "green")
 
-        options_column_2 = ["Rank another cocktail", "View ranking", "", "Back to cocktail menu"]
 
-        console.print(
-            Padding(display_table(options_column_2=options_column_2, width=70), (1, 0, 1, 5))
-        )
+        columns = {
+            "Action": ["Rank another cocktail", "View ranking", "", "Back to cocktail menu"]
+        }
 
-        menu_choice = get_menu_choice(range(0, 3))
+        print()
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
             guest_id = ""
@@ -203,40 +194,20 @@ def show_cocktail_ranking():
         average_score = round(score / number, 1)
         average_scores[cocktail] = average_score
 
-    options_column_1 = []
-    options_column_2 = []
-    options_column_3 = []
-    options_column_4 = []
+    columns = {
+        "Place": [],
+        "Cocktail": [],
+        "Score": [],
+        "Votes": []
+    }
 
-    counter = 0
+    for place, (cocktail, score) in enumerate(sorted(average_scores.items(), key=lambda item: item[1], reverse=True), start=1):
+        columns["Place"].append(place)
+        columns["Cocktail"].append(cocktail)
+        columns["Score"].append(score)
+        columns["Votes"].append(number_of_ratings[cocktail])
 
-    for cocktail, score in sorted(average_scores.items(), reverse=True, key=lambda item: item[1]):
-        counter += 1
-        options_column_1.append(counter)
-        options_column_2.append(cocktail)
-        options_column_3.append(score)
-        options_column_4.append(number_of_ratings[cocktail])
-
-    table = Table(
-        box=box.SQUARE,
-        expand=True,
-        header_style="bold bright_white",
-        border_style="bright_yellow",
-        padding=(0, 1),
-        width=70
-    )
-
-    table.add_column("Place")
-    table.add_column("Cocktail")
-    table.add_column("Score")
-    table.add_column("Votes")
-
-    for option_c1, option_c2, option_c3, option_c4 in zip(options_column_1, options_column_2, options_column_3, options_column_4):
-        table.add_row(str(option_c1), option_c2, str(option_c3), str(option_c4))
-
-    console.print(
-        Padding(table, (0, 0, 1, 5))
-    )
+    display_table(columns)
 
     get_input("Press [blue]Enter[/] to return to the cocktail menu.")
 
@@ -246,7 +217,6 @@ def show_cocktail_ranking():
 
 def select_cocktail(trigger=""):
     while True:
-        clear_terminal()
         cocktails = load_data("cocktails")
 
         content = "Select the cocktail you want to order."
@@ -256,24 +226,24 @@ def select_cocktail(trigger=""):
                      content=content
                      )
 
-        options_column_2 = []
         cocktail_ids = []
+
+        columns = {
+            "Cocktail": []
+        }
 
         for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda item: item[1]["name"].casefold()):
 
             if cocktail["active"] and (trigger or not check_cocktail_availability(cocktail_id)):
                 cocktail_ids.append(cocktail_id)
-                options_column_2.append(cocktail["name"])
+                columns["Cocktail"].append(cocktail["name"])
 
         if not trigger:
-            options_column_2.append("")
-            options_column_2.append("Cocktail not on list")
+            columns["Cocktail"].extend(["", "Cocktail not on list"])
 
-        console.print(
-            Padding(display_table(name_column_2="Cocktail", options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-        )
+        display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, len(options_column_2) -1))
+        menu_choice = get_menu_choice(range(0, len(columns["Cocktail"]) - 1))
         cocktail_id = cocktail_ids[menu_choice - 1]
 
         if menu_choice == 0:
@@ -284,18 +254,17 @@ def select_cocktail(trigger=""):
                 print()
                 print_message("The following cocktails were found:", "bright_white")
 
-                options_column_2 = []
+                columns = {
+                    "Cocktail": []
+                }
 
                 for cocktail, cocktail_id in sorted(cocktails.items(), key=lambda item: item[0].casefold()):
-                    options_column_2.append(str(cocktail))
+                    columns["Cocktail"].append(str(cocktail))
 
-                console.print(
-                    Padding(display_table(name_column_1="Option", name_column_2="Cocktail", options_column_2=options_column_2, width=70),
-                            (0, 0, 1, 5))
-                )
+                display_table(columns, auto_number=True)
 
-                menu_choice = get_menu_choice(range(0, len(options_column_2) + 1)) - 1
-                cocktail_name = options_column_2[menu_choice]
+                menu_choice = get_menu_choice(range(0, len(columns["Cocktail"]) - 1))
+                cocktail_name = columns["Cocktail"][menu_choice]
                 cocktail_id = cocktails.get(cocktail_name)
                 new_cocktail(cocktail_id, cocktail_name)
         break
@@ -305,48 +274,28 @@ def select_cocktail(trigger=""):
 
 
 def show_cocktail(cocktail, ingredients, instructions):
-    clear_terminal()
+    page_content = f"Ingredients and instructions for a [blue]{cocktail}[/]"
 
-    location = "Cocktails"
-    title = cocktail
-    content = f"Ingredients and instructions for a [blue]{cocktail}[/]"
+    display_page(location="Cocktails",
+                 title=cocktail,
+                 content=page_content
+                 )
 
-    display_page(location, title, content)
+    columns = {
+        "Number": [],
+        "Ingredient": [],
+        "Measure": []
+    }
 
-    table = Table(
-        box=box.SQUARE,
-        expand=True,
-        header_style="bold bright_white",
-        border_style="bright_yellow",
-        padding=(0, 1),
-        width=70
-    )
+    for number, (ingredient, measure) in enumerate(ingredients.items(), start=1):
+        columns["Number"].append(number)
+        columns["Ingredient"].append(ingredient)
+        columns["Measure"].append(measure if measure is not None else "")
 
-    table.add_column("Number")
-    table.add_column("Ingredient")
-    table.add_column("Measure")
+    display_table(columns)
 
-    counter = 1
-    for ingredient, measure in ingredients.items():
-        if measure is None:
-            measure = ""
+    panel_content = "- " + instructions.replace(". ", ".\n- ")
 
-        table.add_row(
-            Text(str(counter)),
-            Text(ingredient),
-            Text(measure),
-        )
-        counter += 1
-
-    console.print(
-        Padding(
-            table,
-            (0, 0, 1, 5),
-        )
-    )
-
-    content = "- " + instructions.replace(". ", ".\n- ")
-
-    display_panel(content, title="instructions")
+    display_panel(panel_content, title="instructions")
 
 

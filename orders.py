@@ -2,11 +2,6 @@
 # FUNCTION IMPORTS
 # ==============================
 
-from rich.console import Console
-from rich.padding import Padding
-from rich.table import Table
-from rich import box
-
 from inventory import (
     check_cocktail_availability,
 )
@@ -34,19 +29,6 @@ from utils.utils import (
 )
 
 
-# ==============================
-# CONSTANTS
-# ==============================
-
-
-
-
-# ==============================
-# CONFIGURATION
-# ==============================
-
-console = Console(width=80)
-
 def get_next_order():
     orders = load_data("orders")
 
@@ -69,56 +51,33 @@ def all_open_orders():
                  content=content
                  )
 
-    options_column_1 = []
-    options_column_2 = []
-    options_column_3 = []
+    guests_names = []
+    cocktail_names = []
     order_ids = []
-    order_lists = []
-
-    counter = 0
 
     for order_id, order in orders.items():
         if orders[order_id]["status"] == "ordered":
             order_ids.append(order_id)
-            order_lists.append(order)
-
-            counter += 1
-            options_column_1.append(counter)
 
             guest_name = f"{persons[order["person"]]["first_name"]} {persons[order["person"]]["surname"]}"
-            options_column_2.append(guest_name)
+            guests_names.append(guest_name)
 
             cocktail_name = cocktails[order["cocktail"]]["name"]
-            options_column_3.append(cocktail_name)
+            cocktail_names.append(cocktail_name)
 
-    options_column_1.append("")
-    options_column_2.append("")
-    options_column_3.append("")
-    options_column_1.append(0)
-    options_column_2.append("Terug")
-    options_column_3.append("-")
+    guests_names.append("")
+    guests_names.append("Back to orders menu")
+    cocktail_names.append("")
+    cocktail_names.append("")
 
-    table = Table(
-        box=box.SQUARE,
-        expand=True,
-        header_style="bold bright_white",
-        border_style="bright_yellow",
-        padding=(0, 1),
-        width=70
-    )
+    columns = {
+        "Name": guests_names,
+        "Cocktail": cocktail_names
+    }
 
-    table.add_column("Option", min_width=4)
-    table.add_column("Name")
-    table.add_column("Cocktail")
+    display_table(columns, auto_number=True)
 
-    for option_c1, option_c2, option_c3 in zip(options_column_1, options_column_2, options_column_3):
-        table.add_row(str(option_c1), option_c2, option_c3)
-
-    console.print(
-    Padding(table, (0, 0, 1, 5))
-    )
-
-    menu_choice = get_menu_choice(range(0, len(options_column_1) -1))
+    menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
     order_id = order_ids[menu_choice - 1]
 
     if menu_choice == 0:
@@ -145,13 +104,13 @@ Cocktail:   [blue]{cocktail_name}[/]"""
                  content=content
                  )
 
-    options_column_2 = ["Prepare cocktail", "Cancel order", "", "Back to order menu"]
+    columns = {
+        "Action": ["Prepare cocktail", "Cancel order", "", "Back to order menu"]
+    }
 
-    console.print(
-        Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-    )
+    display_table(columns, auto_number=True)
 
-    menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
+    menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
     if menu_choice == 0:
         return
@@ -162,13 +121,13 @@ Cocktail:   [blue]{cocktail_name}[/]"""
             instructions = cocktails[order["cocktail"]]["instructions"]
             show_cocktail(cocktail_name, ingredients, instructions)
 
-            options_column_2 = ["Cocktail served", "Order cancelled", "Unit converter", "", "Back to order menu"]
+            columns = {
+                "Action": ["Cocktail served", "Order cancelled", "Unit converter", "", "Back to order menu"]
+            }
 
-            console.print(
-                Padding(display_table(options_column_2=options_column_2, width=70), (0, 0, 1, 5))
-            )
+            display_table(columns, auto_number=True)
 
-            menu_choice = get_menu_choice(range(0, len(options_column_2) - 1))
+            menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
             if menu_choice == 1:
                 for ingredient in ingredients.keys():
@@ -250,13 +209,13 @@ def new_order():
                          content=content
                          )
 
-            options_column_2 = ["Place another order", "Back to orders menu"]
+            columns = {
+                "Action": ["Place another order", "Back to orders menu"]
+            }
 
-            console.print(
-                Padding(display_table(options_column_2 = options_column_2, width=70), (0, 0, 1, 5))
-            )
+            display_table(columns, auto_number=True)
 
-            menu_choice = get_menu_choice(range(1, 3))
+            menu_choice = get_menu_choice(range(1, len(columns["Action"]) + 1))
 
             if menu_choice == 1:
                 order.clear()

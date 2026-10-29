@@ -15,27 +15,25 @@
         "event": "1",
         "person": "1",
         "cocktail": "11118",
-        "status": "ordered",
-        "cancelled": "ordered",
-        "served": "served"
+        "status": "served"
     },
     "4": {
         "event": "1",
         "person": "1",
         "cocktail": "11118",
-        "status": "ordered"
+        "status": "served"
     },
     "5": {
         "event": "1",
         "person": "1",
         "cocktail": "11007",
-        "status": "ordered"
+        "status": "served"
     },
     "6": {
         "event": "1",
         "person": "1",
         "cocktail": "178358",
-        "status": "ordered"
+        "status": "served"
     },
     "7": {
         "event": "1",
