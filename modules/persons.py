@@ -8,7 +8,7 @@ from utils.utils import (
     display_page,
 )
 
-from events import (
+from modules.events import (
     get_current_event,
     add_guest_to_event,
     get_event_guests,

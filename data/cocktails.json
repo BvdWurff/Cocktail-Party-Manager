@@ -58,5 +58,28 @@
             "Lime": "1 wedge "
         },
         "active": true
+    },
+    "17105": {
+        "name": "501 Blue",
+        "instructions": "Mix equal amounts into a glass with ice.",
+        "ingredients": {
+            "Blue Curacao": null,
+            "Blueberry schnapps": null,
+            "Vodka": null,
+            "Sour mix": null,
+            "7-Up": null
+        },
+        "active": true
+    },
+    "14071": {
+        "name": "Belgian Blue",
+        "instructions": "Just pour all ingredients in the glass and stir...",
+        "ingredients": {
+            "Vodka": "2 cl ",
+            "Coconut liqueur": "1 cl ",
+            "Blue Curacao": "1 cl ",
+            "Sprite": "Fill with "
+        },
+        "active": true
     }
 }

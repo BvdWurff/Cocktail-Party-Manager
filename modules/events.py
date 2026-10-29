@@ -12,8 +12,8 @@ from utils.utils import (
     save_data,
     get_menu_choice,
     display_page, update_record,
-    clear_terminal,
 )
+
 # ==============================
 # CONSTANTS
 # ==============================
@@ -268,19 +268,17 @@ Type [blue]Stop[/] to exit the registration process."""
                 name = f"{persons[person]["first_name"]} {persons[person]["surname"]}"
                 options[int(person)] = name
 
-        guest_names = []
+        columns = {
+            "Name": []
+        }
+
         guest_ids = []
 
         for person_id, person_name in sorted(options.items(), key=lambda item: item[1].casefold()):
             guest_ids.append(person_id)
-            guest_names.append(person_name)
+            columns["Name"].append(person_name)
 
-        guest_names.append("")
-        guest_names.append("Continue")
-
-        columns = {
-            "Name": guest_names
-        }
+        columns["Name"].extend(["", "Continue"])
 
         display_table(columns, auto_number=True)
 

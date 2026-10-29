@@ -2,16 +2,16 @@
 # FUNCTION IMPORTS
 # ==============================
 
-from inventory import (
+from modules.inventory import (
     check_cocktail_availability,
 )
 
-from persons import select_guest
-from events import (
+from modules.persons import select_guest
+from modules.events import (
     get_current_event,
 )
 
-from cocktails import (
+from modules.cocktails import (
     select_cocktail,
     show_cocktail,
 )
@@ -51,40 +51,36 @@ def all_open_orders():
                  content=content
                  )
 
-    guests_names = []
-    cocktail_names = []
+    columns = {
+        "Name": [],
+        "Cocktail": []
+    }
+
     order_ids = []
 
     for order_id, order in orders.items():
-        if orders[order_id]["status"] == "ordered":
+        if order["status"] == "ordered":
             order_ids.append(order_id)
 
-            guest_name = f"{persons[order["person"]]["first_name"]} {persons[order["person"]]["surname"]}"
-            guests_names.append(guest_name)
+            person = persons[order["person"]]
+            guest_name = f"{person['first_name']} {person['surname']}"
 
-            cocktail_name = cocktails[order["cocktail"]]["name"]
-            cocktail_names.append(cocktail_name)
+            columns["Name"].append(guest_name)
+            columns["Cocktail"].append(cocktails[order["cocktail"]]["name"])
 
-    guests_names.append("")
-    guests_names.append("Back to orders menu")
-    cocktail_names.append("")
-    cocktail_names.append("")
-
-    columns = {
-        "Name": guests_names,
-        "Cocktail": cocktail_names
-    }
+    columns["Name"].extend(["", "Back to orders menu"])
+    columns["Cocktail"].extend(["", ""])
 
     display_table(columns, auto_number=True)
 
     menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
-    order_id = order_ids[menu_choice - 1]
 
     if menu_choice == 0:
         return None, None
 
-    else:
-        return order_id, orders[order_id]
+    order_id = order_ids[menu_choice - 1]
+
+    return order_id, orders[order_id]
 
 
 def process_order(order_id, order):

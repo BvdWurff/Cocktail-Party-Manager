@@ -2,15 +2,15 @@
 # FUNCTION IMPORTS
 # ==============================
 
-from orders import (
+from modules.orders import (
     new_order,
     get_next_order,
     all_open_orders,
     process_order,
 )
 
-from persons import new_person
-from events import (
+from modules.persons import new_person
+from modules.events import (
     new_event,
     show_event,
     show_all_events,
@@ -21,18 +21,15 @@ from utils.utils import (
     display_table,
     display_page,
     unit_converter,
+    get_input,
+    print_message,
 )
 
-from cocktails import (
+from modules.cocktails import (
     all_available_cocktails,
     rank_a_cocktail,
-    show_cocktail_ranking
-)
-
-from cocktail_api import (
-    get_cocktails_by_name,
-    get_cocktails_by_ingredient,
-    lucky_shot,
+    show_cocktail_ranking,
+    search_cocktail,
 )
 
 
@@ -102,9 +99,6 @@ def cocktail_menu():
 
         elif menu_choice == 4:
             show_cocktail_ranking()
-
-        elif menu_choice == 5:
-            pass
 
         else:
             break
@@ -263,8 +257,8 @@ def find_new_cocktails_menu():
     while True:
         content = "Here you can search for new cocktails and get recipes."
 
-        display_page(location="Cocktail Party Manager",
-                     title="Cocktails",
+        display_page(location="Cocktails",
+                     title="Find cocktails",
                      content=content
                      )
 
@@ -277,13 +271,13 @@ def find_new_cocktails_menu():
         menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
-            get_cocktails_by_name()
+            search_cocktail("name")
 
         elif menu_choice == 2:
-            get_cocktails_by_ingredient()
+            search_cocktail("ingredient")
 
         elif menu_choice == 3:
-            lucky_shot()
+            search_cocktail("lucky_shot")
 
         else:
             break

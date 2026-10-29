@@ -1,15 +1,15 @@
 import datetime
 
-from cocktail_api import (
+from modules.cocktail_api import (
     new_cocktail,
-    get_cocktails_by_name,
+    get_cocktails,
 )
 
-from persons import select_guest
+from modules.persons import select_guest
 
-from inventory import check_cocktail_availability
+from modules.inventory import check_cocktail_availability
 
-from events import get_current_event
+from modules.events import get_current_event
 
 from utils.utils import (
     load_data,
@@ -25,6 +25,8 @@ from utils.utils import (
 
 from utils.constants import (
     INVALID_INPUT,
+    API_KEY,
+    URL,
 )
 
 
@@ -39,37 +41,34 @@ def all_available_cocktails():
                      content=content
                      )
 
-        cocktail_names = []
+        columns = {
+            "Cocktail": []
+        }
+
         cocktail_ids = []
 
         for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda item: item[1]["name"].casefold()):
             if cocktail["active"]:
                 cocktail_ids.append(cocktail_id)
-                cocktail_names.append(cocktail["name"])
+                columns["Cocktail"].append(cocktail["name"])
 
-        cocktail_names.append("")
-        cocktail_names.append("Back to cocktail menu")
-
-        columns = {
-            "Cocktail": cocktail_names
-        }
+        columns["Cocktail"].extend(["", "Back to cocktail menu"])
 
         display_table(columns, auto_number=True)
 
         menu_choice = get_menu_choice(range(0, len(columns["Cocktail"]) - 1))
-        cocktail_id = cocktail_ids[menu_choice - 1]
 
         if menu_choice == 0:
             break
 
-        else:
-            cocktail_name = cocktails[cocktail_id]["name"]
-            ingredients = cocktails[cocktail_id]["ingredients"]
-            instructions = cocktails[cocktail_id]["instructions"]
-            show_cocktail(cocktail_name, ingredients, instructions)
+        cocktail_id = cocktail_ids[menu_choice - 1]
 
-            get_input("Press [blue]Enter[/] to return to All available cocktails.")
-            continue
+        show_cocktail(cocktail_id)
+
+        get_input("Press [blue]Enter[/] to return to All available cocktails.")
+
+        continue
+
     return
 
 
@@ -247,7 +246,7 @@ def select_cocktail(trigger=""):
         cocktail_id = cocktail_ids[menu_choice - 1]
 
         if menu_choice == 0:
-            cocktails = get_cocktails_by_name()
+            #cocktails = get_cocktails_by_name()
 
             if cocktails:
 
@@ -273,11 +272,18 @@ def select_cocktail(trigger=""):
 
 
 
-def show_cocktail(cocktail, ingredients, instructions):
-    page_content = f"Ingredients and instructions for a [blue]{cocktail}[/]"
+def show_cocktail(cocktail_id):
+    cocktails = load_data("cocktails")
+
+    cocktail =  cocktails[cocktail_id]
+    cocktail_name = cocktail["name"]
+    ingredients = cocktail["ingredients"]
+    instructions = cocktail["instructions"]
+
+    page_content = f"Ingredients and instructions for a [blue]{cocktail_name}[/]"
 
     display_page(location="Cocktails",
-                 title=cocktail,
+                 title=cocktail_name,
                  content=page_content
                  )
 
@@ -297,5 +303,71 @@ def show_cocktail(cocktail, ingredients, instructions):
     panel_content = "- " + instructions.replace(". ", ".\n- ")
 
     display_panel(panel_content, title="instructions")
+
+
+def search_cocktail(search_method=""):
+    content = f"Here you can search cocktails by {search_method}."
+
+    display_page(location="Cocktails",
+                 title=f"Search by {search_method}",
+                 content=content
+                 )
+
+    cocktails = None
+
+    if search_method == "name":
+        name = get_input("What is the name of the cocktail you would you like to search for? ").lower()
+        params = f"/search.php?s={name}"
+        cocktails = get_cocktails(params, "name")
+
+    elif search_method == "ingredient":
+        inventory = load_data("inventory")
+
+        columns = {
+            "Ingredient": [],
+        }
+
+        for item_id, item in inventory.items():
+            if item["quantity"] > 0:
+                columns["Ingredient"].append(item["name"])
+
+        columns["Ingredient"].extend(["", "Back to cocktails menu"])
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Ingredient"]) - 1))
+
+        if menu_choice == 0:
+            return
+
+        ingredient = columns["Ingredients"][menu_choice - 1]
+        params = f"/filter.php?i={ingredient}"
+        cocktails = get_cocktails(params, "ingredient")
+
+
+    if cocktails:
+        print()
+        print_message("The following cocktails were found:", "bright_white")
+
+        columns = {
+            "Cocktail": []
+        }
+
+        for cocktail in sorted(cocktails.keys(), key = lambda item: item.casefold()):
+            columns["Cocktail"].append(str(cocktail))
+
+        columns["Cocktail"].extend(["", "Back to cocktail menu"])
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Cocktail"]) + 1)) - 1
+        cocktail_name = columns["Cocktail"][menu_choice]
+        cocktail_id = cocktails.get(cocktail_name)
+
+        new_cocktail(cocktail_id, cocktail_name)
+
+        show_cocktail(cocktail_id)
+
+        get_input()
 
 
