@@ -161,5 +161,51 @@
             "Orange Peel": "Garnish with"
         },
         "active": true
+    },
+    "14510": {
+        "name": "Bailey's Dream Shake",
+        "instructions": "Blend ingredients for 30 seconds. Definitely refreshing for a hot summer's day !",
+        "ingredients": {
+            "Baileys irish cream": "2 oz ",
+            "Vanilla ice-cream": "2 scoops ",
+            "Cream": null
+        },
+        "active": true
+    },
+    "16985": {
+        "name": "Shot-gun",
+        "instructions": "Pour one part Jack Daneils and one part Jim Beam into shot glass then float Wild Turkey on top.",
+        "ingredients": {
+            "Jim Beam": "1 part ",
+            "Jack Daniels": "1 part ",
+            "Wild Turkey": "1 oz "
+        },
+        "active": true
+    },
+    "11145": {
+        "name": "Classic Old-Fashioned",
+        "instructions": "In an old-fashioned glass, muddle the bitters and water into the sugar cube, using the back of a teaspoon. Almost fill the glass with ice cubes and add the bourbon. Garnish with the orange slice and the cherry. Serve with a swizzle stick.",
+        "ingredients": {
+            "Bitters": "3 dashes ",
+            "Water": "1 tsp ",
+            "Sugar": "1 ",
+            "Bourbon": "3 oz ",
+            "Orange": "1 ",
+            "Maraschino cherry": "1 "
+        },
+        "active": true
+    },
+    "11418": {
+        "name": "Gin Squirt",
+        "instructions": "Stir gin, grenadine, and powdered sugar with ice and strain into a highball glass over ice cubes. Fill with carbonated water and stir. Decorate with the pineapple chunks and the strawberries and serve.",
+        "ingredients": {
+            "Gin": "1 1/2 oz ",
+            "Grenadine": "1 tsp ",
+            "Powdered sugar": "1 tblsp ",
+            "Pineapple": "3 chunks",
+            "Strawberries": "2 ",
+            "Carbonated water": null
+        },
+        "active": true
     }
 }

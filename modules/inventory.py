@@ -5,9 +5,9 @@ from utils.utils import (
     display_table,
     get_input,
     get_menu_choice,
+    display_panel,
+    update_record,
 )
-
-from utils.constants import PARAM_ITEM_DESCRIPTION
 
 
 def check_cocktail_availability(cocktail_id):
@@ -49,18 +49,20 @@ def check_cocktail_availability(cocktail_id):
 
 def add_item_to_inventory(ingredient):
     inventory = load_data("inventory")
-    from modules.cocktail_api import get_ingredient_description
+    from modules.cocktail_api import get_ingredient_details
 
     if not any(item["name"] == ingredient for item in inventory.values()):
-
-        description = get_ingredient_description(PARAM_ITEM_DESCRIPTION)
+        print(ingredient)
+        get_input()
+        item_id, item_description = get_ingredient_details(ingredient)
 
         item = {
-            "id": str(len(inventory) + 1),
+            "id": item_id,
             "name": ingredient,
-            "description": description,
+            "description": item_description,
             "quantity": 0,
-            "minimum_quantity": 10
+            "minimum_quantity": 10,
+            "shopping_list": False
         }
 
         save_data("inventory", item)
@@ -73,8 +75,8 @@ def show_inventory():
 
         content = f"An overview of the current inventory"
 
-        display_page(location="Admin",
-                     title="Inventory",
+        display_page(location="Inventory",
+                     title="Inventory overview",
                      content=content
                      )
 
@@ -83,25 +85,31 @@ def show_inventory():
         columns = {
             "Name": [],
             "Quantity": [],
-            "Minimum Quantity": []
+            "Shopping list": []
         }
 
         for item_id, item in sorted(inventory.items(), key=lambda entry: entry[1]["name"].casefold()):
             item_ids.append(item_id)
             columns["Name"].append(item["name"])
-            columns["Minimum Quantity"].append(item["minimum_quantity"])
+
+            if item["shopping_list"]:
+                columns["Shopping list"].append("Yes")
+            else:
+                columns["Shopping list"].append("No")
 
             quantity = item["quantity"]
             minimum_quantity = item["minimum_quantity"]
 
-            if quantity < minimum_quantity:
-                columns["Quantity"].append(f"[red]{quantity}[/red]")
+            if quantity == 0:
+                columns["Quantity"].append(f"[red]{quantity}[/]")
+            elif quantity < minimum_quantity:
+                columns["Quantity"].append(f"[orange1]{quantity}[/]")
             else:
-                columns["Quantity"].append(str(quantity))
+                columns["Quantity"].append(f"[green]{quantity}[/]")
 
         columns["Name"].extend(["", "Back to admin menu"])
         columns["Quantity"].extend(["", ""])
-        columns["Minimum Quantity"].extend(["", ""])
+        columns["Shopping list"].extend(["", ""])
 
         display_table(columns, auto_number=True)
 
@@ -117,17 +125,92 @@ def show_inventory():
 
 
 def show_inventory_item(item_id):
-    inventory = load_data("inventory")
-    item = inventory.get(item_id)
+    while True:
+        inventory = load_data("inventory")
+        cocktails = load_data("cocktails")
+        item = inventory[item_id]
+        shopping_list = item["shopping_list"]
 
-    content = f"Inventory details of [blue]{item["name"]}[/]."
+        if item["quantity"] == 0:
+            quantity = f"[red]{item["quantity"]}[/]"
 
-    display_page(location="Inventory",
-                 title=item["name"],
-                 content=content
-                 )
+        elif item["quantity"] < item["minimum_quantity"]:
+            quantity = f"[orange1]{item["quantity"]}[/]"
 
-    get_input()
+        else:
+            quantity = f"[green]{item["quantity"]}[/]"
+
+        if shopping_list:
+            add_to_shopping_list = "Yes"
+        else:
+            add_to_shopping_list = "No"
+
+        content = f"""These are the inventory details for the ingredient [blue]{item["name"]}[/]:\n
+Quantity:                 {quantity}
+Minimum Quantity:         {item["minimum_quantity"]}
+Added to shopping list:   {add_to_shopping_list}"""
+
+        display_page(location="Inventory",
+                     title=item["name"],
+                     content=content
+                     )
+
+        if item["description"]:
+            panel_content = item["description"]
+
+        else:
+            panel_content = "[red]No description available for this ingredient[/]"
+
+        display_panel(panel_content, title="Description")
+
+        columns = {
+            "Cocktail": [],
+        }
+
+        for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda entry: entry[1]["name"].casefold()):
+            if cocktail["active"] and item["name"] in cocktail["ingredients"]:
+                columns["Cocktail"].append(cocktail["name"])
+
+        display_table(columns)
+
+        columns = {
+            "Action": ["Update quantity", "Update minimum quantity"]
+        }
+
+        if shopping_list:
+            columns["Action"].extend(["Remove from shopping list"])
+            action = "removed from"
+
+        else:
+            columns["Action"].extend(["Add to shopping list"])
+            action = "added to"
+
+        columns["Action"].extend(["", "Back to inventory overview"])
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+        if menu_choice == 1:
+            quantity = int(get_input("What is the new quantity? ", int))
+            print()
+            update_record("inventory", item_id, "quantity", quantity)
+            continue
+
+        elif menu_choice == 2:
+            min_quantity = int(get_input("What is the new minimum quantity? ", int))
+            print()
+            update_record("inventory", item_id, "minimum_quantity", min_quantity)
+            continue
+
+        elif menu_choice == 3:
+            update_record("inventory", item_id, "shopping_list", not shopping_list)
+            get_input(f"Ingredient successfully {action} the shopping list.", color="green")
+            continue
+
+        break
+
+    return
 
 
 

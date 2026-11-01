@@ -1,197 +1,254 @@
 {
     "1": {
         "name": "Tequila",
+        "description": null,
         "quantity": 49,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "2": {
         "name": "Blue Curacao",
+        "description": null,
         "quantity": 49,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": true
     },
     "3": {
         "name": "Lime juice",
+        "description": null,
         "quantity": 49,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "4": {
         "name": "Salt",
-        "quantity": 49,
-        "minimum_quantity": 10
+        "description": null,
+        "quantity": 50,
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "5": {
         "name": "Mango",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "6": {
         "name": "Mint",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "7": {
         "name": "White Rum",
+        "description": null,
         "quantity": 10,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "8": {
         "name": "Ice",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "9": {
         "name": "Soda Water",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "10": {
         "name": "Triple sec",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "11": {
         "name": "Lime",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "12": {
         "name": "Lemon juice",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "13": {
         "name": "Dark rum",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "14": {
         "name": "Club soda",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "15": {
         "name": "Angostura bitters",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "16": {
         "name": "Vodka",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "17": {
         "name": "Tomato juice",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "18": {
         "name": "Worcestershire sauce",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "19": {
         "name": "Tabasco sauce",
+        "description": null,
         "quantity": 50,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "20": {
         "name": "Bitters",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "21": {
         "name": "Gin",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "22": {
         "name": "Yoghurt",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "23": {
         "name": "Sugar",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "24": {
-        "name": "Salt",
+        "name": "Beer",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "25": {
-        "name": "Beer",
+        "name": "7-Up",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "26": {
-        "name": "7-Up",
+        "name": "Light rum",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "27": {
-        "name": "Light rum",
+        "name": "Pineapple juice",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "28": {
-        "name": "Pineapple juice",
-        "quantity": 0,
-        "minimum_quantity": 10
+        "name": "Grapefruit Juice",
+        "description": null,
+        "quantity": 10,
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "29": {
-        "name": "Grapefruit Juice",
-        "quantity": 10,
-        "minimum_quantity": 10
+        "name": "Strawberries",
+        "description": null,
+        "quantity": 12,
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "30": {
-        "name": "Strawberries",
+        "name": "Lemon-lime soda",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "31": {
-        "name": "Lemon-lime soda",
+        "name": "Raisins",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "32": {
-        "name": "Raisins",
+        "name": "Blueberries",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "33": {
-        "name": "Blueberries",
+        "name": "Grenadine",
+        "description": "Grenadine is a commonly used, non-alcoholic bar syrup, characterized by a flavour that is both tart and sweet, and by a deep red colour. It is popular as an ingredient in cocktails, both for its flavour and to give a reddish/pink tint to mixed drinks.\r\n\r\nThe name grenadine originated from the French word grenade which means pomegranate, with pomme meaning apple and granate derived from the Italian word for seeds.\r\n\r\nGrenadine was originally prepared from pomegranate juice, sugar, and water.\r\n\r\nAs grenadine is subject to minimal regulation, its basic flavour profile can alternatively be obtained from a mixture of blackcurrant juice and other fruit juices with the blackcurrant flavour dominating.\r\n\r\nTo reduce production costs, manufacturers have widely replaced fruit bases with artificial ingredients. The Mott's brand \"Rose's\" is by far the most common brand of grenadine sold in the United States,[3] and is formulated from (in order of concentration): high fructose corn syrup, water, citric acid, sodium citrate, sodium benzoate, FD&C Red #40, natural and artificial flavours and FD&C Blue #1. In Europe, Bols still manufactures grenadine with pomegranate.",
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "34": {
-        "name": "Amaro Montenegro",
-        "description": "Elderflower cordial is a soft drink made largely from a refined sugar and water solution and uses the flowers of the European elderberry. Historically the cordial has been popular in North Western Europe where it has a strong Victorian heritage.",
+        "name": "Powdered sugar",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     },
     "35": {
-        "name": "Ruby Port",
-        "description": "Elderflower cordial is a soft drink made largely from a refined sugar and water solution and uses the flowers of the European elderberry. Historically the cordial has been popular in North Western Europe where it has a strong Victorian heritage.",
-        "quantity": 0,
-        "minimum_quantity": 10
+        "name": "Pineapple",
+        "description": "The pineapple (Ananas comosus) is a tropical plant with an edible multiple fruit consisting of coalesced berries, also called pineapples, and the most economically significant plant in the Bromeliaceae family.\r\n\r\nPineapples may be cultivated from a crown cutting of the fruit, possibly flowering in 5–10 months and fruiting in the following six months. Pineapples do not ripen significantly after harvest.\r\n\r\nPineapples can be consumed fresh, cooked, juiced, or preserved. They are found in a wide array of cuisines. In addition to consumption, the pineapple leaves are used to produce the textile fiber piña in the Philippines, commonly used as the material for the men's barong Tagalog and women's baro't saya formal wear in the country. The fiber is also used as a component for wallpaper and other furnishings.",
+        "quantity": 5,
+        "minimum_quantity": 10,
+        "shopping_list": true
     },
     "36": {
-        "name": "Blood Orange",
-        "description": "Elderflower cordial is a soft drink made largely from a refined sugar and water solution and uses the flowers of the European elderberry. Historically the cordial has been popular in North Western Europe where it has a strong Victorian heritage.",
+        "name": "Carbonated water",
+        "description": null,
         "quantity": 0,
-        "minimum_quantity": 10
-    },
-    "37": {
-        "name": "Angostura Bitters",
-        "description": "Elderflower cordial is a soft drink made largely from a refined sugar and water solution and uses the flowers of the European elderberry. Historically the cordial has been popular in North Western Europe where it has a strong Victorian heritage.",
-        "quantity": 0,
-        "minimum_quantity": 10
-    },
-    "38": {
-        "name": "Orange Peel",
-        "description": "Elderflower cordial is a soft drink made largely from a refined sugar and water solution and uses the flowers of the European elderberry. Historically the cordial has been popular in North Western Europe where it has a strong Victorian heritage.",
-        "quantity": 0,
-        "minimum_quantity": 10
+        "minimum_quantity": 10,
+        "shopping_list": false
     }
 }

@@ -15,6 +15,7 @@ from modules.inventory import add_item_to_inventory
 from utils.constants import (
     API_KEY,
     URL,
+    PARAM_ITEM_DESCRIPTION
 )
 
 
@@ -121,8 +122,8 @@ def search_cocktails_in_db(params, search_type):
         return None
 
 
-def get_ingredient_description(params):
-    url = URL + API_KEY + params
+def get_ingredient_details(ingredient):
+    url = URL + API_KEY + PARAM_ITEM_DESCRIPTION + ingredient
 
     try:
         response = requests.get(url, timeout=10)
@@ -140,8 +141,9 @@ def get_ingredient_description(params):
 
         if data["ingredients"]:
             for ingredient in data["ingredients"]:
+                ingredient_id = ingredient["idIngredient"]
                 description = ingredient["strDescription"]
-                return description
+                return ingredient_id, description
 
         else:
             print()
