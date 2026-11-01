@@ -16,6 +16,8 @@ from modules.events import (
     show_all_events,
 )
 
+from modules.inventory import show_inventory
+
 from utils.utils import (
     get_menu_choice,
     display_table,
@@ -198,7 +200,7 @@ def admin_menu():
         menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
-            pass
+            show_inventory()
 
         elif menu_choice == 2:
             new_person(trigger="admin_menu")

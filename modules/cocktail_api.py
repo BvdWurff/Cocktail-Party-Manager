@@ -4,8 +4,9 @@ from utils.utils import (
     get_input,
     print_message,
     save_data,
-    display_page,
 )
+
+from modules.inventory import add_item_to_inventory
 
 # ==============================
 # CONSTANTS
@@ -17,8 +18,7 @@ from utils.constants import (
 )
 
 
-def new_cocktail(cocktail_id, cocktail_name):
-
+def add_cocktail_to_local_db(cocktail_id):
     url = URL + f"{API_KEY}/lookup.php?i={cocktail_id}"
 
     try:
@@ -32,6 +32,7 @@ def new_cocktail(cocktail_id, cocktail_name):
         get_input("Error: TheCocktailDB response timeout.", color="red")
         return
 
+    cocktail_name = ""
     instructions = ""
     ingredients = {}
 
@@ -40,6 +41,8 @@ def new_cocktail(cocktail_id, cocktail_name):
 
         if data["drinks"]:
             for drink in data["drinks"]:
+                cocktail_name = drink["strDrink"]
+
                 if "strInstructions" in drink:
                     instructions = drink["strInstructions"]
                 else:
@@ -66,6 +69,8 @@ def new_cocktail(cocktail_id, cocktail_name):
 
             save_data("cocktails", cocktail)
 
+            for ingredient in ingredients.keys():
+                add_item_to_inventory(ingredient)
 
         else:
             get_input(f"Error: Cocktail not found", color="red")
@@ -76,134 +81,75 @@ def new_cocktail(cocktail_id, cocktail_name):
     return
 
 
-# def get_cocktails_by_ingredient():
-#
-#
-#     while True:
-#         ingredient = get_input("What ingredient would you like the cocktail to contain? ").lower()
-#
-#         url = URL + f"{API_KEY}/filter.php?i={ingredient}"
-#
-#         try:
-#             response = requests.get(url, timeout=10)
-#
-#         except requests.exceptions.ConnectionError:
-#             get_input("Error: Cannot connect to TheCocktailDB.", color="red")
-#             return None
-#
-#         except requests.exceptions.Timeout:
-#             get_input("Error: TheCocktailDB response timeout.", color="red")
-#             return None
-#
-#         if response.ok:
-#             data = response.json()
-#
-#             cocktails = {}
-#
-#             if data["drinks"]:
-#                 for drink in data["drinks"]:
-#                     if "strDrink" in drink:
-#                         cocktails[drink["strDrink"]] = drink["idDrink"]
-#
-#             else:
-#                 print()
-#                 print_message(f"No cocktails with that ingredient were found.", "red")
-#                 print()
-#                 continue
-#
-#             return cocktails
-#
-#         else:
-#             get_input(f"Error: {response.status_code} - {response.text}", "red")
-#             return None
+def search_cocktails_in_db(params, search_type):
+    url = URL + API_KEY + params
 
+    try:
+        response = requests.get(url, timeout=10)
 
-# def get_cocktails_by_name():
-#     content = "Here you can search cocktails by name."
-#
-#     display_page(location="Cocktails",
-#                  title="Search by name",
-#                  content=content
-#                  )
-#
-#     while True:
-#         cocktail = get_input("Which cocktail would you like to search for? ").lower()
-#
-#         url = URL + f"{API_KEY}/search.php?s={cocktail}"
-#
-#         try:
-#             response = requests.get(url, timeout=10)
-#
-#         except requests.exceptions.ConnectionError:
-#             get_input("Error: Cannot connect to TheCocktailDB.", color="red")
-#             return None
-#
-#         except requests.exceptions.Timeout:
-#             get_input("Error: TheCocktailDB response timeout.", color="red")
-#             return None
-#
-#         if response.ok:
-#             data = response.json()
-#
-#             cocktails = {}
-#
-#             if data["drinks"]:
-#                 for drink in data["drinks"]:
-#                     if "strDrink" in drink:
-#                         cocktails[drink["strDrink"]] = drink["idDrink"]
-#
-#             else:
-#                 print()
-#                 print_message(f"No cocktails with that name were found.", "red")
-#                 print()
-#                 continue
-#
-#             return cocktails
-#
-#         else:
-#             get_input(f"Error: {response.status_code} - {response.text}", "red")
-#             return None
+    except requests.exceptions.ConnectionError:
+        get_input("Error: Cannot connect to TheCocktailDB.", color="red")
+        return None
 
+    except requests.exceptions.Timeout:
+        get_input("Error: TheCocktailDB response timeout.", color="red")
+        return None
 
+    if response.ok:
+        data = response.json()
 
-def get_cocktails(params, type):
-    while True:
-        url = URL + f"{API_KEY}" + params
+        cocktails = {}
 
-        try:
-            response = requests.get(url, timeout=10)
+        if data["drinks"]:
+            for drink in data["drinks"]:
+                if search_type == "lucky_shot":
+                    return drink["idDrink"]
 
-        except requests.exceptions.ConnectionError:
-            get_input("Error: Cannot connect to TheCocktailDB.", color="red")
-            return None
-
-        except requests.exceptions.Timeout:
-            get_input("Error: TheCocktailDB response timeout.", color="red")
-            return None
-
-        if response.ok:
-            data = response.json()
-
-            cocktails = {}
-
-            if data["drinks"]:
-                for drink in data["drinks"]:
-                    if "strDrink" in drink:
-                        cocktails[drink["strDrink"]] = drink["idDrink"]
-
-            else:
-                print()
-                print_message(f"No cocktails with that {type} were found.", "red")
-                print()
-                continue
+                elif "strDrink" in drink:
+                    cocktails[drink["strDrink"]] = drink["idDrink"]
 
             return cocktails
 
         else:
-            get_input(f"Error: {response.status_code} - {response.text}", "red")
+            print()
+            get_input(f"No cocktails with that {search_type} were found.", color="red")
+            print()
             return None
 
+    else:
+        get_input(f"Error: {response.status_code} - {response.text}", "red")
+        return None
 
-def lucky_shot():
-    pass
+
+def get_ingredient_description(params):
+    url = URL + API_KEY + params
+
+    try:
+        response = requests.get(url, timeout=10)
+
+    except requests.exceptions.ConnectionError:
+        get_input("Error: Cannot connect to TheCocktailDB.", color="red")
+        return None
+
+    except requests.exceptions.Timeout:
+        get_input("Error: TheCocktailDB response timeout.", color="red")
+        return None
+
+    if response.ok:
+        data = response.json()
+
+        if data["ingredients"]:
+            for ingredient in data["ingredients"]:
+                description = ingredient["strDescription"]
+                return description
+
+        else:
+            print()
+            get_input(f"No description for this ingredient was found.", color="red")
+            print()
+            return None
+
+    else:
+        get_input(f"Error: {response.status_code} - {response.text}", "red")
+        return None
 

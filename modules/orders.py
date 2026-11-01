@@ -162,7 +162,7 @@ Cocktail:   [blue]{cocktail_name}[/]"""
     return
 
 
-def new_order():
+def new_order(cocktail_id=None):
     current_event, current_event_id = get_current_event()
     if current_event is None:
         return
@@ -172,7 +172,9 @@ def new_order():
         if person_id is None:
             return
 
-        cocktail_id = select_cocktail()
+        if cocktail_id is None:
+            cocktail_id = select_cocktail()
+
         orders = load_data("orders")
 
         order = {

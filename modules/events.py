@@ -405,7 +405,7 @@ def get_event_cocktails(event_id=None):
 
 
 def add_guest_to_event(event=None, event_id=None):
-    from persons import new_person
+    from modules.persons import new_person
 
     if event is None:
         event, event_id = get_current_event()
@@ -468,3 +468,6 @@ def add_guest_to_event(event=None, event_id=None):
     save_data("events", event, record_id=str(event_id))
 
     return guest_id
+
+
+

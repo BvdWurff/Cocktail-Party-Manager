@@ -68,5 +68,17 @@
             "7",
             "9"
         ]
+    },
+    "6": {
+        "name": "Halloween",
+        "date": "01-11-2026",
+        "current": true,
+        "active": true,
+        "guests": [
+            "1",
+            "4",
+            "10",
+            "6"
+        ]
     }
 }
