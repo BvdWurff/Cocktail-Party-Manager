@@ -86,8 +86,9 @@ def all_open_orders():
 def process_order(order_id, order):
 
     persons = load_data("persons")
-    cocktails = load_data("cocktails")
     inventory = load_data("inventory")
+    cocktails = load_data("cocktails")
+    cocktail = cocktails[order["cocktail"]]
 
     guest_name = f"{persons[order["person"]]["first_name"]} {persons[order["person"]]["surname"]}"
     cocktail_name = cocktails[order["cocktail"]]["name"]
@@ -113,9 +114,7 @@ Cocktail:   [blue]{cocktail_name}[/]"""
 
     elif menu_choice == 1:
         while True:
-            ingredients = cocktails[order["cocktail"]]["ingredients"]
-            instructions = cocktails[order["cocktail"]]["instructions"]
-            show_cocktail(cocktail_name, ingredients, instructions)
+            show_cocktail(order["cocktail"])
 
             columns = {
                 "Action": ["Cocktail served", "Order cancelled", "Unit converter", "", "Back to order menu"]
@@ -126,9 +125,9 @@ Cocktail:   [blue]{cocktail_name}[/]"""
             menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
             if menu_choice == 1:
-                for ingredient in ingredients.keys():
+                for ingredient in cocktail["ingredients"].keys():
                     for item_id, item in inventory.items():
-                        if ingredient == item["name"]:
+                        if ingredient == item_id:
                             quantity = item["quantity"]
                             quantity -= 1
 
@@ -208,7 +207,7 @@ def new_order(cocktail_id=None):
                          )
 
             columns = {
-                "Action": ["Place another order", "Back to orders menu"]
+                "Action": ["Place another order", "Back"]
             }
 
             display_table(columns, auto_number=True)
@@ -221,3 +220,29 @@ def new_order(cocktail_id=None):
 
             break
     return
+
+
+def cancel_order(cocktail_id="", person_id="", event_id=""):
+    orders = load_data("orders")
+
+    if cocktail_id:
+        key = "cocktail"
+        value = cocktail_id
+
+    elif person_id:
+        key = "person"
+        value = person_id
+
+    elif event_id:
+        key = "event"
+        value = event_id
+
+    else:
+        return
+
+    for order_id, order in orders.items():
+        if order[key] == str(value) and order["status"] == "ordered":
+            update_record("orders", order_id, "status", "cancelled")
+
+    return
+

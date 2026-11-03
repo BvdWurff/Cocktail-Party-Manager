@@ -7,6 +7,7 @@ from utils.utils import (
     get_menu_choice,
     display_panel,
     update_record,
+    print_message,
 )
 
 
@@ -22,9 +23,9 @@ def check_cocktail_availability(cocktail_id):
         inventory = load_data("inventory")
         found = False
 
-        for item in inventory:
-            if inventory[item]["name"] == ingredient:
-                quantity = inventory[item]["quantity"]
+        for item_id, item in inventory.items():
+            if item_id == ingredient:
+                quantity = inventory[item_id]["quantity"]
 
                 for order in orders:
                     if orders[order]["status"] == "ordered":
@@ -47,18 +48,16 @@ def check_cocktail_availability(cocktail_id):
     return low_on_stock
 
 
-def add_item_to_inventory(ingredient):
+def add_item_to_inventory(ingredient_id):
     inventory = load_data("inventory")
-    from modules.cocktail_api import get_ingredient_details
+    from modules.cocktail_api import get_ingredient
 
-    if not any(item["name"] == ingredient for item in inventory.values()):
-        print(ingredient)
-        get_input()
-        item_id, item_description = get_ingredient_details(ingredient)
+    if not any(item == ingredient_id for item in inventory.keys()):
+        item_id, item_name, item_description = get_ingredient("id", ingredient_id)
 
         item = {
             "id": item_id,
-            "name": ingredient,
+            "name": item_name,
             "description": item_description,
             "quantity": 0,
             "minimum_quantity": 10,
@@ -68,15 +67,27 @@ def add_item_to_inventory(ingredient):
         save_data("inventory", item)
 
 
-def show_inventory():
+def show_inventory(trigger):
     while True:
-
         inventory = load_data("inventory")
 
-        content = f"An overview of the current inventory"
+        if trigger == "full_inventory":
+            content = "An overview of the full inventory."
+            title = "Inventory overview"
+
+        elif trigger == "below_min_quantity":
+            content = "An overview of the items in the inventory below the minimum quantity."
+            title = "Below minimum quantity"
+
+        elif trigger == "shopping_list":
+            content = "An overview of the items in the shopping list"
+            title = "Shopping list"
+
+        else:
+            break
 
         display_page(location="Inventory",
-                     title="Inventory overview",
+                     title=title,
                      content=content
                      )
 
@@ -89,37 +100,72 @@ def show_inventory():
         }
 
         for item_id, item in sorted(inventory.items(), key=lambda entry: entry[1]["name"].casefold()):
-            item_ids.append(item_id)
-            columns["Name"].append(item["name"])
-
-            if item["shopping_list"]:
-                columns["Shopping list"].append("Yes")
-            else:
-                columns["Shopping list"].append("No")
-
             quantity = item["quantity"]
             minimum_quantity = item["minimum_quantity"]
 
-            if quantity == 0:
-                columns["Quantity"].append(f"[red]{quantity}[/]")
-            elif quantity < minimum_quantity:
-                columns["Quantity"].append(f"[orange1]{quantity}[/]")
-            else:
-                columns["Quantity"].append(f"[green]{quantity}[/]")
+            if trigger == "below_min_quantity":
+                if quantity < minimum_quantity:
+                    item_ids.append(item_id)
+                    columns["Name"].append(item["name"])
 
-        columns["Name"].extend(["", "Back to admin menu"])
+                    if quantity == 0:
+                        columns["Quantity"].append(f"[red]{quantity}[/]")
+                    else:
+                        columns["Quantity"].append(f"[orange1]{quantity}[/]")
+
+                    if item["shopping_list"]:
+                        columns["Shopping list"].append("Yes")
+                    else:
+                        columns["Shopping list"].append("No")
+
+            elif trigger == "shopping_card":
+                if item["shopping_list"]:
+                    item_ids.append(item_id)
+                    columns["Name"].append(item["name"])
+                    columns["Shopping list"].append("Yes")
+                    if quantity == 0:
+                        columns["Quantity"].append(f"[red]{quantity}[/]")
+                    elif quantity < minimum_quantity:
+                        columns["Quantity"].append(f"[orange1]{quantity}[/]")
+                    else:
+                        columns["Quantity"].append(f"[green]{quantity}[/]")
+
+            else:
+                item_ids.append(item_id)
+                columns["Name"].append(item["name"])
+
+                if item["shopping_list"]:
+                    columns["Shopping list"].append("Yes")
+                else:
+                    columns["Shopping list"].append("No")
+
+                if quantity == 0:
+                    columns["Quantity"].append(f"[red]{quantity}[/]")
+                elif quantity < minimum_quantity:
+                    columns["Quantity"].append(f"[orange1]{quantity}[/]")
+                else:
+                    columns["Quantity"].append(f"[green]{quantity}[/]")
+
+        columns["Name"].extend(["", "Back to inventory menu"])
         columns["Quantity"].extend(["", ""])
         columns["Shopping list"].extend(["", ""])
 
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
-
-        if menu_choice == 0:
+        if len(columns["Name"]) == 2:
+            print_message("No items found.", "red")
+            print()
+            get_input("Press [blue]Enter[/] to return to the inventory menu.")
             break
 
-        item_id = item_ids[menu_choice - 1]
-        show_inventory_item(item_id)
+        else:
+            display_table(columns, auto_number=True)
+
+            menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
+
+            if menu_choice == 0:
+                break
+
+            item_id = item_ids[menu_choice - 1]
+            show_inventory_item(item_id)
 
     return
 
@@ -168,7 +214,7 @@ Added to shopping list:   {add_to_shopping_list}"""
         }
 
         for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda entry: entry[1]["name"].casefold()):
-            if cocktail["active"] and item["name"] in cocktail["ingredients"]:
+            if cocktail["active"] and item_id in cocktail["ingredients"]:
                 columns["Cocktail"].append(cocktail["name"])
 
         display_table(columns)

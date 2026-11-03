@@ -1,251 +1,461 @@
 {
     "1": {
-        "name": "Tequila",
-        "description": null,
-        "quantity": 49,
+        "name": "Vodka",
+        "description": "Vodka is a distilled beverage composed primarily of water and ethanol, sometimes with traces of impurities and flavorings. Traditionally, vodka is made by the distillation of fermented cereal grains or potatoes, though some modern brands use other substances, such as fruits or sugar.\r\n\r\nSince the 1890s, the standard Polish, Russian, Belarusian, Ukrainian, Estonian, Latvian, Lithuanian and Czech vodkas are 40% alcohol by volume ABV (80 US proof), a percentage that is widely misattributed to Dmitri Mendeleev. The European Union has established a minimum of 37.5% ABV for any \"European vodka\" to be named as such. Products sold as \"vodka\" in the United States must have a minimum alcohol content of 40%. Even with these loose restrictions, most vodka sold contains 40% ABV. For homemade vodkas and distilled beverages referred to as \"moonshine\", see moonshine by country.\r\n\r\nVodka is traditionally drunk neat (not mixed with any water, ice, or other mixer), though it is often served chilled in the vodka belt countries (Belarus, Estonia, Finland, Iceland, Latvia, Lithuania, Norway, Poland, Russia, Sweden, Ukraine). It is also commonly used in cocktails and mixed drinks, such as the vodka martini, Cosmopolitan, vodka tonic, Screwdriver, Greyhound, Black or White Russian, Moscow Mule, and Bloody Mary.\r\n\r\nScholars debate the beginnings of vodka. It is a contentious issue because very little historical material is available. For many centuries, beverages differed significantly compared to the vodka of today, as the spirit at that time had a different flavor, color and smell, and was originally used as medicine. It contained little alcohol, an estimated maximum of about 14%, as only this amount can be attained by natural fermentation. The still, allowing for distillation (\"burning of wine\"), increased purity, and increased alcohol content, was invented in the 8th century.\r\n\r\nA common property of the vodkas produced in the United States and Europe is the extensive use of filtration prior to any additional processing including the addition of flavorants. Filtering is sometimes done in the still during distillation, as well as afterwards, where the distilled vodka is filtered through activated charcoal and other media to absorb trace amounts of substances that alter or impart off-flavors to the vodka. However, this is not the case in the traditional vodka-producing nations, so many distillers from these countries prefer to use very accurate distillation but minimal filtering, thus preserving the unique flavors and characteristics of their products.\r\n\r\nThe master distiller is in charge of distilling the vodka and directing its filtration, which includes the removal of the \"fore-shots\", \"heads\" and \"tails\". These components of the distillate contain flavor compounds such as ethyl acetate and ethyl lactate (heads) as well as the fusel oils (tails) that impact the usually desired clean taste of vodka. Through numerous rounds of distillation, or the use of a fractioning still, the taste is modified and clarity is increased. In contrast, distillery process for liquors such as whiskey, rum, and baijiu allow portions of the \"heads\" and \"tails\" to remain, giving them their unique flavors.\r\n\r\nRepeated distillation of vodka will make its ethanol level much higher than is acceptable to most end users, whether legislation determines strength limits or not. Depending on the distillation method and the technique of the stillmaster, the final filtered and distilled vodka may have as much as 95–96% ethanol. As such, most vodka is diluted with water prior to bottling.\r\n\r\nPolish distilleries make a very pure (96%, 192 proof, formerly also 98%) rectified spirit (Polish language: spirytus rektyfikowany). Technically a form of vodka, it is sold in liquor stores rather than pharmacies. Similarly, the German market often carries German, Hungarian, Polish, and Ukrainian-made varieties of vodka of 90 to 95% ABV. A Bulgarian vodka, Balkan 176°, has an 88% alcohol content. Everclear, an American brand, is also sold at 95% ABV.",
+        "quantity": 40,
         "minimum_quantity": 10,
         "shopping_list": false
     },
     "2": {
-        "name": "Blue Curacao",
-        "description": null,
-        "quantity": 49,
-        "minimum_quantity": 10,
-        "shopping_list": true
-    },
-    "3": {
-        "name": "Lime juice",
-        "description": null,
-        "quantity": 49,
+        "name": "Gin",
+        "description": "Gin is a distilled alcoholic drink that derives its predominant flavour from juniper berries (Juniperus communis). Gin is one of the broadest categories of spirits, all of various origins, styles, and flavour profiles, that revolve around juniper as a common ingredient.\r\n\r\nFrom its earliest origins in the Middle Ages, the drink has evolved from a herbal medicine to an object of commerce in the spirits industry. Gin emerged in England after the introduction of the jenever, a Dutch liquor which originally had been a medicine. Although this development had been taking place since early 17th century, gin became widespread after the William of Orange-led 1688 Glorious Revolution and subsequent import restrictions on French brandy.\r\n\r\nGin today is produced in subtly different ways, from a wide range of herbal ingredients, giving rise to a number of distinct styles and brands. After juniper, gin tends to be flavoured with botanical/herbal, spice, floral or fruit-flavours or often a combination. It is most commonly consumed mixed with tonic water. Gin is also often used as a base spirit to produce flavoured gin-based liqueurs such as, for example, Sloe gin, traditionally by the addition of fruit, flavourings and sugar.",
+        "quantity": 50,
         "minimum_quantity": 10,
         "shopping_list": false
     },
     "4": {
-        "name": "Salt",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "5": {
-        "name": "Mango",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "6": {
-        "name": "Mint",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "7": {
-        "name": "White Rum",
-        "description": null,
-        "quantity": 10,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "8": {
-        "name": "Ice",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "9": {
-        "name": "Soda Water",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "10": {
-        "name": "Triple sec",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "11": {
-        "name": "Lime",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "12": {
-        "name": "Lemon juice",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "13": {
-        "name": "Dark rum",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "14": {
-        "name": "Club soda",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "15": {
-        "name": "Angostura bitters",
-        "description": null,
-        "quantity": 0,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "16": {
-        "name": "Vodka",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "17": {
-        "name": "Tomato juice",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "18": {
-        "name": "Worcestershire sauce",
-        "description": null,
-        "quantity": 50,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "19": {
-        "name": "Tabasco sauce",
-        "description": null,
-        "quantity": 50,
+        "name": "Tequila",
+        "description": "Tequila (Spanish pronunciation: [teˈkila] (About this sound listen)) is a regionally specific distilled beverage and type of alcoholic drink made from the blue agave plant, primarily in the area surrounding the city of Tequila, 65 km (40 mi) northwest of Guadalajara, and in the highlands (Los Altos) of the central western Mexican state of Jalisco. Aside from differences in region of origin, tequila is a type of mezcal (and the regions of production of the two drinks are overlapping). The distinction in the method of production is that tequila must use only blue agave plants rather than any type of agave. Tequila is commonly served neat in Mexico and as a shot with salt and lime across the rest of the world.\r\n\r\nThe red volcanic soil in the region around the city of Tequila is particularly well suited to the growing of the blue agave, and more than 300 million of the plants are harvested there each year. Agave grows differently depending on the region. Blue agaves grown in the highlands Los Altos region are larger in size and sweeter in aroma and taste. Agaves harvested in the lowlands, on the other hand, have a more herbaceous fragrance and flavor.\r\n\r\nMexican laws state that tequila can only be produced in the state of Jalisco and limited municipalities in the states of Guanajuato, Michoacán, Nayarit, and Tamaulipas. Tequila is recognized as a Mexican designation of origin product in more than 40 countries. It is protected through NAFTA in Canada and the United States,[6] through bilateral agreements with individual countries such as Japan and Israel, and has been a protected designation of origin product in the constituent countries of the European Union since 1997.\r\n\r\nTequila contains alcohol (also known formally as ethanol) and is most often made at a 38% alcohol content (76 U.S. proof) for domestic consumption, but can be produced between 31 and 55% alcohol content (62 and 110 U.S. proof). Per U.S law, tequila must contain at least 40% alcohol (80 U.S. proof) to be sold in the United States.",
+        "quantity": 15,
         "minimum_quantity": 10,
         "shopping_list": false
     },
     "20": {
+        "name": "Angostura bitters",
+        "description": "Angostura bitters (English: /æŋɡəˈstjʊərə/) is a concentrated bitters, or botanically infused alcoholic mixture, made of water, 44.7% ethanol, gentian, herbs and spices by House of Angostura in Trinidad and Tobago. It is typically used for flavouring beverages or (less often) food. The bitters were first produced in the town of Angostura (Ciudad Bolívar, Venezuela) (hence the name), but do not contain angostura bark. The bottle is easily recognisable by its distinctive oversized label.\r\n\r\nThe recipe was developed as a tonic by a German, Johann Gottlieb Benjamin Siegert (1796–1870), surgeon general in Simón Bolívar's army in Venezuela. Siegert began to sell it in 1824 and established a distillery for the purpose in 1830. Siegert was based in the town of Angostura, now Ciudad Bolívar, and used locally available ingredients, perhaps aided by botanical knowledge of the local Amerindians. The product was sold abroad from 1853, and in 1875 the plant was moved from Ciudad Bolivar to Port of Spain, Trinidad, where it remains. Angostura won a medal at the Weltausstellung 1873 Wien. The medal is still depicted on the oversized label, along with reverse which shows Emperor Franz Joseph I of Austria in profile.\r\n\r\nThe exact formula is a closely guarded secret, with only one person knowing the whole recipe, passed hereditarily.\r\n\r\nAngostura bitters are extremely concentrated and are an acquired taste; though 44.7% alcohol by volume, bitters are not normally ingested undiluted, but instead are used in small amounts as flavouring.\r\n\r\nAngostura bitters are a key ingredient in many cocktails. Originally used to help with upset stomachs of the soldiers in the Simón Bolívar army, it later became popular in soda water and was usually served with gin. The mix stuck in the form of a pink gin, and is also used in many other alcoholic cocktails such as long vodka, consisting of vodka, Angostura bitters, and lemonade. In the United States, it is best known for its use in whiskey cocktails: the Old Fashioned, made with whiskey, bitters, sugar, and water,[8] and the Manhattan, made usually with rye whiskey and sweet vermouth. In a Pisco Sour a few drops are sprinkled on top of the foam, both for aroma and decoration. In a Champagne Cocktail a few drops of bitters are added to a sugar cube.\r\n\r\nIn Hong Kong, Angostura bitters are included in the local Gunner cocktail. Though not in the classic recipe, bartenders sometimes add more flavour to the Mojito cocktail by sprinkling a few drops of Angostura bitters on top. Bitters can also be used in \"soft\" drinks; a common drink served in Australian and New Zealand pubs is lemon lime and bitters.\r\n\r\nAngostura Bitters Drink Guide, a promotional booklet of 1908, was reprinted in 2008 with a new introduction by Ross Bolton.",
+        "quantity": 15,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "67": {
+        "name": "Blue Curacao",
+        "description": "Curaçao (/ˈkjʊərəsaʊ/) is a liqueur flavored with the dried peel of the Laraha citrus fruit, grown on the island of Curaçao.\r\n\r\nAn official Curaçao liqueur has to be made with the dried peels of the \"Laraha\". Laraha is a bitter orange native of Curaçao with the Latin name: \"Citrus Aurantium Currasuviensis\", meaning \"Golden Orange of Curaçao\". Spanish explorers brought the sweet Valencia orange to the island in 1527, [2] but the nutrient-poor soil and arid climate of Curaçao proved unsuitable to Valencia cultivation, resulting in small, bitter fruit. Although the bitter flesh of the Laraha is hardly edible, the peels are aromatic and flavorful, maintaining much of the essence of the Valencia orange.\r\n\r\nThere are no definite facts that points out who and when the first Curaçao Liqueur was developed. The Lucas Bols distillery, founded in 1575 in Amsterdam, maintains that Lucas Bols (1652–1719) already developed a Laraha-based liqueur. The Dutch West Indies Company had taken possession of Curaçao in 1634 and Bols had shares in both the West and East India Companies to guarantee the cheap supply of spices for their distilled drinks. After the discovery that an aromatic oil could be extracted from the unripe peel of the otherwise useless bitter oranges, Bols had this oil exported back to Amsterdam to develop a liqueur similar to current day Curaçao. Bols tended to add an \"element of alchemical mystery\" to his products, explaining the unlikely addition of a blue coloring. In the past, the liqueur also had the name Crème de Ciel (\"cream of heaven\"), presumably for its blue color.\r\n\r\nAlternatively, the Senior & Co, a company that originates from Curaçao, are to this day the only company that always produced their liqueur with the peels of the Laraha. The Jewish family, Senior and Chumacairo, started selling their liqueur in 1896 in their pharmacy at small quantities. In 1947 they bought the Landhuis (Dutch for \"country manor\") Chobolobo in Willemstad, where the distillery has since been housed. As this company is the only one who uses laraha fruit from Curaçao, it has been permitted to put the word \"genuine\" on its labels.",
+        "quantity": 7,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "308": {
+        "name": "Lime juice",
+        "description": null,
+        "quantity": 12,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "439": {
+        "name": "Salt",
+        "description": "Table salt or common salt is a mineral composed primarily of sodium chloride (NaCl), a chemical compound belonging to the larger class of salts; salt in its natural form as a crystalline mineral is known as rock salt or halite. Salt is present in vast quantities in seawater, where it is the main mineral constituent. The open ocean has about 35 grams (1.2 oz) of solids per litre, a salinity of 3.5%.\r\n\r\nSalt is essential for life in general, and saltiness is one of the basic human tastes. The tissues of animals contain larger quantities of salt than do plant tissues. Salt is one of the oldest and most ubiquitous food seasonings, and salting is an important method of food preservation.\r\n\r\nSome of the earliest evidence of salt processing dates to around 8,000 years ago, when people living in the area of present-day Romania boiled spring water to extract salts; a salt-works in China dates to approximately the same period. Salt was also prized by the ancient Hebrews, the Greeks, the Romans, the Byzantines, the Hittites, Egyptians, and the Indians. Salt became an important article of trade and was transported by boat across the Mediterranean Sea, along specially built salt roads, and across the Sahara on camel caravans. The scarcity and universal need for salt have led nations to go to war over it and use it to raise tax revenues. Salt is used in religious ceremonies and has other cultural significance.\r\n\r\nSalt is processed from salt mines, and by the evaporation of seawater (sea salt) and mineral-rich spring water in shallow pools. Its major industrial products are caustic soda and chlorine; salt is used in many industrial processes including the manufacture of polyvinyl chloride, plastics, paper pulp and many other products. Of the annual global production of around two hundred million tonnes of salt, only about 6% is used for human consumption. Other uses include water conditioning processes, de-icing highways, and agricultural use. Edible salt is sold in forms such as sea salt and table salt which usually contains an anti-caking agent and may be iodised to prevent iodine deficiency. As well as its use in cooking and at the table, salt is present in many processed foods.\r\n\r\nSodium is an essential nutrient for human health via its role as an electrolyte and osmotic solute. Excessive salt consumption may increase the risk of cardiovascular diseases, such as hypertension, in children and adults. Such health effects of salt have long been studied. Accordingly, numerous world health associations and experts in developed countries recommend reducing consumption of popular salty foods. The World Health Organization recommends that adults should consume less than 2,000 mg of sodium, equivalent to 5 grams of salt per day.",
+        "quantity": 999,
+        "minimum_quantity": 0,
+        "shopping_list": false
+    },
+    "319": {
+        "name": "Mango",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "337": {
+        "name": "Mint",
+        "description": "Lamiaceae (/ˌleɪmiˈeɪsiˌaɪ/ or /ˌleɪmiˈeɪsiiː/) or Labiatae is a family of flowering plants commonly known as the mint or deadnettle family. Many of the plants are aromatic in all parts and include widely used culinary herbs, such as basil, mint, rosemary, sage, savory, marjoram, oregano, hyssop, thyme, lavender, and perilla. Some species are shrubs, trees (such as teak), or, rarely, vines. Many members of the family are widely cultivated, not only for their aromatic qualities but also their ease of cultivation, since they are readily propagated by stem cuttings. Besides those grown for their edible leaves, some are grown for decorative foliage, such as Coleus. Others are grown for seed, such as Salvia hispanica (chia), or for their edible tubers, such as Plectranthus edulis, Plectranthus esculentus, Plectranthus rotundifolius, and Stachys affinis (Chinese artichoke).\r\n\r\nThe family has a cosmopolitan distribution. The enlarged Lamiaceae contains about 236 genera and has been stated to contain 6,900 to 7,200 species, but the World Checklist lists 7,534. The largest genera are Salvia (900), Scutellaria (360), Stachys (300), Plectranthus (300), Hyptis (280), Teucrium (250), Vitex (250), Thymus (220), and Nepeta (200). Clerodendrum was once a genus of over 400 species, but by 2010, it had been narrowed to about 150.\r\n\r\nThe family has traditionally been considered closely related to the Verbenaceae; in the 1990s, phylogenetic studies suggested that many genera classified in the Verbenaceae should be classified in the Lamiaceae  or to other families in the order Lamiales.\r\n\r\nThe alternate family name Labiatae refers to the fact that the flowers typically have petals fused into an upper lip and a lower lip (labia in Latin). The flowers are bilaterally symmetrical with five united petals and five united sepals. They are usually bisexual and verticillastrate (a flower cluster that looks like a whorl of flowers, but actually consists of two crowded clusters). Although this is still considered an acceptable alternative name, most botanists now use the name Lamiaceae in referring to this family. The leaves emerge oppositely, each pair at right angles to the previous one (decussate) or whorled. The stems are frequently square in cross section, but this is not found in all members of the family, and is sometimes found in other plant families.",
+        "quantity": 4,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "523": {
+        "name": "White Rum",
+        "description": "Rum is a distilled alcoholic beverage made from sugarcane byproducts, such as molasses, or directly from sugarcane juice, by a process of fermentation and distillation. The distillate, a clear liquid, is then usually aged in oak barrels.\r\n\r\nThe majority of the world's rum production occurs in the Caribbean and Latin America. Rum is also produced in Scotland, Austria, Spain, Australia, New Zealand, Fiji, the Philippines, India, Reunion Island, Mauritius, South Africa, Taiwan, Thailand, Japan, the United States, and Canada.\r\n\r\nRums are produced in various grades. Light rums are commonly used in cocktails, whereas \"golden\" and \"dark\" rums were typically consumed straight or neat, on the rocks, or used for cooking, but are now commonly consumed with mixers. Premium rums are also available, made to be consumed either straight or iced.\r\n\r\nRum plays a part in the culture of most islands of the West Indies as well as in The Maritimes and Newfoundland. This beverage has famous associations with the Royal Navy (where it was mixed with water or beer to make grog) and piracy (where it was consumed as bumbo). Rum has also served as a popular medium of economic exchange, used to help fund enterprises such as slavery (see Triangular trade), organized crime, and military insurgencies (e.g., the American Revolution and Australia's Rum Rebellion).",
+        "quantity": 20,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "270": {
+        "name": "Ice",
+        "description": null,
+        "quantity": 25,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "455": {
+        "name": "Soda Water",
+        "description": null,
+        "quantity": 22,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "498": {
+        "name": "Triple sec",
+        "description": "Triple sec, originally Curaçao triple sec, is a variety of Curaçao liqueur, an orange-flavoured liqueur made from the dried peels of bitter and/or sweet oranges.\r\n\r\nTriple sec may be consumed neat as a digestif or on the rocks, but it is more often used as an ingredient in a variety of cocktails, such as sangria, margarita, Kamikaze, White Lady, Long Island Iced Tea, Sidecar, Skittle Bomb, Corpse Reviver #2, and Cosmopolitan.\r\n\r\nThe Combier distillery claims that triple sec was invented between 1834 and 1848 by Jean-Baptiste Combier in Saumur, France. However, Combier was more famous for its élixir Combier, which contained orange and many other flavorings.\r\n\r\nCointreau, on the other hand, claims that its orange liqueur was formulated in 1849.\r\n\r\nTriple sec was widely known by 1878: at the Exposition Universelle of 1878 in Paris, several distillers were offering \"Curaçao [sic] triple sec\", as well as \"Curaçao doux\".",
+        "quantity": 9,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "312": {
+        "name": "Lime",
+        "description": "A lime (from French lime, from Arabic līma, from Persian līmū, \"lemon\") is a hybrid citrus fruit, which is typically round, lime green, 3–6 centimetres (1.2–2.4 in) in diameter, and contains acidic juice vesicles.\r\n\r\nThere are several species of citrus trees whose fruits are called limes, including the Key lime (Citrus aurantifolia), Persian lime, kaffir lime, and desert lime. Limes are an excellent source of vitamin C, and are often used to accent the flavours of foods and beverages. They are grown year-round. Plants with fruit called \"limes\" have diverse genetic origins; limes do not form a monophyletic group.\r\n",
+        "quantity": 14,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "293": {
+        "name": "Lemon juice",
+        "description": null,
+        "quantity": 2,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "179": {
+        "name": "Dark rum",
+        "description": null,
+        "quantity": 18,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "127": {
+        "name": "Club soda",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "492": {
+        "name": "Tomato juice",
+        "description": "Tomato juice is a juice made from tomatoes, usually used as a beverage, either plain or in cocktails such as a Bloody Mary or Michelada.\r\n\r\nIn Canada, tomato juice is unconcentrated and pasteurized, made from fine tomato pulp from ripe and whole tomatoes. The stems and skins must be removed without adding water to the final juice product. It may also contain a sweetening agent, citric acid and salt.",
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "529": {
+        "name": "Worcestershire sauce",
+        "description": "Worcestershire sauce (/ˈwʊstərʃər/ (About this sound listen)), (Merriam-Webster: \\ˈwu̇s-tə(r)-ˌshir-, -shər- also -ˌshī(-ə)r-\\ ), frequently shortened to Worcester sauce (/ˈwʊstər/)[citation needed], is a fermented liquid condiment of complex mixture originally created by the Worcester chemists John Wheeley Lea and William Henry Perrins, who went on to form the company Lea & Perrins. The ingredients are allowed to mature for 18 months before being blended and bottled in Worcester, where the exact recipe is kept a secret.\r\n\r\nLea and Perrins devised the recipe in the 1830s, however it was not to their liking and was set aside and forgotten about. It was not until the barrels were rediscovered many months later that the taste had mellowed into what is now known as Worcestershire sauce. A high court decided on 26 July 1876 that Lea & Perrins did not have the rights to the term Worcestershire sauce, and so the name is not trademarked. Lea & Perrins claims to be The Original Worcestershire sauce and may be the leading global brand of Worcestershire sauce[citation needed], but other brands offer similar recipes. Some may be vegetarian or vegan, and may add other spices.\r\n\r\nWorcestershire sauce is complex and unique in its flavour and aroma, and frequently used to enhance some food and drink recipes. For example, it is often an ingredient in Welsh rarebit, Caesar salad, Oysters Kirkpatrick, deviled eggs, and sometimes an ingredient in chili con carne, beef stew or other beef dishes. The sauce is also used to flavour cocktails such as the Bloody Mary or Caesar.",
+        "quantity": 15,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "483": {
+        "name": "Tabasco sauce",
+        "description": null,
+        "quantity": 15,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "56": {
         "name": "Bitters",
         "description": null,
-        "quantity": 0,
+        "quantity": 11,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "21": {
-        "name": "Gin",
-        "description": null,
-        "quantity": 0,
-        "minimum_quantity": 10,
-        "shopping_list": false
-    },
-    "22": {
+    "533": {
         "name": "Yoghurt",
-        "description": null,
-        "quantity": 0,
+        "description": "Yogurt, yoghurt, or yoghourt (/ˈjoʊɡərt/ or /ˈjɒɡət/; from Turkish: yoğurt; other spellings listed below) is a food produced by bacterial fermentation of milk.[1] The bacteria used to make yogurt are known as \"yogurt cultures\". Fermentation of lactose by these bacteria produces lactic acid, which acts on milk protein to give yogurt its texture and characteristic tart flavor. Cow's milk is commonly available worldwide, and, as such, is the milk most commonly used to make yogurt. Milk from water buffalo, goats, ewes, mares, camels, and yaks is also used to produce yogurt where available locally. Milk used may be homogenized or not (milk distributed in many parts of the world is homogenized); both types may be used, with substantially different results.\r\n\r\nYogurt is produced using a culture of Lactobacillus delbrueckii subsp. bulgaricus and Streptococcus thermophilus bacteria. In addition, other lactobacilli and bifidobacteria are also sometimes added during or after culturing yogurt. Some countries require yogurt to contain a certain amount of colony-forming units of bacteria; in China, for example, the requirement for the number of lactobacillus bacteria is at least 1 × 106 CFU per milliliter.\r\n\r\nTo produce yogurt, milk is first heated, usually to about 85 °C (185 °F), to denature the milk proteins so that they do not form curds. After heating, the milk is allowed to cool to about 45 °C (113 °F). The bacterial culture is mixed in, and a temperature of 45 °C (113 °F) is maintained for four to twelve hours to allow fermentation.",
+        "quantity": 18,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "23": {
+    "476": {
         "name": "Sugar",
-        "description": null,
-        "quantity": 0,
+        "description": "Sugar is the generic name for sweet-tasting, soluble carbohydrates, many of which are used in food.",
+        "quantity": 1000,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "24": {
+    "52": {
         "name": "Beer",
-        "description": null,
-        "quantity": 0,
+        "description": "Beer is the oldest and most widely consumed alcoholic drink in the world, and the third most popular drink overall after water and tea.[5] Beer is brewed from cereal grains — most commonly from malted barley, though wheat, maize (corn), and rice are also used. During the brewing process, fermentation of the starch sugars in the wort produces ethanol and carbonation in the resulting beer. Most modern beer is brewed with hops, which add bitterness and other flavours and act as a natural preservative and stabilizing agent. Other flavouring agents such as gruit, herbs, or fruits may be included or used instead of hops. In commercial brewing, the natural carbonation effect is often removed during processing and replaced with forced carbonation.\r\n\r\nSome of humanity's earliest known writings refer to the production and distribution of beer: the Code of Hammurabi included laws regulating beer and beer parlours, and \"The Hymn to Ninkasi\", a prayer to the Mesopotamian goddess of beer, served as both a prayer and as a method of remembering the recipe for beer in a culture with few literate people.\r\n\r\nBeer is distributed in bottles and cans and is also commonly available on draught, particularly in pubs and bars. The brewing industry is a global business, consisting of several dominant multinational companies and many thousands of smaller producers ranging from brewpubs to regional breweries. The strength of modern beer is usually around 4% to 6% alcohol by volume (abv), although it may vary between 0.5% and 20%, with some breweries creating examples of 40% abv and above.[11] Beer forms part of the culture of many nations and is associated with social traditions such as beer festivals as well as a rich pub culture involving activities like pub crawling and pub games such as bar billiards.\r\n\r\nVarious legal definitions of beer exist in different countries. Historically, the most famous of these was the Reinheitsgebot, which applied to parts of the Holy Roman Empire and Germany and required beer to be made from only water, hops, and barley. Today in Canada, the Canadian Government’s Food and Drug Regulations state that beer must have alcohol content that ranges from 1.1% to 8.6%, though it also includes a stipulation that it could be greater than 8.6% and labeled accordingly. Beer in South Korea must have less than 25% ABV, which means that it has to be 25 mL of alcohol or less per 100 mL of solution and can be considered ‘lite’ only if it has less than 30 kcal per 100ml. Additionally, beer in South Korea must use only water, hops, and starches (wheat, rice, barley, corn, or potato) as ingredients in the brewing process.[13] In Singapore, beer must have at minimum 1.0% alcohol by volume concentration at 20 °C. It is often brewed from a mixture of grains like malt, sugars or its equivalent, and hops or other vegetables.",
+        "quantity": 24,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "25": {
+    "572": {
         "name": "7-Up",
-        "description": null,
+        "description": "7 Up (stylized as 7up outside of the U.S.) is a brand of lemon-lime flavored, non-caffeinated soft drink. The rights to the brand are held by Dr Pepper Snapple Group in the United States, and PepsiCo (or its licensees) in the rest of the world. The U.S. version of the 7 Up logo includes a red cherry between the \"7\" and \"Up\"; this red cherry has been animated and used as a mascot for the brand as Cool Spot.\r\n\r\n7 Up was created by Charles Leiper Grigg, who launched his St. Louis–based company The Howdy Corporation in 1920.[1] Grigg came up with the formula for a lemon-lime soft drink in 1929. The product, originally named \"Bib-Label Lithiated Lemon-Lime Soda\", was launched two weeks before the Wall Street Crash of 1929.[2] It contained lithium citrate, a mood-stabilizing drug, until 1950.[3] It was one of a number of patent medicine products popular in the late-19th and early-20th centuries. Its name was later shortened to \"7 Up Lithiated Lemon Soda\" before being further shortened to just \"7 Up\" by 1936.\r\n\r\nWestinghouse bought 7 Up in 1969 and sold it in 1978 to Philip Morris, who then in 1986 sold it to a group led by the investment firm Hicks & Haas.[4] 7 Up merged with Dr Pepper in 1988; Cadbury Schweppes bought the combined company in 1995. The Dr Pepper Snapple Group was spun off from Cadbury Schweppes in 2008.\r\n\r\n7 Up has been reformulated several times since its launch in 1929. In 2006, the version of the product sold in the U.S. was re-formulated so that it could be marketed as being \"100% natural\". This was achieved by eliminating the chelating-agent calcium disodium EDTA, and replacing sodium citrate with potassium citrate in order to reduce the beverage's sodium content.[5] This re-formulation contains no fruit juice and, in the U.S., is sweetened with high-fructose corn syrup (HFCS). The manufacturing process used in the production of HFCS has led some public health and advocacy groups to challenge the ad campaign's \"natural\" claims.[6] In 2007, after the Center for Science in the Public Interest threatened to sue 7 Up, it was announced that 7 Up would stop being marketed as \"100% natural\". Instead, it is now promoted as having \"100% Natural Flavors\". The controversy does not extend to other countries, such as the United Kingdom, where HFCS is not generally used in foods, including 7 Up. In 2011, 7 Up began test-marketing a formula, called 7 Up Retro, using sugar rather than HFCS. Container labels sport the caption, \"Made With Real Sugar\".\r\n\r\nThere exists a myth that the 7 Up name comes from the drink having a pH over 7. That would make it neutral or basic on the scale; however, this is not the case, as the 7 Up pH is close to 3.79, similar to other drinks of the type.[7] The real origin of the name is unclear,[8] though Britvic claims that the name comes from the seven main ingredients in the drink,[9] while others have claimed that the number was a coded reference to the lithium contained in the original recipe, which has an atomic mass of approximately 7.",
         "quantity": 0,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "26": {
+    "305": {
         "name": "Light rum",
-        "description": null,
-        "quantity": 0,
+        "description": "Light rums, also referred to as \"silver\" or \"white\" rums, in general, have very little flavor aside from a general sweetness. Light rums are sometimes filtered after aging to remove any colour. The majority of light rums come from Puerto Rico. Their milder flavors make them popular for use in mixed drinks, as opposed to drinking them straight. Light rums are included in some of the most popular cocktails including the Mojito and the Daiquiri.",
+        "quantity": 14,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "27": {
+    "393": {
         "name": "Pineapple juice",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "28": {
+    "242": {
         "name": "Grapefruit Juice",
         "description": null,
-        "quantity": 10,
+        "quantity": 7,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "29": {
+    "470": {
         "name": "Strawberries",
-        "description": null,
-        "quantity": 12,
+        "description": "The garden strawberry (or simply strawberry; Fragaria × ananassa) is a widely grown hybrid species of the genus Fragaria, collectively known as the strawberries. It is cultivated worldwide for its fruit. The fruit is widely appreciated for its characteristic aroma, bright red color, juicy texture, and sweetness. It is consumed in large quantities, either fresh or in such prepared foods as preserves, juice, pies, ice creams, milkshakes, and chocolates. Artificial strawberry flavorings and aromas are also widely used in many products like lip gloss, candy, hand sanitizers, perfume, and many others.\r\n\r\nThe garden strawberry was first bred in Brittany, France, in the 1750s via a cross of Fragaria virginiana from eastern North America and Fragaria chiloensis, which was brought from Chile by Amédée-François Frézier in 1714. Cultivars of Fragaria × ananassa have replaced, in commercial production, the woodland strawberry (Fragaria vesca), which was the first strawberry species cultivated in the early 17th century.\r\n\r\nThe strawberry is not, from a botanical point of view, a berry. Technically, it is an aggregate accessory fruit, meaning that the fleshy part is derived not from the plant's ovaries but from the receptacle that holds the ovaries.Each apparent \"seed\" (achene) on the outside of the fruit is actually one of the ovaries of the flower, with a seed inside it.",
+        "quantity": 30,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "30": {
+    "297": {
         "name": "Lemon-lime soda",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "31": {
+    "412": {
         "name": "Raisins",
         "description": null,
-        "quantity": 0,
+        "quantity": 8,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "32": {
+    "69": {
         "name": "Blueberries",
         "description": null,
-        "quantity": 0,
+        "quantity": 30,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "33": {
+    "250": {
         "name": "Grenadine",
         "description": "Grenadine is a commonly used, non-alcoholic bar syrup, characterized by a flavour that is both tart and sweet, and by a deep red colour. It is popular as an ingredient in cocktails, both for its flavour and to give a reddish/pink tint to mixed drinks.\r\n\r\nThe name grenadine originated from the French word grenade which means pomegranate, with pomme meaning apple and granate derived from the Italian word for seeds.\r\n\r\nGrenadine was originally prepared from pomegranate juice, sugar, and water.\r\n\r\nAs grenadine is subject to minimal regulation, its basic flavour profile can alternatively be obtained from a mixture of blackcurrant juice and other fruit juices with the blackcurrant flavour dominating.\r\n\r\nTo reduce production costs, manufacturers have widely replaced fruit bases with artificial ingredients. The Mott's brand \"Rose's\" is by far the most common brand of grenadine sold in the United States,[3] and is formulated from (in order of concentration): high fructose corn syrup, water, citric acid, sodium citrate, sodium benzoate, FD&C Red #40, natural and artificial flavours and FD&C Blue #1. In Europe, Bols still manufactures grenadine with pomegranate.",
-        "quantity": 0,
+        "quantity": 4,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "34": {
+    "409": {
         "name": "Powdered sugar",
+        "description": null,
+        "quantity": 100,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "397": {
+        "name": "Pineapple",
+        "description": "The pineapple (Ananas comosus) is a tropical plant with an edible multiple fruit consisting of coalesced berries, also called pineapples, and the most economically significant plant in the Bromeliaceae family.\r\n\r\nPineapples may be cultivated from a crown cutting of the fruit, possibly flowering in 5–10 months and fruiting in the following six months. Pineapples do not ripen significantly after harvest.\r\n\r\nPineapples can be consumed fresh, cooked, juiced, or preserved. They are found in a wide array of cuisines. In addition to consumption, the pineapple leaves are used to produce the textile fiber piña in the Philippines, commonly used as the material for the men's barong Tagalog and women's baro't saya formal wear in the country. The fiber is also used as a component for wallpaper and other furnishings.",
+        "quantity": 2,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "89": {
+        "name": "Carbonated water",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
         "shopping_list": false
     },
-    "35": {
-        "name": "Pineapple",
-        "description": "The pineapple (Ananas comosus) is a tropical plant with an edible multiple fruit consisting of coalesced berries, also called pineapples, and the most economically significant plant in the Bromeliaceae family.\r\n\r\nPineapples may be cultivated from a crown cutting of the fruit, possibly flowering in 5–10 months and fruiting in the following six months. Pineapples do not ripen significantly after harvest.\r\n\r\nPineapples can be consumed fresh, cooked, juiced, or preserved. They are found in a wide array of cuisines. In addition to consumption, the pineapple leaves are used to produce the textile fiber piña in the Philippines, commonly used as the material for the men's barong Tagalog and women's baro't saya formal wear in the country. The fiber is also used as a component for wallpaper and other furnishings.",
+    "94": {
+        "name": "Celery Salt",
+        "description": null,
+        "quantity": 1000,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "299": {
+        "name": "lemon",
+        "description": "The lemon, Citrus limon (L.) Osbeck, is a species of small evergreen tree in the flowering plant family Rutaceae, native to Asia.\r\n\r\nThe tree's ellipsoidal yellow fruit is used for culinary and non-culinary purposes throughout the world, primarily for its juice, which has both culinary and cleaning uses. The pulp and rind (zest) are also used in cooking and baking. The juice of the lemon is about 5% to 6% citric acid, with a pH of around 2.2, giving it a sour taste. The distinctive sour taste of lemon juice makes it a key ingredient in drinks and foods such as lemonade and lemon meringue pie.",
+        "quantity": 15,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "70": {
+        "name": "Blueberry Schnapps",
+        "description": "Schnapps (/ʃnɑːps/ or /ʃnæps/) or schnaps is a type of alcoholic beverage that may take several forms, including distilled fruit brandies, herbal liqueurs, infusions, and \"flavored liqueurs\" made by adding fruit syrups, spices, or artificial flavorings to neutral grain spirits.\n\nThe English loanword \"schnapps\" is derived from the colloquial German word Schnaps [ʃnaps] (About this sound listen) (plural: Schnäpse) which is used in reference to spirit drinks. The word Schnaps stems from Low German language and is related to the German term \"schnappen\", which refers to the fact that the spirit or liquor drink is usually consumed in a quick slug from a small glass (i.e., a shot glass). In British English, a corresponding term is \"dram\" [of liquor].",
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "457": {
+        "name": "Sour Mix",
+        "description": "Sour mix (also known as sweet and sour mix) is a mixer that is yellow-green in color and is used in many cocktails. It is made from approximately equal parts lemon and/or lime juice and simple syrup and shaken vigorously with ice. This produces a pearly-white liquid with a pronounced flavor.\r\n\r\nOptionally, egg-whites may be added to make the liquid slightly foamy.\r\n\r\nSour mix can be mixed with liquor(s) to make a sour drink; most common are vodka sour (vodka) and whiskey sour (whiskey).\r\n\r\nPre-mixed versions are available, and are in use in many bars. These typically consist of a powder which must be rehydrated by adding water prior to use.",
+        "quantity": 12,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "18": {
+        "name": "Amaretto",
+        "description": "Amaretto (Italian for \"a little bitter\") is a sweet, almond-flavoured, Italian liqueur associated with Saronno, Italy. Various commercial brands are made from a base of apricot pits, almonds, or both.\r\n\r\nWhen served as a beverage, amaretto can be drunk by itself, used as an ingredient to create several popular mixed drinks, or added to coffee. Amaretto is also commonly used in culinary applications.\r\n\r\nThe name amaretto originated as a diminutive of the Italian word amaro, meaning \"bitter\", which references the distinctive flavour lent by the mandorla amara (the bitter almond) or by the drupe kernel. However, the bitterness of amaretto tends to be mild, and sweeteners—and sometimes sweet almonds—enhance the flavour in the final products. Thus one can interpret the liqueur's name as a description of the taste as \"a little bitter\". Cyanide is processed out of the almond preparation prior to its use.\r\n\r\nConflation of amaro (\"bitter\") and amore (\"love\") has led to associations with romance.\r\n\r\nOne should not confuse amaretto with amaro, a different family of Italian liqueurs that, while also sweetened, have a stronger bitter flavour derived from herbs.",
+        "quantity": 14,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "458": {
+        "name": "Southern Comfort",
+        "description": "Southern Comfort (often abbreviated SoCo) is an American liqueur made from neutral spirits with fruit, spice and whiskey flavoring. The brand was originally created by bartender Martin Wilkes Heron in New Orleans in 1874. Since March 1, 2016 the brand has been owned by the Sazerac Company after being sold by the Brown-Forman Group. Sazerac has announced that Southern Comfort's formula will be changed in 2017 to include whiskey as an ingredient, as it was until some time before the brand was sold to Brown-Forman in 1979.\r\n\r\nIn the US, Southern Comfort is available as 100 US proof (50% ABV), 70 US proof (35% ABV) and 42 US proof (21% ABV). Southern Comfort Special Reserve, found in duty-free shops, is a blend of Southern Comfort and bourbon, and is 80 US proof (40% ABV). Southern Comfort Lime, released in summer 2010, is 55 proof (27.5% ABV) (UK 2013 20% ABV) and Southern Comfort Bold Black Cherry, released in summer 2012, is 70 proof (35% ABV).\r\n\r\nSouthern Comfort also produces ready-to-pour cocktails available in the US including Southern Comfort Sweet Tea, Southern Comfort Hurricane and Southern Comfort Lemonade, which are all 30 proof (15% ABV).\r\n\r\nSouthern Comfort has expanded over the years and has several product offerings globally. Outside the US, Southern Comfort produces single-serve cocktails, including Southern Comfort Lemonade and Lime in the UK and Southern Comfort and Cola in Australia.",
+        "quantity": 3,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "164": {
+        "name": "Creme De Cacao",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "304": {
+        "name": "Light Cream",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "241": {
+        "name": "Grape soda",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "352": {
+        "name": "Orange Juice",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "85": {
+        "name": "Candy",
+        "description": null,
+        "quantity": 10,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "43": {
+        "name": "Baileys Irish Cream",
+        "description": "Baileys Irish Cream is an Irish whiskey- and cream-based liqueur, made by Gilbeys of Ireland. The trademark is currently owned by Diageo. It has a declared alcohol content of 17% by volume.\r\n\r\nBaileys Irish Cream was created by Gilbeys of Ireland, a division of International Distillers & Vintners, as it searched for something to introduce to the international market. The process of finding a product began in 1971 and it was introduced in 1974 as the first Irish cream on the market. The Baileys name was granted permission by John Chesterman after Gilbeys asked to use the name from a restaurant that John Chesterman owned. The fictional R.A. Bailey signature was inspired by the Bailey's Hotel in London, though the registered trademark omits the apostrophe. Baileys is produced in Dublin and Mallusk (Northern Ireland).\r\n\r\nCream and Irish whiskey from various distilleries are homogenized to form an emulsion with the aid of an emulsifier containing refined vegetable oil. The process prevents separation of the alcohol and cream during storage. The quantity of other ingredients is not known but they include herbs and sugar.\r\n\r\nAccording to the manufacturer, no preservatives are required as the alcohol content preserves the cream. The cream used in the drink comes from Glanbia, an Irish dairy company. Glanbia's Virginia facility in County Cavan produces a range of fat-filled milk powders and fresh cream. It has been the principal cream supplier to Baileys Irish Cream Liqueurs for more than thirty years. At busier times of the year, Glanbia will also supply cream from its Ballyragget facility in Kilkenny.",
+        "quantity": 14,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "503": {
+        "name": "Vanilla Ice-Cream",
+        "description": null,
+        "quantity": 10,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "161": {
+        "name": "Cream",
+        "description": null,
+        "quantity": 2,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "133": {
+        "name": "Coconut Liqueur",
+        "description": null,
+        "quantity": 14,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "466": {
+        "name": "Sprite",
+        "description": null,
+        "quantity": 1000,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "513": {
+        "name": "Water",
+        "description": "Water is a transparent and nearly colorless chemical substance that is the main constituent of Earth's streams, lakes, and oceans, and the fluids of most living organisms. Its chemical formula is H2O, meaning that its molecule contains one oxygen and two hydrogen atoms that are connected by covalent bonds. Strictly speaking, water refers to the liquid state of a substance that prevails at standard ambient temperature and pressure; but it often refers also to its solid state (ice) or its gaseous state (steam or water vapor). It also occurs in nature as snow, glaciers, ice packs and icebergs, clouds, fog, dew, aquifers, and atmospheric humidity.\r\n\r\nWater covers 71% of the Earth's surface.[1] It is vital for all known forms of life. On Earth, 96.5% of the planet's crust water is found in seas and oceans, 1.7% in groundwater, 1.7% in glaciers and the ice caps of Antarctica and Greenland, a small fraction in other large water bodies, 0.001% in the air as vapor, clouds (formed of ice and liquid water suspended in air), and precipitation. Only 2.5% of this water is freshwater, and 98.8% of that water is in ice (excepting ice in clouds) and groundwater. Less than 0.3% of all freshwater is in rivers, lakes, and the atmosphere, and an even smaller amount of the Earth's freshwater (0.003%) is contained within biological bodies and manufactured products. A greater quantity of water is found in the earth's interior.\r\n\r\nWater on Earth moves continually through the water cycle of evaporation and transpiration (evapotranspiration), condensation, precipitation, and runoff, usually reaching the sea. Evaporation and transpiration contribute to the precipitation over land. Large amounts of water are also chemically combined or adsorbed in hydrated minerals.\r\n\r\nSafe drinking water is essential to humans and other lifeforms even though it provides no calories or organic nutrients. Access to safe drinking water has improved over the last decades in almost every part of the world, but approximately one billion people still lack access to safe water and over 2.5 billion lack access to adequate sanitation. There is a clear correlation between access to safe water and gross domestic product per capita. However, some observers have estimated that by 2025 more than half of the world population will be facing water-based vulnerability. A report, issued in November 2009, suggests that by 2030, in some developing regions of the world, water demand will exceed supply by 50%.\r\n\r\nWater plays an important role in the world economy. Approximately 70% of the freshwater used by humans goes to agriculture. Fishing in salt and fresh water bodies is a major source of food for many parts of the world. Much of long-distance trade of commodities (such as oil and natural gas) and manufactured products is transported by boats through seas, rivers, lakes, and canals. Large quantities of water, ice, and steam are used for cooling and heating, in industry and homes. Water is an excellent solvent for a wide variety of chemical substances; as such it is widely used in industrial processes, and in cooking and washing. Water is also central to many sports and other forms of entertainment, such as swimming, pleasure boating, boat racing, surfing, sport fishing, and diving.",
+        "quantity": 999,
+        "minimum_quantity": 0,
+        "shopping_list": false
+    },
+    "71": {
+        "name": "Bourbon",
+        "description": "Bourbon whiskey /bɜːrbən/ is a type of American whiskey: a barrel-aged distilled spirit made primarily from corn. The name is derived from the French Bourbon dynasty, although it is unclear precisely what inspired the whiskey's name (contenders include Bourbon County in Kentucky and Bourbon Street in New Orleans). Bourbon has been distilled since the 18th century. The use of the term \"bourbon\" for the whiskey has been traced to the 1820s, and the term began to be used consistently in Kentucky in the 1870s. While bourbon may be made anywhere in the United States, it is strongly associated with the American South, and with Kentucky in particular. As of 2014, the distillers' wholesale market revenue for bourbon sold within the U.S. is about $2.7 billion, and bourbon makes up about two-thirds of the $1.6 billion of U.S. exports of distilled spirits.\r\n\r\nThe origin of bourbon is not well documented. There are many conflicting legends and claims, some more credible than others. For example, the invention of bourbon is often attributed to Elijah Craig, a Baptist minister and distiller credited with many Kentucky firsts (e.g., fulling mill, paper mill, ropewalk) who is also said to have been the first to age the product in charred oak casks, a process which gives bourbon its reddish color and distinctive taste. Across the county line in Bourbon County, an early distiller named Jacob Spears is credited with being the first to label his product as Bourbon whiskey. Spears' home, Stone Castle, warehouse and spring house survive; one can drive by the Spears' home on Clay-Kiser Road.\r\n\r\nAlthough still popular and often repeated, the Craig legend is apocryphal. Similarly, the Spears story is a local favorite, rarely repeated outside the county. There likely was no single \"inventor\" of bourbon, which developed into its present form only in the late 19th century. Essentially any type of grain can be used to make whiskey, and the practice of aging whiskey and charring the barrels for better flavor had also been known in Europe for centuries. The late date of the Bourbon County etymology has led Louisville historian Michael Veach to dispute its authenticity. He proposes that the whiskey was named after Bourbon Street in New Orleans, a major port where shipments of Kentucky whiskey sold well as a cheaper alternative to French cognac.\r\n\r\nDistilling probably was brought to present-day Kentucky in the late 18th century by Scots, Scots-Irish, and other settlers (including English, Irish, Welsh, German and French) who began to farm the area in earnest. The spirit they made evolved, and became known as bourbon in the early 19th century due to its historical association with the geographic area known as Old Bourbon (this consisted of the original Bourbon County of Virginia as organized in 1785, a region that included much of today's Eastern Kentucky – including 34 of today's counties in Kentucky). This area included the current Bourbon County of Kentucky, which became a county of Kentucky when Kentucky was separated from Virginia as a new state in 1792.\r\n\r\nWhen American pioneers pushed west of the Allegheny Mountains following the American Revolution, the first counties they founded covered vast regions. One of these original, huge counties was Bourbon, established in 1785 and named after the French royal family. While this vast county was being carved into many smaller ones, early in the 19th century, many people continued to call the region Old Bourbon. Located within Old Bourbon was the principal port on the Ohio River, Maysville, Kentucky, from which whiskey and other products were shipped. \"Old Bourbon\" was stencilled on the barrels to indicate their port of origin. Old Bourbon whiskey was different because it was the first corn whiskey most people had ever tasted. In time, bourbon became the name for any corn-based whiskey.\r\n\r\nAlthough many distilleries operated in Bourbon County historically, there were no distilleries operating there between 1919, when Prohibition began in Kentucky, and late 2014, when a small distillery opened – a period of 95 years.\r\n\r\nA refinement often dubiously credited to James C. Crow was the sour mash process, by which each new fermentation is conditioned with some amount of spent mash. Spent mash is also known as spent beer, distillers' spent grain, stillage, and slop or feed mash, so named because it is used as animal feed. The acid introduced by using the sour mash controls the growth of bacteria that could taint the whiskey and creates a proper pH balance for the yeast to work.\r\n\r\nA concurrent resolution adopted by the United States Congress in 1964 declared bourbon to be a \"distinctive product of the United States\" and asked \"the appropriate agencies of the United States Government... [to] take appropriate action to prohibit importation into the United States of whiskey designated as 'Bourbon Whiskey.'\" Federal regulation now defines \"bourbon whiskey\" to only include \"bourbon\" produced in the United States.\r\n\r\nIn recent years, bourbon and Tennessee whiskey (which is sometimes regarded as a different type of spirit but which generally meets the legal requirements for being called bourbon) have enjoyed significant growth and popularity. The Distilled Spirits Council of the United States, the industry trade group, tracks sales of bourbon and Tennessee whiskey together.\r\n\r\nAccording to the Distilled Spirits Council, during 2009–14, the volume of 9-liter cases of whiskey increased by 28.5% overall. Higher-end bourbon and whiskeys experienced the greatest growth: during 2009–14 the volume of the value segment increased by 12.1%, premium by 25.8%, high-end premium by 27.8% and super-premium by 123.8%. Gross supplier revenues (including federal excise tax) for U.S. bourbon and Tennessee whiskey increased by 46.7% over the 2009–14 period, with the greatest growth coming from high-end products (18.7% growth for value, 33.6% for premium, 44.5% for high-end premium, and 137.2% for super-premium).[4] In 2014, more than 19 million nine-liter cases of bourbon and Tennessee whiskey were sold in the U.S., generating almost $2.7 billion in wholesale distillery revenue. U.S. exports of bourbon whiskey surpassed $1 billion for the first time in 2013; distillers hailed the rise of a \"golden age of Kentucky bourbon\" and predicted further growth. In 2014, it was estimated that U.S. bourbon whiskey exports surpassed $1 billion (making up the majority of the U.S. total of $1.6 billion in spirits exports). Major export markets for U.S. spirits are, in descending order: Canada, the United Kingdom, Germany, Australia and France. The largest percentage increases in U.S. exports were, in descending order: Brazil, the Dominican Republic, Bahamas, Israel and United Arab Emirates. Key elements of growth in the markets showing the largest increases have been changes of law, trade agreements, and reductions of tariffs, as well as increased consumer demand for premium-category spirits.",
+        "quantity": 20,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "359": {
+        "name": "Orange",
+        "description": "The orange is the fruit of the citrus species Citrus × sinensis in the family Rutaceae. It is also called sweet orange, to distinguish it from the related Citrus × aurantium, referred to as bitter orange. The sweet orange reproduces asexually (apomixis through nucellar embryony); varieties of sweet orange arise through mutations.\r\n\r\nThe orange is a hybrid between pomelo (Citrus maxima) and mandarin (Citrus reticulata). It has genes that are ~25% pomelo and ~75% mandarin; however, it is not a simple backcrossed BC1 hybrid, but hybridized over multiple generations. The chloroplast genes, and therefore the maternal line, seem to be pomelo. The sweet orange has had its full genome sequenced. Earlier estimates of the percentage of pomelo genes varying from ~50% to 6% have been reported.\r\n\r\nSweet oranges were mentioned in Chinese literature in 314 BC. As of 1987, orange trees were found to be the most cultivated fruit tree in the world. Orange trees are widely grown in tropical and subtropical climates for their sweet fruit. The fruit of the orange tree can be eaten fresh, or processed for its juice or fragrant peel. As of 2012, sweet oranges accounted for approximately 70% of citrus production.\r\n\r\nIn 2014, 70.9 million tonnes of oranges were grown worldwide, with Brazil producing 24% of the world total followed by China and India.",
         "quantity": 5,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "322": {
+        "name": "Maraschino Cherry",
+        "description": null,
+        "quantity": 12,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "66": {
+        "name": "Blended Whiskey",
+        "description": null,
+        "quantity": 700,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "425": {
+        "name": "Red Wine",
+        "description": "Wine (from Latin vinum) is an alcoholic beverage made from grapes, generally Vitis vinifera, fermented without the addition of sugars, acids, enzymes, water, or other nutrients.\r\n\r\nYeast consumes the sugar in the grapes and converts it to ethanol and carbon dioxide. Different varieties of grapes and strains of yeasts produce different styles of wine. These variations result from the complex interactions between the biochemical development of the grape, the reactions involved in fermentation, the terroir, and the production process. Many countries enact legal appellations intended to define styles and qualities of wine. These typically restrict the geographical origin and permitted varieties of grapes, as well as other aspects of wine production. Wines not made from grapes include rice wine and fruit wines such as plum, cherry, pomegranate and elderberry.\r\n\r\nWine has been produced for thousands of years. The earliest known traces of wine are from China (c. 7000 BC), Georgia (c. 6000 BC), Iran (c. 5000 BC), and Sicily (c. 4000 BC). The earliest known winery is the 6,100-year-old Areni-1 winery in Armenia. Wine reached the Balkans by 4500 BC and was consumed and celebrated in ancient Greece, Thrace and Rome. Throughout history, wine has been consumed for its intoxicating effects.\r\n\r\nWine has long played an important role in religion. Red wine was associated with blood by the ancient Egyptians and was used by both the Greek cult of Dionysus and the Romans in their Bacchanalia; Judaism also incorporates it in the Kiddush and Christianity in the Eucharist.",
+        "quantity": 750,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "106": {
+        "name": "Cherry",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "279": {
+        "name": "Jim Beam",
+        "description": null,
+        "quantity": 750,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "275": {
+        "name": "Jack Daniels",
+        "description": "Jack Daniel's is a brand of Tennessee whiskey and the top selling American whiskey in the world. It is produced in Lynchburg, Tennessee, by the Jack Daniel Distillery, which has been owned by the Brown-Forman Corporation since 1956. Despite being the location of a major operational distillery, Jack Daniel's home county of Moore is a dry county, so the product is not available for purchase at stores or restaurants within the county.\r\n\r\nThe product meets the regulatory criteria for classification as a straight bourbon, though the company disavows this classification and markets it simply as Tennessee whiskey rather than as Tennessee bourbon. Jack Daniel's distillery tour advises that their product is initially bourbon prior to entering their charcoal filtering setup, and that this process creates the distinction between regular bourbon and \"Tennessee sipping whiskey.\" As defined in the North American Free Trade Agreement, Tennessee Whiskey is classified as a straight bourbon authorized to be produced in the state of Tennessee. Packaged in square bottles, a total of 11 million cases of the flagship \"Black Label\" product were sold in the company's 2012 fiscal year, which ended April 30, 2013.\r\n\r\nThe mash for Jack Daniel's is made from corn, rye, and malted barley, and is distilled in copper stills. It is then filtered through 10-foot (3.0 m) stacks of sugar maple charcoal. The company refers to this filtering step as \"mellowing\". This extra step, known as the Lincoln County Process, removes impurities and the taste of corn. The company argues this extra step makes the product different from bourbon. However, Tennessee whiskey is required to be \"a straight Bourbon Whiskey\" under terms of the North American Free Trade Agreement and Canadian law. A distinctive aspect of the filtering process is that the Jack Daniel's brand grinds its charcoal before using it for filtering. After the filtering, the whiskey is stored in newly handcrafted oak barrels, which give the whiskey its color and most of its flavor.\r\n\r\nThe product label mentions that it is a \"sour mash\" whiskey, which means that when the mash is prepared, some of the wet solids from a previously used batch are mixed in to help make the fermentation process operate more consistently. This is common practice in American whiskey production. (As of 2005, all currently produced straight bourbon is produced using the sour mash process.)\r\n\r\nAfter being used for the aging of Jack Daniel's whiskey, many barrels go to Scotland to be used in the production of Scotch whisky. Some barrels are leased from Glenmorangie distillery. Some of the barrels are sold to McIlhenny Company of Avery Island, Louisiana, for production of Tabasco sauce and to both the Mount Gay Rum company of Barbados and Appleton Estate of Jamaica for use in the aging process of their distinctively flavored rums.] Some barrels are also cut in half and shipped to Lowe's Home Centers to be used as planter pots. They retain the whiskey smell for some time after arriving there and must be watered every couple of days to keep them intact[clarification needed] before they are sold and filled with soil.",
+        "quantity": 750,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "526": {
+        "name": "Wild Turkey",
+        "description": "Wild Turkey is a brand of Kentucky straight bourbon whiskey distilled and bottled by the Austin Nichols division of Campari Group. The distillery is located near Lawrenceburg, Kentucky, United States. It offers tours, and is part of the American Whiskey Trail and the Kentucky Bourbon Trail.\r\n\r\nIn 1891, Thomas Ripy built the Old Hickory Distillery in Tyrone, Kentucky, near Lawrenceburg, on the former site of the Old Moore Distillery. After Prohibition, the Ripy family (Thomas had died in 1902) repaired the distillery and began to again produce bourbon. The Ripys sold the bourbon produced at this distillery to various wholesalers who bottled bourbon under their own brands. Austin Nichols was one of these wholesalers.\r\n\r\nThe \"Wild Turkey\" brand is said to have arisen after an Austin Nichols executive, Thomas McCarthy, took some warehouse samples on a wild turkey hunting trip in 1940. The bourbon proved so popular among his friends they continued to ask him for \"that wild turkey bourbon.\" Austin Nichols began to bottle Wild Turkey in 1942.\r\n\r\nThe Ripys were bought out in 1949 by Robert and Alvin Gould.\r\n\r\nFor three decades after introducing Wild Turkey, Austin Nichols remained a non-distiller producer—bottling bourbon purchased on the open market under their Wild Turkey brand. Much of this whiskey was purchased from the Ripys/Gould distillery in Tyrone. In 1971, Austin Nichols purchased the facility (then known as the Boulevard Distillery) and changed the name to the Wild Turkey Distillery.\r\n\r\nIn 1980, the distillery and the Wild Turkey brand were purchased by Pernod Ricard.\r\n\r\nOn May 9, 2000, a fire destroyed a seven-story aging warehouse at the company in Anderson County, Kentucky. It contained more than 17,000 wooden barrels of whiskey. Burning whiskey flowed from the warehouse, setting the woods on fire, causing limestone deposits to explode. Firefighters saved Lawrenceburg's water treatment plant from destruction. However, an estimated 20% of the whiskey flowed into the Kentucky River. The river contamination required the temporary shutdown of the water treatment plant. Officials ordered water usage restrictions. Businesses and schools were closed because of the water shortage. The alcohol spill also depleted the oxygen in the river, killing an estimated 228,000 fish along a 66-mile stretch. The EPA and the Coast Guard's Gulf Strike Team aerated the river using equipment mounted on barges.[6] The company paid $256,000 to the Kentucky Department of Fish and Wildlife in an effort to restore the fish population in the river.\r\n\r\nIn 2009, the Campari Group acquired the distillery and the Wild Turkey brand from Pernod Ricard.\r\n\r\nIn 2011, Wild Turkey began to be distilled at a newly constructed facility near the old distillery. The new distillery sits where the old bottling facility was previously located.\r\n\r\nIn 2013, Campari opened a new bottling facility at the Wild Turkey Distillery. For the previous 13 years Wild Turkey had been bottled offsite in Indiana and, later, Arkansas. In addition to the Wild Turkey products, Campari's SKYY vodka is also bottled there after being shipped from the Illinois distillery.",
+        "quantity": 0,
         "minimum_quantity": 10,
         "shopping_list": true
     },
-    "36": {
-        "name": "Carbonated water",
+    "613": {
+        "name": "Amaro Montenegro",
+        "description": "Amaro Montenegro is a traditional amaro distilled in Bologna, Italy. It is made from a secret blend of 40 botanicals, including vanilla, orange peels and eucalyptus. The amaro was first produced by Stanislao Cobianchi in 1885 and was originally called Elisivir Lungavita.",
+        "quantity": 500,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "614": {
+        "name": "Ruby Port",
+        "description": "Ruby Port is the most extensively produced and widely available style of port wine. In fact, for many people it serves as an introduction to fortified wines in general. Unlike Vintage Port, most Ruby Port is a blend of young wines from multiple vintages. ... Until the 1960s, it simply indicated a bulk-produced port.",
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "612": {
+        "name": "Blood Orange",
+        "description": "The blood orange is a variety of orange (Citrus × sinensis) with crimson, almost blood-colored flesh.\r\n\r\nThe distinctive dark flesh color is due to the presence of anthocyanins, a family of polyphenol pigments common to many flowers and fruit, but uncommon in citrus fruits. Chrysanthemin (cyanidin 3-O-glucoside) is the main compound found in red oranges. The flesh develops its characteristic maroon color when the fruit develops with low temperatures during the night. Sometimes, dark coloring is seen on the exterior of the rind, as well, depending on the variety of blood orange. The skin can be tougher and harder to peel than that of other oranges. Blood oranges have a unique flavor compared to other oranges, being distinctly raspberry-like in addition to the usual citrus notes. The anthocyanin pigments of blood oranges begin accumulating in the vesicles at the edges of the segments, and at the blossom end of the fruit, and continue accumulating in cold storage after harvest.",
+        "quantity": 2,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "354": {
+        "name": "Orange Peel",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,

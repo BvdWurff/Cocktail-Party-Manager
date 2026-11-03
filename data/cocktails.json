@@ -1,61 +1,12 @@
 {
     "11007": {
         "name": "Margarita",
-        "instructions": "",
+        "instructions": "Rub the rim of the glass with the lime slice to make the salt stick to it. Take care to moisten only the outer rim and sprinkle the salt on it. The salt should present to the lips of the imbiber and never mix into the cocktail. Shake the other ingredients with ice, then carefully pour into the glass.",
         "ingredients": {
-            "Tequila": "1 1/2 oz",
-            "Triple sec": "1/2 oz",
-            "Lime juice": "1 oz",
-            "Salt": ""
-        },
-        "active": true
-    },
-    "11118": {
-        "name": "Blue Margarita",
-        "instructions": "Rub rim of cocktail glass with lime juice. Dip rim in coarse salt. Shake tequila, blue curacao, and lime juice with ice, strain into the salt-rimmed glass, and serve.",
-        "ingredients": {
-            "Tequila": "1 1/2 oz ",
-            "Blue Curacao": "1 oz ",
-            "Lime juice": "1 oz ",
-            "Salt": "Coarse "
-        },
-        "active": true
-    },
-    "178358": {
-        "name": "Mango Mojito",
-        "instructions": "Squeeze the juice from 1½ limes and blend with the mango to give a smooth purée.\nCut the rest of the limes into quarters, and then cut each wedge in half again. Put 2 pieces of lime in a highball glass for each person and add 1 teaspoon of caster sugar and 5-6 mint leaves to each glass. Squish everything together with a muddler or the end of a rolling pin to release all the flavours from the lime and mint.\nDivide the mango purée between the glasses and add 30ml white rum and a handful of crushed ice to each one, stirring well to mix everything together. Top up with soda water to serve and garnish with extra mint, if you like.",
-        "ingredients": {
-            "Lime": "3",
-            "Mango": "Garnish with",
-            "Mint": "Sprig",
-            "White Rum": "200 ml",
-            "Ice": "cubes",
-            "Soda Water": "Top"
-        },
-        "active": true
-    },
-    "15841": {
-        "name": "Mojito Extra",
-        "instructions": "Put mint with lemon juice in a glas, mash the mint with a spoon, ice, rum & fill up with club soda. Top it with Angostura.",
-        "ingredients": {
-            "Mint": "1/2 handful ",
-            "Lemon juice": "3 cl ",
-            "Dark rum": "1/8 L Jamaican ",
-            "Club soda": "1/8 L ",
-            "Angostura bitters": "8 drops "
-        },
-        "active": true
-    },
-    "11113": {
-        "name": "Bloody Mary",
-        "instructions": "Stirring gently, pour all ingredients into highball glass. Garnish.",
-        "ingredients": {
-            "Vodka": "1 1/2 oz ",
-            "Tomato juice": "3 oz ",
-            "Lemon juice": "1 dash ",
-            "Worcestershire sauce": "1/2 tsp ",
-            "Tabasco sauce": "2-3 drops ",
-            "Lime": "1 wedge "
+            "4": "1 1/2 oz ",
+            "498": "1/2 oz ",
+            "308": "1 oz ",
+            "439": null
         },
         "active": true
     },
@@ -63,22 +14,11 @@
         "name": "501 Blue",
         "instructions": "Mix equal amounts into a glass with ice.",
         "ingredients": {
-            "Blue Curacao": null,
-            "Blueberry schnapps": null,
-            "Vodka": null,
-            "Sour mix": null,
-            "7-Up": null
-        },
-        "active": true
-    },
-    "14071": {
-        "name": "Belgian Blue",
-        "instructions": "Just pour all ingredients in the glass and stir...",
-        "ingredients": {
-            "Vodka": "2 cl ",
-            "Coconut liqueur": "1 cl ",
-            "Blue Curacao": "1 cl ",
-            "Sprite": "Fill with "
+            "67": null,
+            "70": null,
+            "1": null,
+            "457": null,
+            "572": null
         },
         "active": true
     },
@@ -86,44 +26,20 @@
         "name": "A Piece of Ass",
         "instructions": "Put ice in glass. Pour in shots. Fill with Sour Mix.",
         "ingredients": {
-            "Amaretto": "1 shot ",
-            "Southern Comfort": "1 shot ",
-            "Ice": "cubes",
-            "Sour mix": null
+            "18": "1 shot ",
+            "458": "1 shot ",
+            "270": "cubes",
+            "457": null
         },
-        "active": true
+        "active": false
     },
-    "11844": {
-        "name": "New York Sour",
-        "instructions": "Shake blended whiskey, juice of lemon, and powdered sugar with ice and strain into a whiskey sour glass. Float claret on top. Decorate with the half-slice of lemon and the cherry and serve.",
+    "11024": {
+        "name": "Almond Joy",
+        "instructions": "Shake all ingredients with ice, strain into a cocktail glass, and serve.",
         "ingredients": {
-            "Blended whiskey": "2 oz ",
-            "Lemon": null,
-            "Sugar": "1 tsp ",
-            "Red wine": " (Claret)\n",
-            "Cherry": null
-        },
-        "active": true
-    },
-    "17252": {
-        "name": "Greyhound",
-        "instructions": "Add the vodka to a Collins glass filled with ice.\nTop with grapefruit juice and stir.\n\n",
-        "ingredients": {
-            "Vodka": "1 1/2 oz",
-            "Grapefruit Juice": "3 oz"
-        },
-        "active": true
-    },
-    "178312": {
-        "name": "Bloody Punch",
-        "instructions": "Place the thawed strawberries in a large bowl. Mash them with a fork to ensure no large chunks.\r\n\r\nIn a punch bowl or pitcher, combine mashed strawberries, lime pulp and soda. Mix well.\r\n\r\nAdd blueberries and raisins. They will float and look like bugs in the punch.",
-        "ingredients": {
-            "Vodka": "10 shots",
-            "Strawberries": "3 cups",
-            "Lime Juice": "1/2 cup",
-            "Lemon-lime soda": "12 oz",
-            "Raisins": "1 cup",
-            "Blueberries": "1 cup"
+            "18": "1/2 oz ",
+            "164": "1/2 oz white ",
+            "304": "2 oz "
         },
         "active": true
     },
@@ -131,34 +47,11 @@
         "name": "Arctic Fish",
         "instructions": "Fill glass with ice and fish, add vodka, grape soda and orange juice. DO NOT STIR!!!!! Serve well chilled.",
         "ingredients": {
-            "Vodka": "1/3 part ",
-            "Grape soda": "1/3 part ",
-            "Orange juice": "1/3 part ",
-            "Ice": "lots ",
-            "Candy": "1 dash "
-        },
-        "active": true
-    },
-    "11024": {
-        "name": "Almond Joy",
-        "instructions": "Shake all ingredients with ice, strain into a cocktail glass, and serve.",
-        "ingredients": {
-            "Amaretto": "1/2 oz ",
-            "Creme de Cacao": "1/2 oz white ",
-            "Light cream": "2 oz "
-        },
-        "active": true
-    },
-    "178349": {
-        "name": "Snowday",
-        "instructions": "Stir all ingredients with ice. Strain into a chilled rocks glass over fresh ice. Express orange peel over drink and garnish.",
-        "ingredients": {
-            "Vodka": "1 oz",
-            "Amaro Montenegro": "1 oz",
-            "Ruby Port": "1 oz",
-            "Blood Orange": "1 tsp",
-            "Angostura Bitters": "Dash",
-            "Orange Peel": "Garnish with"
+            "1": "1/3 part ",
+            "241": "1/3 part ",
+            "352": "1/3 part ",
+            "270": "lots ",
+            "85": "1 dash "
         },
         "active": true
     },
@@ -166,19 +59,44 @@
         "name": "Bailey's Dream Shake",
         "instructions": "Blend ingredients for 30 seconds. Definitely refreshing for a hot summer's day !",
         "ingredients": {
-            "Baileys irish cream": "2 oz ",
-            "Vanilla ice-cream": "2 scoops ",
-            "Cream": null
+            "43": "2 oz ",
+            "503": "2 scoops ",
+            "161": null
         },
         "active": true
     },
-    "16985": {
-        "name": "Shot-gun",
-        "instructions": "Pour one part Jack Daneils and one part Jim Beam into shot glass then float Wild Turkey on top.",
+    "14071": {
+        "name": "Belgian Blue",
+        "instructions": "Just pour all ingredients in the glass and stir...",
         "ingredients": {
-            "Jim Beam": "1 part ",
-            "Jack Daniels": "1 part ",
-            "Wild Turkey": "1 oz "
+            "1": "2 cl ",
+            "133": "1 cl ",
+            "67": "1 cl ",
+            "466": "Fill with "
+        },
+        "active": true
+    },
+    "11113": {
+        "name": "Bloody Mary",
+        "instructions": "Stirring gently, pour all ingredients into highball glass. Garnish.",
+        "ingredients": {
+            "1": "1 1/2 oz ",
+            "492": "3 oz ",
+            "293": "1 dash ",
+            "529": "1/2 tsp ",
+            "483": "2-3 drops ",
+            "312": "1 wedge "
+        },
+        "active": true
+    },
+    "11118": {
+        "name": "Blue Margarita",
+        "instructions": "Rub rim of cocktail glass with lime juice. Dip rim in coarse salt. Shake tequila, blue curacao, and lime juice with ice, strain into the salt-rimmed glass, and serve.",
+        "ingredients": {
+            "4": "1 1/2 oz ",
+            "67": "1 oz ",
+            "308": "1 oz ",
+            "439": "Coarse "
         },
         "active": true
     },
@@ -186,12 +104,12 @@
         "name": "Classic Old-Fashioned",
         "instructions": "In an old-fashioned glass, muddle the bitters and water into the sugar cube, using the back of a teaspoon. Almost fill the glass with ice cubes and add the bourbon. Garnish with the orange slice and the cherry. Serve with a swizzle stick.",
         "ingredients": {
-            "Bitters": "3 dashes ",
-            "Water": "1 tsp ",
-            "Sugar": "1 ",
-            "Bourbon": "3 oz ",
-            "Orange": "1 ",
-            "Maraschino cherry": "1 "
+            "56": "3 dashes ",
+            "513": "1 tsp ",
+            "476": "1 ",
+            "71": "3 oz ",
+            "359": "1 ",
+            "322": "1 "
         },
         "active": true
     },
@@ -199,12 +117,81 @@
         "name": "Gin Squirt",
         "instructions": "Stir gin, grenadine, and powdered sugar with ice and strain into a highball glass over ice cubes. Fill with carbonated water and stir. Decorate with the pineapple chunks and the strawberries and serve.",
         "ingredients": {
-            "Gin": "1 1/2 oz ",
-            "Grenadine": "1 tsp ",
-            "Powdered sugar": "1 tblsp ",
-            "Pineapple": "3 chunks",
-            "Strawberries": "2 ",
-            "Carbonated water": null
+            "2": "1 1/2 oz ",
+            "250": "1 tsp ",
+            "409": "1 tblsp ",
+            "397": "3 chunks",
+            "470": "2 ",
+            "89": null
+        },
+        "active": true
+    },
+    "17252": {
+        "name": "Greyhound",
+        "instructions": "Add the vodka to a Collins glass filled with ice.\nTop with grapefruit juice and stir.",
+        "ingredients": {
+            "1": "1 1/2 oz",
+            "242": "3 oz"
+        },
+        "active": true
+    },
+    "178358": {
+        "name": "Mango Mojito",
+        "instructions": "Squeeze the juice from 1½ limes and blend with the mango to give a smooth purée.\nCut the rest of the limes into quarters, and then cut each wedge in half again. Put 2 pieces of lime in a highball glass for each person and add 1 teaspoon of caster sugar and 5-6 mint leaves to each glass. Squish everything together with a muddler or the end of a rolling pin to release all the flavours from the lime and mint.\nDivide the mango purée between the glasses and add 30ml white rum and a handful of crushed ice to each one, stirring well to mix everything together. Top up with soda water to serve and garnish with extra mint, if you like.",
+        "ingredients": {
+            "312": "3",
+            "319": "Garnish with",
+            "337": "Sprig",
+            "523": "200 ml",
+            "270": "cubes",
+            "455": "Top"
+        },
+        "active": true
+    },
+    "15841": {
+        "name": "Mojito Extra",
+        "instructions": "Put mint with lemon juice in a glas, mash the mint with a spoon, ice, rum & fill up with club soda. Top it with Angostura.",
+        "ingredients": {
+            "337": "1/2 handful ",
+            "293": "3 cl ",
+            "179": "1/8 L Jamaican ",
+            "127": "1/8 L ",
+            "20": "8 drops "
+        },
+        "active": true
+    },
+    "11844": {
+        "name": "New York Sour",
+        "instructions": "Shake blended whiskey, juice of lemon, and powdered sugar with ice and strain into a whiskey sour glass. Float claret on top. Decorate with the half-slice of lemon and the cherry and serve.",
+        "ingredients": {
+            "66": "2 oz ",
+            "299": null,
+            "476": "1 tsp ",
+            "425": " (Claret)\n",
+            "106": null
+        },
+        "active": true
+    },
+    "16985": {
+        "name": "Shot-gun",
+        "instructions": "Pour one part Jack Daneils and one part Jim Beam into shot glass then float Wild Turkey on top.",
+        "ingredients": {
+            "279": "1 part ",
+            "275": "1 part ",
+            "526": "1 oz "
+        },
+        "active": true
+    },
+    "178349": {
+        "name": "Snowday",
+        "instructions": "Stir all ingredients with ice. Strain into a chilled rocks glass over fresh ice. Express orange peel over drink and garnish.",
+        "ingredients": {
+            "1": "1 oz",
+            "613": "1 oz",
+            "614": "1 oz",
+            "612": "1 tsp",
+            "20": "Dash",
+            "354": "Garnish with"
         },
         "active": true
     }

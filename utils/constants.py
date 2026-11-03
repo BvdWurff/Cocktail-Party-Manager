@@ -17,4 +17,5 @@ API_KEY = os.getenv("API_KEY")
 PARAM_LUCKY_SHOT = "/random.php"
 PARAM_SEARCH_BY_NAME = "/search.php?s="
 PARAM_SEARCH_BY_INGREDIENT = "/filter.php?i="
-PARAM_ITEM_DESCRIPTION = "/search.php?i="
+PARAM_ITEM_BY_ID = "/lookup.php?iid="
+PARAM_ITEM_BY_NAME = "/search.php?i="

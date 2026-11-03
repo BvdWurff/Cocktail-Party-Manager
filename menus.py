@@ -9,7 +9,8 @@ from modules.orders import (
     process_order,
 )
 
-from modules.persons import new_person
+from modules.persons import show_all_persons
+
 from modules.events import (
     new_event,
     show_event,
@@ -25,6 +26,7 @@ from utils.utils import (
     unit_converter,
     get_input,
     print_message,
+    load_data,
 )
 
 from modules.cocktails import (
@@ -45,7 +47,7 @@ def main_menu():
                      )
 
         columns = {
-            "Menu": ["Cocktails", "Orders", "Events", "Admin", "Statistics", "", "Exit"]
+            "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Persons", "Unit convertor", "Statistics", "", "Exit"]
         }
 
         display_table(columns, auto_number=True)
@@ -62,9 +64,15 @@ def main_menu():
             events_menu()
 
         elif menu_choice == 4:
-            admin_menu()
+            inventory_menu()
 
         elif menu_choice == 5:
+            show_all_persons()
+
+        elif menu_choice == 6:
+            unit_converter()
+
+        elif menu_choice == 7:
             stats_menu()
 
         else:
@@ -182,6 +190,38 @@ def events_menu():
     return
 
 
+def inventory_menu():
+    while True:
+        content = "Here you can manage the inventory."
+
+        display_page(location="Cocktail Party Manager",
+                     title="Inventory",
+                     content=content
+                     )
+
+        columns = {
+            "Action": ["Show full inventory", "Items below minimum quantity", "Shopping list", "", "Back to main menu"]
+        }
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+        if menu_choice == 1:
+            show_inventory("full_inventory")
+
+        elif menu_choice == 2:
+            show_inventory("below_min_quantity")
+
+        elif menu_choice == 3:
+            show_inventory("shopping_list")
+
+        else:
+            break
+
+    return
+
+
 def admin_menu():
     while True:
         content = "Here you can manage your settings and data."
@@ -203,7 +243,7 @@ def admin_menu():
             show_inventory()
 
         elif menu_choice == 2:
-            new_person(trigger="admin_menu")
+            pass
 
         elif menu_choice == 3:
             pass
@@ -285,3 +325,4 @@ def find_new_cocktails_menu():
             break
 
     return
+

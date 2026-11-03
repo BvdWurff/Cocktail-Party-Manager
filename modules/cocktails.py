@@ -22,7 +22,7 @@ from utils.utils import (
     display_panel,
     display_table,
     display_page,
-
+    update_record,
 )
 
 from utils.constants import (
@@ -67,8 +67,6 @@ def all_available_cocktails():
         cocktail_id = cocktail_ids[menu_choice - 1]
 
         show_cocktail(cocktail_id)
-
-        get_input("Press [blue]Enter[/] to return to All available cocktails.")
 
         continue
 
@@ -257,13 +255,15 @@ def select_cocktail(trigger=""):
 
 def show_cocktail(cocktail_id):
     cocktails = load_data("cocktails")
+    inventory = load_data("inventory")
 
     cocktail =  cocktails[cocktail_id]
     cocktail_name = cocktail["name"]
     ingredients = cocktail["ingredients"]
     instructions = cocktail["instructions"]
 
-    page_content = f"Ingredients and instructions for a [blue]{cocktail_name}[/]"
+    page_content = f"Ingredients and instructions for a [blue]{cocktail_name}[/].\n\n"
+    page_content += "Ingredients marked [red]red[/] are not available in the inventory."
 
     display_page(location="Cocktails",
                  title=cocktail_name,
@@ -271,15 +271,16 @@ def show_cocktail(cocktail_id):
                  )
 
     columns = {
-        "Number": [],
         "Ingredient": [],
         "Measure": []
     }
 
-    for number, (ingredient, measure) in enumerate(ingredients.items(), start=1):
-        columns["Number"].append(number)
-        columns["Ingredient"].append(ingredient)
-        columns["Measure"].append(measure if measure is not None else "")
+    for ingredient, measure in ingredients.items():
+        if inventory[ingredient]["quantity"] == 0:
+            columns["Ingredient"].append(f"[red]{inventory[ingredient]["name"]}[/]")
+        else:
+            columns["Ingredient"].append(inventory[ingredient]["name"])
+        columns["Measure"].append(measure if measure is not None else "-")
 
     display_table(columns)
 
@@ -287,12 +288,30 @@ def show_cocktail(cocktail_id):
 
     display_panel(panel_content, title="instructions")
 
-    low_on_stock = check_cocktail_availability(cocktail_id)
-    if low_on_stock:
-        print_message("The following ingredients are low on stock:", "red")
-        for ingredient in low_on_stock:
-            print_message(f"- {str(ingredient)}")
-        print()
+    while True:
+        columns = {
+            "Action": ["Order cocktail", "Deactivate cocktail", "", "Back to cocktail menu"]
+        }
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+        if menu_choice == 1:
+            low_on_stock = check_cocktail_availability(cocktail_id)
+
+            if low_on_stock:
+                get_input("Cocktail cannot be ordered because not all ingredients are available.", color="red")
+                break
+            from modules.orders import new_order
+            new_order(cocktail_id)
+
+        elif menu_choice == 2:
+            deactivate_cocktail(cocktail_id)
+
+        break
+
+    return
 
 
 def search_cocktail(search_method=""):
@@ -374,25 +393,20 @@ def search_cocktail(search_method=""):
 
     if cocktail_id in cocktails:
         show_cocktail(cocktail_id)
-        low_on_stock = check_cocktail_availability(cocktail_id)
-
-        if low_on_stock:
-            get_input()
-
-        else:
-            columns = {
-                "Action": ["Order cocktail", "", "Back to cocktail menu"]
-            }
-
-            display_table(columns, auto_number=True)
-
-            menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-
-            if menu_choice == 1:
-                from modules.orders import new_order
-                new_order(cocktail_id)
 
     return
+
+
+def deactivate_cocktail(cocktail_id):
+    from modules.orders import cancel_order
+    cancel_order(cocktail_id=cocktail_id)
+
+    update_record("cocktails", cocktail_id, "active", False)
+
+    print_message("Cocktail successfully deactivated.", "green")
+    print()
+    get_input()
+
 
 
 

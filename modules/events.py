@@ -118,6 +118,9 @@ Event date:         [blue]{event["date"]}[/]"""
                     get_input()
                     continue
 
+                from modules.orders import cancel_order
+                cancel_order(event_id=event_id)
+
                 update_record("events", event_id, "active", False)
                 update_record("events", event_id, "current", False)
                 print_message("The event was successfully canceled", "green")

@@ -137,11 +137,187 @@ def select_guest(trigger=""):
     display_table(columns, auto_number=True)
 
     menu_choice = get_menu_choice(range(0, len(columns["Name"]) -1))
-    guest_id = guest_ids[menu_choice - 1]
-
     if menu_choice == 0:
         guest_id = add_guest_to_event()
         if guest_id is None:
             return None
 
+    else:
+        guest_id = guest_ids[menu_choice - 1]
+
     return str(guest_id)
+
+
+def show_all_persons():
+    while True:
+
+        persons = load_data("persons")
+
+        content = f"A list off all the active persons in the cocktail party manager app."
+
+        display_page(location="Persons",
+                     title="Active persons",
+                     content=content
+                     )
+
+        people_ids = []
+
+        columns = {
+            "Name": []
+        }
+
+        for person_id, person in sorted(persons.items(), key=lambda entry: entry[1]["first_name"].casefold()):
+            if person["active"]:
+                people_ids.append(person_id)
+                name = f"{person["first_name"]} {person["surname"]}"
+                columns["Name"].append(name)
+
+        columns["Name"].extend(["", "Back to main menu"])
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
+        if menu_choice == 0:
+            break
+
+        else:
+            person_id = people_ids[menu_choice - 1]
+            show_person(person_id)
+
+    return
+
+
+def show_person(person_id):
+    persons = load_data("persons")
+    person = persons[person_id]
+    name = f"{person["first_name"]} {person["surname"]}"
+
+    while True:
+        cocktails = load_data("cocktails")
+        orders = load_data("orders")
+        order_counter = 0
+        orders_list = []
+
+        for order_id, order in orders.items():
+            if person_id == order["person"] and order["status"] == "served":
+                orders_list.append({"id": order_id, **order})
+                order_counter += 1
+
+        events = load_data("events")
+        event_counter = 0
+        events_list = []
+
+        for event_id, event in events.items():
+            if person_id in event["guests"] and not event["active"]:
+                events_list.append({"id": event_id, **event})
+                event_counter += 1
+
+        rankings = load_data("rankings")
+        ranking_counter = 0
+        rankings_list = []
+
+        for ranking_id, ranking in rankings.items():
+            if person_id == ranking["person"]:
+                rankings_list.append({"id": ranking_id, **ranking})
+                ranking_counter += 1
+
+        content = f"""Here you can find all information about [blue]{name}[/].\n
+Events attended:     [blue]{event_counter}[/]
+Cocktails ordered:   [blue]{order_counter}[/]
+Ranking votes:       [blue]{ranking_counter}[/]"""
+
+        display_page(location="Persons",
+                     title=name,
+                     content=content
+                     )
+
+        columns = {
+            "Event": [],
+            "Date": [],
+            "Cocktails": []
+        }
+
+        for event in events_list:
+            columns["Event"].append(event["name"])
+            columns["Date"].append(event["date"])
+            cocktail_counter = 0
+            for order in orders_list:
+                if order["event"] == event["id"]:
+                    cocktail_counter += 1
+            columns["Cocktails"].append(cocktail_counter)
+
+        display_table(columns)
+
+        columns = {
+            "Cocktail": [],
+            "Ordered": [],
+        }
+
+        cocktails_list = {}
+
+        for order in orders_list:
+            cocktail_id = order["cocktail"]
+            cocktails_list[cocktail_id] = cocktails_list.get(cocktail_id, 0) + 1
+
+        for cocktail_id, counter in sorted(cocktails_list.items(), reverse=True, key=lambda item: item[1]):
+            columns["Cocktail"].append(cocktails[cocktail_id]["name"])
+            columns["Ordered"].append(counter)
+
+        display_table(columns)
+
+        get_input()
+
+        # cocktail_names, cocktail_servings = get_event_cocktails(event_id)
+        #
+        # if cocktail_names:
+        #     columns = {
+        #         "Cocktail": cocktail_names,
+        #         "Times served": cocktail_servings,
+        #     }
+        #
+        #     display_table(columns)
+        #
+        # today = datetime.datetime.now()
+        # event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y")
+        #
+        # if event_date.date() >= today.date():
+        #     columns = {
+        #         "Action": ["Add guest", "Cancel event", "", "Back to event menu"]
+        #     }
+        #
+        #     display_table(columns, auto_number=True)
+        #
+        #     menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+        #
+        #     if menu_choice == 1:
+        #         _ = add_guest_to_event(event, event_id)
+        #         continue
+        #
+        #     elif menu_choice == 2:
+        #         if event["current"]:
+        #             print_message("You cannot cancel the current event.", "red")
+        #             print()
+        #             get_input()
+        #             continue
+        #
+        #         from modules.orders import cancel_order
+        #         cancel_order(event_id=event_id)
+        #
+        #         update_record("events", event_id, "active", False)
+        #         update_record("events", event_id, "current", False)
+        #         print_message("The event was successfully canceled", "green")
+        #         print()
+        #         get_input()
+        #         break
+        #
+        # else:
+        #     get_input()
+        #
+        # break
+
+    return
+
+
+
+
+
