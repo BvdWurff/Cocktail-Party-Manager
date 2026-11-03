@@ -14,6 +14,8 @@ from modules.events import (
     get_event_guests,
 )
 
+from modules.cocktails import rank_a_cocktail
+
 from utils.constants import (
     INVALID_INPUT,
 )
@@ -265,55 +267,50 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
 
         display_table(columns)
 
-        get_input()
+        total_scores = {}
+        number_of_ratings = {}
+        average_scores = {}
 
-        # cocktail_names, cocktail_servings = get_event_cocktails(event_id)
-        #
-        # if cocktail_names:
-        #     columns = {
-        #         "Cocktail": cocktail_names,
-        #         "Times served": cocktail_servings,
-        #     }
-        #
-        #     display_table(columns)
-        #
-        # today = datetime.datetime.now()
-        # event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y")
-        #
-        # if event_date.date() >= today.date():
-        #     columns = {
-        #         "Action": ["Add guest", "Cancel event", "", "Back to event menu"]
-        #     }
-        #
-        #     display_table(columns, auto_number=True)
-        #
-        #     menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-        #
-        #     if menu_choice == 1:
-        #         _ = add_guest_to_event(event, event_id)
-        #         continue
-        #
-        #     elif menu_choice == 2:
-        #         if event["current"]:
-        #             print_message("You cannot cancel the current event.", "red")
-        #             print()
-        #             get_input()
-        #             continue
-        #
-        #         from modules.orders import cancel_order
-        #         cancel_order(event_id=event_id)
-        #
-        #         update_record("events", event_id, "active", False)
-        #         update_record("events", event_id, "current", False)
-        #         print_message("The event was successfully canceled", "green")
-        #         print()
-        #         get_input()
-        #         break
-        #
-        # else:
-        #     get_input()
-        #
-        # break
+        for ranking in rankings_list:
+            cocktail = cocktails[ranking["cocktail"]]["name"]
+            total_scores[cocktail] = total_scores.get(cocktail, 0) + ranking["score"]
+            number_of_ratings[cocktail] = number_of_ratings.get(cocktail, 0) + 1
+
+        for cocktail, score in total_scores.items():
+            number = number_of_ratings[cocktail]
+            average_score = round(score / number, 1)
+            average_scores[cocktail] = average_score
+
+        columns = {
+            "Place": [],
+            "Cocktail": [],
+            "Score": [],
+        }
+
+        for place, (cocktail, score) in enumerate(
+                sorted(average_scores.items(), key=lambda item: item[1], reverse=True), start=1):
+            columns["Place"].append(place)
+            columns["Cocktail"].append(cocktail)
+            columns["Score"].append(score)
+
+        display_table(columns)
+
+        columns = {
+            "Action": ["Rank a cocktail", "Add to event", "Order a cocktail", "Show orders", "Deactivate person", "", "Back to cocktail menu"]
+        }
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+        if menu_choice == 1:
+            rank_a_cocktail(guest_id=person_id, trigger="show_person")
+            continue
+
+        if menu_choice == 2:
+            add_guest_to_event(guest_id=person_id)
+
+        break
 
     return
 

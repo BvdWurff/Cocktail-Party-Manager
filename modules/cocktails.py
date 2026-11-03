@@ -5,8 +5,6 @@ from modules.cocktail_api import (
     search_cocktails_in_db,
 )
 
-from modules.persons import select_guest
-
 from modules.inventory import (
     check_cocktail_availability,
 )
@@ -73,12 +71,11 @@ def all_available_cocktails():
     return
 
 
-def rank_a_cocktail():
+def rank_a_cocktail(guest_id=None, trigger=None):
     current_event, current_event_id = get_current_event()
     if current_event is None:
         return
 
-    guest_id = None
     cocktail_id = None
     today = datetime.date.today().strftime("%d-%m-%Y")
 
@@ -93,8 +90,11 @@ def rank_a_cocktail():
 
         if guest_id is None and cocktail_id is None:
             get_input("press [blue]Enter[/] to select a guest.")
+        elif cocktail_id is None:
+            get_input("press [blue]Enter[/] to select a cocktail.")
 
         if guest_id is None:
+            from modules.persons import select_guest
             guest_id = select_guest()
             if guest_id is None:
                 break
@@ -139,7 +139,7 @@ def rank_a_cocktail():
 
 
         columns = {
-            "Action": ["Rank another cocktail", "View ranking", "", "Back to cocktail menu"]
+            "Action": ["Rank another cocktail", "View ranking", "", "Back"]
         }
 
         print()
@@ -148,8 +148,9 @@ def rank_a_cocktail():
         menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
-            guest_id = ""
-            cocktail_id = ""
+            if trigger is None:
+                guest_id = None
+            cocktail_id = None
             continue
 
         elif menu_choice == 2:
@@ -162,53 +163,66 @@ def rank_a_cocktail():
 
 
 def show_cocktail_ranking():
-    rankings = load_data("rankings")
-    cocktails = load_data("cocktails")
+    while True:
+        rankings = load_data("rankings")
+        cocktails = load_data("cocktails")
 
-    content = "Discover the all-time favorite cocktails, ranked by their average rating."
+        content = "Discover the all-time favorite cocktails, ranked by their average rating."
 
-    display_page(location="Cocktails",
-                 title="All-time favorites",
-                 content=content
-                 )
+        display_page(location="Cocktails",
+                     title="All-time favorites",
+                     content=content
+                     )
 
-    total_scores = {}
-    number_of_ratings = {}
-    average_scores = {}
+        total_scores = {}
+        number_of_ratings = {}
+        average_scores = {}
 
-    for ranking in rankings.values():
-        cocktail = cocktails[ranking["cocktail"]]["name"]
-        if cocktail in total_scores.keys():
-            score = total_scores[cocktail] + ranking["score"]
-            number = number_of_ratings[cocktail] + 1
-        else:
-            score = ranking["score"]
-            number = 1
+        for ranking in rankings.values():
+            cocktail = cocktails[ranking["cocktail"]]["name"]
+            if cocktail in total_scores.keys():
+                score = total_scores[cocktail] + ranking["score"]
+                number = number_of_ratings[cocktail] + 1
+            else:
+                score = ranking["score"]
+                number = 1
 
-        total_scores[cocktail] = score
-        number_of_ratings[cocktail] = number
+            total_scores[cocktail] = score
+            number_of_ratings[cocktail] = number
 
-    for cocktail, score in total_scores.items():
-        number = number_of_ratings[cocktail]
-        average_score = round(score / number, 1)
-        average_scores[cocktail] = average_score
+        for cocktail, score in total_scores.items():
+            number = number_of_ratings[cocktail]
+            average_score = round(score / number, 1)
+            average_scores[cocktail] = average_score
 
-    columns = {
-        "Place": [],
-        "Cocktail": [],
-        "Score": [],
-        "Votes": []
-    }
+        columns = {
+            "Place": [],
+            "Cocktail": [],
+            "Score": [],
+            "Votes": []
+        }
 
-    for place, (cocktail, score) in enumerate(sorted(average_scores.items(), key=lambda item: item[1], reverse=True), start=1):
-        columns["Place"].append(place)
-        columns["Cocktail"].append(cocktail)
-        columns["Score"].append(score)
-        columns["Votes"].append(number_of_ratings[cocktail])
+        for place, (cocktail, score) in enumerate(sorted(average_scores.items(), key=lambda item: item[1], reverse=True), start=1):
+            columns["Place"].append(place)
+            columns["Cocktail"].append(cocktail)
+            columns["Score"].append(score)
+            columns["Votes"].append(number_of_ratings[cocktail])
 
-    display_table(columns)
+        display_table(columns)
 
-    get_input("Press [blue]Enter[/] to return to the cocktail menu.")
+        columns = {
+            "Action": ["Rank a cocktail", "Find new cocktails", "", "Back to cocktail menu"]
+        }
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+        if menu_choice == 1:
+            rank_a_cocktail()
+            continue
+
+        break
 
     return
 

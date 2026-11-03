@@ -407,7 +407,7 @@ def get_event_cocktails(event_id=None):
     return cocktail_names, cocktail_servings
 
 
-def add_guest_to_event(event=None, event_id=None):
+def add_guest_to_event(event=None, event_id=None, guest_id=None):
     from modules.persons import new_person
 
     if event is None:
@@ -415,58 +415,59 @@ def add_guest_to_event(event=None, event_id=None):
         if event is None:
             return None
 
-    persons = load_data("persons")
-    options = {}
+    if guest_id is None:
+        persons = load_data("persons")
+        options = {}
 
-    for person_id, person in persons.items():
-        if person_id not in event["guests"]:
-            guest = persons[person_id]
+        for person_id, person in persons.items():
+            if person_id not in event["guests"]:
+                guest = persons[person_id]
 
-            if guest["active"]:
-                name = f"{guest["first_name"]} {guest["surname"]}"
-                options[int(person_id)] = name
+                if guest["active"]:
+                    name = f"{guest["first_name"]} {guest["surname"]}"
+                    options[int(person_id)] = name
 
-    guest_names = []
-    guests_ids = []
+        guest_names = []
+        guests_ids = []
 
-    for guest_id, guest_name in sorted(options.items(), key=lambda item: item[1].casefold()):
-        guests_ids.append(guest_id)
-        guest_names.append(guest_name)
+        for guest_id, guest_name in sorted(options.items(), key=lambda item: item[1].casefold()):
+            guests_ids.append(guest_id)
+            guest_names.append(guest_name)
 
-    if len(guest_names) == 0:
-        guest_id = new_person("new_order")
-
-        if guest_id is None:
-            return None
-
-    else:
-        guest_names.append("")
-        guest_names.append("Guest not on list")
-
-        content = f"Select the guest you want to add to the event."
-
-        display_page(location="Events",
-                     title="Add guests",
-                     content=content
-                     )
-
-        columns = {
-            "Name": guest_names
-        }
-
-        print()
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
-        guest_id = guests_ids[menu_choice - 1]
-
-        if menu_choice == 0:
+        if len(guest_names) == 0:
             guest_id = new_person("new_order")
 
             if guest_id is None:
                 return None
 
-    event["guests"].append(str(guest_id))
+        else:
+            guest_names.append("")
+            guest_names.append("Guest not on list")
+
+            content = f"Select the guest you want to add to the event."
+
+            display_page(location="Events",
+                         title="Add guests",
+                         content=content
+                         )
+
+            columns = {
+                "Name": guest_names
+            }
+
+            print()
+            display_table(columns, auto_number=True)
+
+            menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
+            guest_id = guests_ids[menu_choice - 1]
+
+            if menu_choice == 0:
+                guest_id = new_person("new_order")
+
+                if guest_id is None:
+                    return None
+
+        event["guests"].append(str(guest_id))
 
     save_data("events", event, record_id=str(event_id))
 

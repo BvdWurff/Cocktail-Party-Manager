@@ -89,5 +89,14 @@
         "guests": [
             "1"
         ]
+    },
+    "8": {
+        "name": "Rammenlapper",
+        "date": "03-11-2026",
+        "current": true,
+        "active": true,
+        "guests": [
+            "1"
+        ]
     }
 }
