@@ -68,7 +68,7 @@ def all_open_orders():
             columns["Name"].append(guest_name)
             columns["Cocktail"].append(cocktails[order["cocktail"]]["name"])
 
-    columns["Name"].extend(["", "Back to orders menu"])
+    columns["Name"].extend(["", "Back"])
     columns["Cocktail"].extend(["", ""])
 
     display_table(columns, auto_number=True)
@@ -83,7 +83,9 @@ def all_open_orders():
     return order_id, orders[order_id]
 
 
-def process_order(order_id, order):
+def process_order(order_id):
+    orders = load_data("orders")
+    order = orders[order_id]
 
     persons = load_data("persons")
     inventory = load_data("inventory")
@@ -102,7 +104,7 @@ Cocktail:   [blue]{cocktail_name}[/]"""
                  )
 
     columns = {
-        "Action": ["Prepare cocktail", "Cancel order", "", "Back to order menu"]
+        "Action": ["Prepare cocktail", "Cancel order", "", "Back"]
     }
 
     display_table(columns, auto_number=True)
@@ -117,7 +119,7 @@ Cocktail:   [blue]{cocktail_name}[/]"""
             show_cocktail(order["cocktail"])
 
             columns = {
-                "Action": ["Cocktail served", "Order cancelled", "Unit converter", "", "Back to order menu"]
+                "Action": ["Cocktail served", "Order cancelled", "Unit converter", "", "Back"]
             }
 
             display_table(columns, auto_number=True)
@@ -161,15 +163,16 @@ Cocktail:   [blue]{cocktail_name}[/]"""
     return
 
 
-def new_order(cocktail_id=None):
+def new_order(cocktail_id=None, guest_id=None):
     current_event, current_event_id = get_current_event()
     if current_event is None:
         return
 
     while True:
-        person_id = select_guest("new_order")
-        if person_id is None:
-            return
+        if guest_id is None:
+            guest_id = select_guest("new_order")
+            if guest_id is None:
+                return
 
         if cocktail_id is None:
             cocktail_id = select_cocktail()
@@ -179,7 +182,7 @@ def new_order(cocktail_id=None):
         order = {
             "id": str(len(orders) + 1),
             "event": current_event_id,
-            "person": str(person_id),
+            "person": str(guest_id),
             "cocktail": cocktail_id,
             "status": "ordered"
         }
@@ -207,14 +210,15 @@ def new_order(cocktail_id=None):
                          )
 
             columns = {
-                "Action": ["Place another order", "Back"]
+                "Action": ["Place another order", "", "Back"]
             }
 
             display_table(columns, auto_number=True)
 
-            menu_choice = get_menu_choice(range(1, len(columns["Action"]) + 1))
+            menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
             if menu_choice == 1:
+                cocktail_id = None
                 order.clear()
                 continue
 
@@ -245,4 +249,50 @@ def cancel_order(cocktail_id="", person_id="", event_id=""):
             update_record("orders", order_id, "status", "cancelled")
 
     return
+
+def show_guest_orders(guest_id):
+    persons = load_data("persons")
+    guest = persons[guest_id]
+    guest_name = f"{guest["first_name"]} {guest["surname"]}"
+
+    while True:
+        content = f"A list of all orders placed by [blue]{guest_name}[/]."
+
+        display_page(location="Orders",
+                     title="Placed orders",
+                     content=content
+                     )
+
+        orders = load_data("orders")
+        cocktails = load_data("cocktails")
+
+        order_ids = []
+
+        columns = {
+            "Cocktail": [],
+            "Status": [],
+        }
+
+        for order_id, order in orders.items():
+            if order["person"] == guest_id:
+                order_ids.append(order_id)
+                columns["Cocktail"].append(cocktails[order["cocktail"]]["name"])
+                columns["Status"].append(str(order["status"]).capitalize())
+
+        columns["Cocktail"].extend(["", "Back"])
+        columns["Status"].extend(["", ""])
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Cocktail"]) - 1))
+
+        if menu_choice == 0:
+            break
+
+        order_id = order_ids[menu_choice - 1]
+        process_order(order_id)
+
+    return
+
+
 

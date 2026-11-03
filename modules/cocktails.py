@@ -53,7 +53,7 @@ def all_available_cocktails():
                 cocktail_ids.append(cocktail_id)
                 columns["Cocktail"].append(cocktail["name"])
 
-        columns["Cocktail"].extend(["", "Back to cocktail menu"])
+        columns["Cocktail"].extend(["", "Back"])
 
         display_table(columns, auto_number=True)
 
@@ -181,14 +181,8 @@ def show_cocktail_ranking():
         for ranking in rankings.values():
             cocktail = cocktails[ranking["cocktail"]]["name"]
             if cocktail in total_scores.keys():
-                score = total_scores[cocktail] + ranking["score"]
-                number = number_of_ratings[cocktail] + 1
-            else:
-                score = ranking["score"]
-                number = 1
-
-            total_scores[cocktail] = score
-            number_of_ratings[cocktail] = number
+                total_scores[cocktail] = total_scores.get(cocktail, 0) + ranking["score"]
+                number_of_ratings[cocktail] = number_of_ratings.get(cocktail, 0) + 1
 
         for cocktail, score in total_scores.items():
             number = number_of_ratings[cocktail]
@@ -211,7 +205,7 @@ def show_cocktail_ranking():
         display_table(columns)
 
         columns = {
-            "Action": ["Rank a cocktail", "Find new cocktails", "", "Back to cocktail menu"]
+            "Action": ["Rank a cocktail", "Find new cocktails", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -304,7 +298,7 @@ def show_cocktail(cocktail_id):
 
     while True:
         columns = {
-            "Action": ["Order cocktail", "Deactivate cocktail", "", "Back to cocktail menu"]
+            "Action": ["Order cocktail", "Deactivate cocktail", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -364,7 +358,7 @@ def search_cocktail(search_method=""):
                 if item["quantity"] > 0:
                     columns["Ingredient"].append(item["name"])
 
-            columns["Ingredient"].extend(["", "Back to cocktails menu"])
+            columns["Ingredient"].extend(["", "Back"])
 
             display_table(columns, auto_number=True)
 
@@ -390,7 +384,7 @@ def search_cocktail(search_method=""):
         for cocktail, cocktail_id in sorted(cocktails.items(), key=lambda entry: entry[0].casefold()):
             columns["Cocktail"].append(cocktail)
 
-        columns["Cocktail"].extend(["", "Back to cocktails menu"])
+        columns["Cocktail"].extend(["", "Back"])
 
         display_table(columns, auto_number=True)
 

@@ -100,7 +100,7 @@ Event date:         [blue]{event["date"]}[/]"""
 
         if event_date.date() >= today.date():
             columns = {
-                "Action": ["Add guest",  "Cancel event", "", "Back to event menu"]
+                "Action": ["Add guest",  "Cancel event", "", "Back"]
             }
 
             display_table(columns, auto_number=True)
@@ -169,7 +169,7 @@ def show_all_events(event_filter):
                 columns["Event"].append(event["name"])
                 columns["Date"].append(event["date"])
 
-        columns["Event"].extend(["", "Back to event menu"])
+        columns["Event"].extend(["", "Back"])
         columns["Date"].extend(["", ""])
 
         display_table(columns, auto_number=True)

@@ -146,7 +146,7 @@ def show_inventory(trigger):
                 else:
                     columns["Quantity"].append(f"[green]{quantity}[/]")
 
-        columns["Name"].extend(["", "Back to inventory menu"])
+        columns["Name"].extend(["", "Back"])
         columns["Quantity"].extend(["", ""])
         columns["Shopping list"].extend(["", ""])
 
@@ -231,7 +231,7 @@ Added to shopping list:   {add_to_shopping_list}"""
             columns["Action"].extend(["Add to shopping list"])
             action = "added to"
 
-        columns["Action"].extend(["", "Back to inventory overview"])
+        columns["Action"].extend(["", "Back"])
 
         display_table(columns, auto_number=True)
 

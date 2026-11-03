@@ -91,7 +91,7 @@ def cocktail_menu():
                      )
 
         columns = {
-            "Action": ["All available cocktails", "Find new cocktails", "Rank a cocktail", "All-time favorites", "", "Back to main menu"]
+            "Action": ["All available cocktails", "Find new cocktails", "Rank a cocktail", "All-time favorites", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -126,7 +126,7 @@ def orders_menu():
                      )
 
         columns = {
-            "Action": ["New order", "Next open order", "All open orders", "", "Back to main menu"]
+            "Action": ["New order", "Next open order", "All open orders", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -141,14 +141,14 @@ def orders_menu():
             if order_id is None:
                 continue
 
-            process_order(order_id, order)
+            process_order(order_id)
 
         elif menu_choice == 3:
             order_id, order = all_open_orders()
             if order_id is None:
                 continue
 
-            process_order(order_id, order)
+            process_order(order_id)
 
         else:
             break
@@ -165,7 +165,7 @@ def events_menu():
                      )
 
         columns = {
-            "Action": ["New event", "Current event", "Upcoming events", "Past events",  "", "Back to main menu"]
+            "Action": ["New event", "Current event", "Upcoming events", "Past events",  "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -200,7 +200,7 @@ def inventory_menu():
                      )
 
         columns = {
-            "Action": ["Show full inventory", "Items below minimum quantity", "Shopping list", "", "Back to main menu"]
+            "Action": ["Show full inventory", "Items below minimum quantity", "Shopping list", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -232,7 +232,7 @@ def admin_menu():
                      )
 
         columns = {
-            "Action": ["Inventory", "Guests", "Events", "Cocktails", "Unit convertor", "Shopping lists", "", "Back to main menu"]
+            "Action": ["Inventory", "Guests", "Events", "Cocktails", "Unit convertor", "Shopping lists", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -273,7 +273,7 @@ def stats_menu():
                      )
 
         columns = {
-            "Action": ["Guests", "Events", "Cocktails", "", "Back to main menu"]
+            "Action": ["Guests", "Events", "Cocktails", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -305,7 +305,7 @@ def find_new_cocktails_menu():
                      )
 
         columns = {
-            "Action": ["Search by name", "Search by ingredient", "Lucky 'shot'", "", "Back to cocktail menu"]
+            "Action": ["Search by name", "Search by ingredient", "Lucky 'shot'", "", "Back"]
         }
 
         display_table(columns, auto_number=True)

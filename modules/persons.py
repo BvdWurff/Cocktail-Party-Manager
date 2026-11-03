@@ -6,6 +6,8 @@ from utils.utils import (
     print_message,
     get_menu_choice,
     display_page,
+    update_record,
+    display_panel,
 )
 
 from modules.events import (
@@ -174,7 +176,7 @@ def show_all_persons():
                 name = f"{person["first_name"]} {person["surname"]}"
                 columns["Name"].append(name)
 
-        columns["Name"].extend(["", "Back to main menu"])
+        columns["Name"].extend(["", "Back"])
 
         display_table(columns, auto_number=True)
 
@@ -233,70 +235,87 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
                      content=content
                      )
 
-        columns = {
-            "Event": [],
-            "Date": [],
-            "Cocktails": []
-        }
+        if len(events_list) > 0:
 
-        for event in events_list:
-            columns["Event"].append(event["name"])
-            columns["Date"].append(event["date"])
-            cocktail_counter = 0
+            columns = {
+                "Event": [],
+                "Date": [],
+                "Cocktails": []
+            }
+
+            for event in events_list:
+                columns["Event"].append(event["name"])
+                columns["Date"].append(event["date"])
+                cocktail_counter = 0
+                for order in orders_list:
+                    if order["event"] == event["id"]:
+                        cocktail_counter += 1
+                columns["Cocktails"].append(cocktail_counter)
+
+            display_table(columns)
+
+        else:
+            panel_content = f"[red]{name} did not attend any events.[/]"
+            display_panel(panel_content, title="Events")
+
+        if len(orders_list) > 0:
+            columns = {
+                "Cocktail": [],
+                "Ordered": [],
+            }
+
+            cocktails_list = {}
+
             for order in orders_list:
-                if order["event"] == event["id"]:
-                    cocktail_counter += 1
-            columns["Cocktails"].append(cocktail_counter)
+                cocktail_id = order["cocktail"]
+                cocktails_list[cocktail_id] = cocktails_list.get(cocktail_id, 0) + 1
 
-        display_table(columns)
+            for cocktail_id, counter in sorted(cocktails_list.items(), reverse=True, key=lambda item: item[1]):
+                columns["Cocktail"].append(cocktails[cocktail_id]["name"])
+                columns["Ordered"].append(counter)
 
-        columns = {
-            "Cocktail": [],
-            "Ordered": [],
-        }
+            display_table(columns)
 
-        cocktails_list = {}
+        else:
+            panel_content = f"[red]{name} did not order any cocktails.[/]"
+            display_panel(panel_content, title="Cocktails")
 
-        for order in orders_list:
-            cocktail_id = order["cocktail"]
-            cocktails_list[cocktail_id] = cocktails_list.get(cocktail_id, 0) + 1
 
-        for cocktail_id, counter in sorted(cocktails_list.items(), reverse=True, key=lambda item: item[1]):
-            columns["Cocktail"].append(cocktails[cocktail_id]["name"])
-            columns["Ordered"].append(counter)
+        if len(rankings_list) > 0:
+            total_scores = {}
+            number_of_ratings = {}
+            average_scores = {}
 
-        display_table(columns)
+            for ranking in rankings_list:
+                cocktail = cocktails[ranking["cocktail"]]["name"]
+                total_scores[cocktail] = total_scores.get(cocktail, 0) + ranking["score"]
+                number_of_ratings[cocktail] = number_of_ratings.get(cocktail, 0) + 1
 
-        total_scores = {}
-        number_of_ratings = {}
-        average_scores = {}
+            for cocktail, score in total_scores.items():
+                number = number_of_ratings[cocktail]
+                average_score = round(score / number, 1)
+                average_scores[cocktail] = average_score
 
-        for ranking in rankings_list:
-            cocktail = cocktails[ranking["cocktail"]]["name"]
-            total_scores[cocktail] = total_scores.get(cocktail, 0) + ranking["score"]
-            number_of_ratings[cocktail] = number_of_ratings.get(cocktail, 0) + 1
+            columns = {
+                "Place": [],
+                "Cocktail": [],
+                "Score": [],
+            }
 
-        for cocktail, score in total_scores.items():
-            number = number_of_ratings[cocktail]
-            average_score = round(score / number, 1)
-            average_scores[cocktail] = average_score
+            for place, (cocktail, score) in enumerate(
+                    sorted(average_scores.items(), key=lambda item: item[1], reverse=True), start=1):
+                columns["Place"].append(place)
+                columns["Cocktail"].append(cocktail)
+                columns["Score"].append(score)
 
-        columns = {
-            "Place": [],
-            "Cocktail": [],
-            "Score": [],
-        }
+            display_table(columns)
 
-        for place, (cocktail, score) in enumerate(
-                sorted(average_scores.items(), key=lambda item: item[1], reverse=True), start=1):
-            columns["Place"].append(place)
-            columns["Cocktail"].append(cocktail)
-            columns["Score"].append(score)
-
-        display_table(columns)
+        else:
+            panel_content = f"[red]{name} did not rank any cocktails.[/]"
+            display_panel(panel_content, title="Ranking")
 
         columns = {
-            "Action": ["Rank a cocktail", "Add to event", "Order a cocktail", "Show orders", "Deactivate person", "", "Back to cocktail menu"]
+            "Action": ["Rank a cocktail", "Add to event", "Order a cocktail", "Show orders", "Deactivate person", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -307,12 +326,37 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
             rank_a_cocktail(guest_id=person_id, trigger="show_person")
             continue
 
-        if menu_choice == 2:
+        elif menu_choice == 2:
             add_guest_to_event(guest_id=person_id)
+            continue
+
+        elif menu_choice == 3:
+            from modules.orders import new_order
+            new_order(guest_id=person_id)
+            continue
+
+        elif menu_choice == 4:
+            from modules.orders import show_guest_orders
+            show_guest_orders(person_id)
+            continue
+
+        elif menu_choice == 5:
+            deactivate_person(person_id)
 
         break
 
     return
+
+
+def deactivate_person(person_id):
+    from modules.orders import cancel_order
+    cancel_order(person_id=person_id)
+
+    update_record("persons", person_id, "active", False)
+
+    print_message("Person successfully deactivated.", "green")
+    print()
+    get_input()
 
 
 
