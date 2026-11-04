@@ -23,7 +23,7 @@ from utils.constants import (
 )
 
 
-def new_person(trigger=""):
+def new_guest(trigger=""):
     created_guests_ids = []
     while True:
         while True:
@@ -52,18 +52,18 @@ Type [red]Stop[/] to exit the registration process."""
                 get_input("Press [blue]Enter[/] to exit the registration process.")
                 return None
 
-            persons = load_data("persons")
+            guests = load_data("guests")
             duplicate = False
 
-            for person in persons.values():
-                if person["first_name"].lower() == first_name.lower() and person["surname"].lower() == surname.lower():
+            for guest in guests.values():
+                if guest["first_name"].lower() == first_name.lower() and guest["surname"].lower() == surname.lower():
                     duplicate = True
                     print()
-                    print_message(f"A person named {first_name} {surname} already exists.", "red")
+                    print_message(f"A guest named {first_name} {surname} already exists.", "red")
 
                     while True:
                         print()
-                        confirmation_choice = get_input("Are you sure you want to create another person with this name? (Yes/No) ").lower()
+                        confirmation_choice = get_input("Are you sure you want to create another guest with this name? (Yes/No) ").lower()
 
                         if confirmation_choice not in ("yes", "no"):
                             print_message(INVALID_INPUT, "red")
@@ -77,14 +77,14 @@ Type [red]Stop[/] to exit the registration process."""
 
             continue
 
-        person = {
-            "id": str(len(persons) + 1),
+        guest = {
+            "id": str(len(guests) + 1),
             "first_name": first_name,
             "surname": surname,
             "active": True
         }
 
-        save_data("persons", person)
+        save_data("guests", guest)
         print()
         print_message("Guest successfully registered.", "green")
 
@@ -92,10 +92,10 @@ Type [red]Stop[/] to exit the registration process."""
             print()
             get_input("Press [blue]Enter[/] to return to the order process.")
 
-            return person["id"]
+            return guest["id"]
 
         else:
-            created_guests_ids.append(person["id"])
+            created_guests_ids.append(guest["id"])
 
             columns = {
                 "Name": ["Create another account", "Back"]
@@ -152,15 +152,15 @@ def select_guest(trigger=""):
     return str(guest_id)
 
 
-def show_all_persons():
+def show_all_guests():
     while True:
 
-        persons = load_data("persons")
+        guests = load_data("guests")
 
-        content = f"A list off all the active persons in the cocktail party manager app."
+        content = f"A list off all the active guests in the cocktail party manager app."
 
-        display_page(location="Persons",
-                     title="Active persons",
+        display_page(location="Guests",
+                     title="Active guests",
                      content=content
                      )
 
@@ -170,10 +170,10 @@ def show_all_persons():
             "Name": []
         }
 
-        for person_id, person in sorted(persons.items(), key=lambda entry: entry[1]["first_name"].casefold()):
-            if person["active"]:
-                people_ids.append(person_id)
-                name = f"{person["first_name"]} {person["surname"]}"
+        for guest_id, guest in sorted(guests.items(), key=lambda entry: entry[1]["first_name"].casefold()):
+            if guest["active"]:
+                people_ids.append(guest_id)
+                name = f"{guest["first_name"]} {guest["surname"]}"
                 columns["Name"].append(name)
 
         columns["Name"].extend(["", "Back"])
@@ -185,16 +185,16 @@ def show_all_persons():
             break
 
         else:
-            person_id = people_ids[menu_choice - 1]
-            show_person(person_id)
+            guest_id = people_ids[menu_choice - 1]
+            show_guest(guest_id)
 
     return
 
 
-def show_person(person_id):
-    persons = load_data("persons")
-    person = persons[person_id]
-    name = f"{person["first_name"]} {person["surname"]}"
+def show_guest(guest_id):
+    guests = load_data("guests")
+    guest = guests[guest_id]
+    name = f"{guest["first_name"]} {guest["surname"]}"
 
     while True:
         cocktails = load_data("cocktails")
@@ -203,7 +203,7 @@ def show_person(person_id):
         orders_list = []
 
         for order_id, order in orders.items():
-            if person_id == order["person"] and order["status"] == "served":
+            if guest_id == order["guest"] and order["status"] == "served":
                 orders_list.append({"id": order_id, **order})
                 order_counter += 1
 
@@ -212,7 +212,7 @@ def show_person(person_id):
         events_list = []
 
         for event_id, event in events.items():
-            if person_id in event["guests"] and (not event["active"] or event["current"]):
+            if guest_id in event["guests"] and (not event["active"] or event["current"]):
                 events_list.append({"id": event_id, **event})
                 event_counter += 1
 
@@ -221,7 +221,7 @@ def show_person(person_id):
         rankings_list = []
 
         for ranking_id, ranking in rankings.items():
-            if person_id == ranking["person"]:
+            if guest_id == ranking["guest"]:
                 rankings_list.append({"id": ranking_id, **ranking})
                 ranking_counter += 1
 
@@ -230,7 +230,7 @@ Events attended:     [blue]{event_counter}[/]
 Cocktails served:   [blue]{order_counter}[/]
 Ranking votes:       [blue]{ranking_counter}[/]"""
 
-        display_page(location="Persons",
+        display_page(location="Guests",
                      title=name,
                      content=content
                      )
@@ -321,7 +321,7 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
             display_panel(panel_content, title="Ranking")
 
         columns = {
-            "Action": ["Rank a cocktail", "Add to current event", "Order a cocktail", "Show orders", "Deactivate person", "", "Back"]
+            "Action": ["Rank a cocktail", "Add to current event", "Order a cocktail", "Show orders", "Deactivate guest", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -329,19 +329,25 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
         menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
-            rank_a_cocktail(guest_id=person_id, trigger="show_person")
+            rank_a_cocktail(guest_id=guest_id, trigger="show_guest")
             continue
 
         elif menu_choice == 2:
             event, event_id = get_current_event()
             guests = event["guests"]
-            if person_id in guests:
+            if guests is None:
+                print_message("The event has no guests.", "red")
+                print()
+                get_input()
+                continue
+
+            if guest_id in guests:
                 print_message(f"{name} is already added to the current event.", "red")
                 print()
                 get_input()
                 continue
 
-            guests.append(person_id)
+            guests.append(guest_id)
 
             update_record("events", event_id, "guests", guests)
 
@@ -353,29 +359,29 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
 
         elif menu_choice == 3:
             from modules.orders import new_order
-            new_order(guest_id=person_id)
+            new_order(guest_id=guest_id)
             continue
 
         elif menu_choice == 4:
             from modules.orders import show_guest_orders
-            show_guest_orders(person_id)
+            show_guest_orders(guest_id)
             continue
 
         elif menu_choice == 5:
-            deactivate_person(person_id)
+            deactivate_guest(guest_id)
 
         break
 
     return
 
 
-def deactivate_person(person_id):
+def deactivate_guest(guest_id):
     from modules.orders import cancel_order
-    cancel_order(person_id=person_id)
+    cancel_order(guest_id=guest_id)
 
-    update_record("persons", person_id, "active", False)
+    update_record("guests", guest_id, "active", False)
 
-    print_message("Person successfully deactivated.", "green")
+    print_message("Guest successfully deactivated.", "green")
     print()
     get_input()
 

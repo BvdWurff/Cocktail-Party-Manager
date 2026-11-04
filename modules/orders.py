@@ -2,7 +2,7 @@
 # FUNCTION IMPORTS
 # ==============================
 
-from modules.persons import select_guest
+from modules.guests import select_guest
 from modules.events import (
     get_current_event,
 )
@@ -37,7 +37,7 @@ def get_next_order():
 
 def all_open_orders():
     orders = load_data("orders")
-    persons = load_data("persons")
+    guests = load_data("guests")
     cocktails = load_data("cocktails")
 
     content = "Here you can find an overview of all open orders."
@@ -58,8 +58,8 @@ def all_open_orders():
         if order["status"] == "ordered":
             order_ids.append(order_id)
 
-            person = persons[order["person"]]
-            guest_name = f"{person['first_name']} {person['surname']}"
+            guest = guests[order["guest"]]
+            guest_name = f"{guest['first_name']} {guest['surname']}"
 
             columns["Name"].append(guest_name)
             columns["Cocktail"].append(cocktails[order["cocktail"]]["name"])
@@ -83,77 +83,83 @@ def process_order(order_id):
     orders = load_data("orders")
     order = orders[order_id]
 
-    persons = load_data("persons")
+    guests = load_data("guests")
     inventory = load_data("inventory")
     cocktails = load_data("cocktails")
     cocktail = cocktails[order["cocktail"]]
 
-    guest_name = f"{persons[order["person"]]["first_name"]} {persons[order["person"]]["surname"]}"
+    guest_name = f"{guests[order["guest"]]["first_name"]} {guests[order["guest"]]["surname"]}"
     cocktail_name = cocktails[order["cocktail"]]["name"]
 
-    content = f"""Guest:      [blue]{guest_name}[/]
-Cocktail:   [blue]{cocktail_name}[/]"""
+    content = f"Guest:      [blue]{guest_name}[/]\n"
+    content += f"Cocktail:   [blue]{cocktail_name}[/]\n"
+    content += f"Status:     [blue]{str(order["status"]).capitalize()}"
 
     display_page(location="Orders",
                  title="Process order",
                  content=content
                  )
 
-    columns = {
-        "Action": ["Prepare cocktail", "Cancel order", "", "Back"]
-    }
+    if order["status"] == "ordered":
 
-    display_table(columns, auto_number=True)
+        columns = {
+            "Action": ["Prepare cocktail", "Cancel order", "", "Back"]
+        }
 
-    menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+        display_table(columns, auto_number=True)
 
-    if menu_choice == 0:
-        return
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
-    elif menu_choice == 1:
-        while True:
-            show_cocktail(order["cocktail"])
+        if menu_choice == 0:
+            return
 
-            columns = {
-                "Action": ["Cocktail served", "Order cancelled", "Unit converter", "", "Back"]
-            }
+        elif menu_choice == 1:
+            while True:
+                show_cocktail(order["cocktail"], trigger="process_order")
 
-            display_table(columns, auto_number=True)
+                columns = {
+                    "Action": ["Cocktail served", "Order cancelled", "Unit converter", "", "Back"]
+                }
 
-            menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+                display_table(columns, auto_number=True)
 
-            if menu_choice == 1:
-                for ingredient in cocktail["ingredients"].keys():
-                    for item_id, item in inventory.items():
-                        if ingredient == item_id:
-                            quantity = item["quantity"]
-                            quantity -= 1
+                menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
-                            update_record("inventory", item_id, "quantity", quantity)
+                if menu_choice == 1:
+                    for ingredient in cocktail["ingredients"].keys():
+                        for item_id, item in inventory.items():
+                            if ingredient == item_id:
+                                quantity = item["quantity"]
+                                quantity -= 1
 
-                update_record("order", order_id, "status", "served")
+                                update_record("inventory", item_id, "quantity", quantity)
 
-                print_message("Order successfully served", "green")
-                print()
-                get_input()
+                    update_record("orders", order_id, "status", "served")
 
-            elif menu_choice == 2:
-                update_record("orders", order_id, "status", "cancelled")
-                print_message("Order successfully cancelled", "green")
-                print()
-                get_input()
+                    print_message("Order successfully served", "green")
+                    print()
+                    get_input()
 
-            elif menu_choice == 3:
-                unit_converter()
+                elif menu_choice == 2:
+                    update_record("orders", order_id, "status", "cancelled")
+                    print_message("Order successfully cancelled", "green")
+                    print()
+                    get_input()
 
-                continue
+                elif menu_choice == 3:
+                    unit_converter()
 
-            break
+                    continue
 
-    elif menu_choice == 2:
-        update_record("orders", order_id, "status", "cancelled")
-        print_message("Order successfully cancelled", "green")
-        print()
+                break
+
+        elif menu_choice == 2:
+            update_record("orders", order_id, "status", "cancelled")
+            print_message("Order successfully cancelled", "green")
+            print()
+            get_input()
+
+    else:
         get_input()
 
     return
@@ -172,13 +178,15 @@ def new_order(cocktail_id=None, guest_id=None):
 
         if cocktail_id is None:
             cocktail_id = select_cocktail("new_order")
+            if cocktail_id is None:
+                return
 
         orders = load_data("orders")
 
         order = {
             "id": str(len(orders) + 1),
             "event": current_event_id,
-            "person": str(guest_id),
+            "guest": str(guest_id),
             "cocktail": cocktail_id,
             "status": "ordered"
         }
@@ -210,16 +218,16 @@ def new_order(cocktail_id=None, guest_id=None):
     return
 
 
-def cancel_order(cocktail_id="", person_id="", event_id=""):
+def cancel_order(cocktail_id="", guest_id="", event_id=""):
     orders = load_data("orders")
 
     if cocktail_id:
         key = "cocktail"
         value = cocktail_id
 
-    elif person_id:
-        key = "person"
-        value = person_id
+    elif guest_id:
+        key = "guest"
+        value = guest_id
 
     elif event_id:
         key = "event"
@@ -235,8 +243,8 @@ def cancel_order(cocktail_id="", person_id="", event_id=""):
     return
 
 def show_guest_orders(guest_id):
-    persons = load_data("persons")
-    guest = persons[guest_id]
+    guests = load_data("guests")
+    guest = guests[guest_id]
     guest_name = f"{guest["first_name"]} {guest["surname"]}"
 
     while True:
@@ -260,7 +268,7 @@ def show_guest_orders(guest_id):
         }
 
         for order_id, order in orders.items():
-            if order["person"] == guest_id:
+            if order["guest"] == guest_id:
                 order_ids.append(order_id)
                 columns["Cocktail"].append(cocktails[order["cocktail"]]["name"])
                 columns["Event"].append(events[order["event"]]["name"])

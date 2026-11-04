@@ -89,7 +89,7 @@ def rank_a_cocktail(guest_id=None, trigger=None):
                      )
 
         if guest_id is None:
-            from modules.persons import select_guest
+            from modules.guests import select_guest
             guest_id = select_guest("rank_a_cocktail")
             if guest_id is None:
                 break
@@ -113,7 +113,7 @@ def rank_a_cocktail(guest_id=None, trigger=None):
 
         update_id = str(len(rankings) + 1)
         for ranking_id, ranking in rankings.items():
-            if ranking["person"] == guest_id and ranking["cocktail"] == cocktail_id:
+            if ranking["guest"] == guest_id and ranking["cocktail"] == cocktail_id:
                 update_id = ranking_id
                 break
 
@@ -121,7 +121,7 @@ def rank_a_cocktail(guest_id=None, trigger=None):
         update_ranking = {
             "id": update_id,
             "cocktail": cocktail_id,
-            "person": guest_id,
+            "guest": guest_id,
             "date": today,
             "score": score
         }
@@ -253,20 +253,27 @@ def select_cocktail(trigger=""):
         if trigger == "new_order":
             columns["Cocktail"].extend(["", "Cocktail not on list"])
 
+        if trigger != "new_order":
+            columns["Cocktail"].extend(["", "Back"])
+
         display_table(columns, auto_number=True)
 
         menu_choice = get_menu_choice(range(0, len(columns["Cocktail"]) - 1))
-        cocktail_id = cocktail_ids[menu_choice - 1]
 
         if menu_choice == 0:
-            search_cocktail("name")
+            if trigger == "new_order":
+                search_cocktail("name")
+            else:
+                return None
+
+        cocktail_id = cocktail_ids[menu_choice - 1]
 
         break
 
     return cocktail_id
 
 
-def show_cocktail(cocktail_id):
+def show_cocktail(cocktail_id, trigger=None):
     cocktails = load_data("cocktails")
     inventory = load_data("inventory")
 
@@ -304,41 +311,42 @@ def show_cocktail(cocktail_id):
 
     display_panel(panel_content, title="instructions")
 
-    while True:
-        columns = {
-            "Action": ["Order cocktail", "Statistics", "Deactivate cocktail"]
-        }
+    if trigger != "process_order":
+        while True:
+            columns = {
+                "Action": ["Order cocktail", "Statistics", "Deactivate cocktail"]
+            }
 
-        if low_on_stock:
-            columns["Action"].append("Add unavailable ingredients to shopping list")
-
-        columns["Action"].extend(["", "Back"])
-
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-
-        if menu_choice == 1:
             if low_on_stock:
-                get_input("Cocktail cannot be ordered because not all ingredients are available.", color="red")
-                break
-            from modules.orders import new_order
-            new_order(cocktail_id)
+                columns["Action"].append("Add unavailable ingredients to shopping list")
 
-        elif menu_choice == 2:
-            show_cocktail_statistics(cocktail_id)
-            continue
+            columns["Action"].extend(["", "Back"])
 
-        elif menu_choice == 3:
-            deactivate_cocktail(cocktail_id)
+            display_table(columns, auto_number=True)
 
-        elif menu_choice == 4:
-            for item_id in low_on_stock:
-                update_record("inventory", item_id, "shopping_list", True)
-            print_message("Ingredients successfully added to shopping list.\n", "green")
-            get_input()
+            menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
-        break
+            if menu_choice == 1:
+                if low_on_stock:
+                    get_input("Cocktail cannot be ordered because not all ingredients are available.", color="red")
+                    break
+                from modules.orders import new_order
+                new_order(cocktail_id)
+
+            elif menu_choice == 2:
+                show_cocktail_statistics(cocktail_id)
+                continue
+
+            elif menu_choice == 3:
+                deactivate_cocktail(cocktail_id)
+
+            elif menu_choice == 4:
+                for item_id in low_on_stock:
+                    update_record("inventory", item_id, "shopping_list", True)
+                print_message("Ingredients successfully added to shopping list.\n", "green")
+                get_input()
+
+            break
 
     return
 
@@ -447,7 +455,7 @@ def show_cocktail_statistics(cocktail_id):
 
     orders = load_data("orders")
     rankings = load_data("rankings")
-    persons = load_data("persons")
+    guests = load_data("guests")
     events = load_data("events")
 
     content = f"Statistics for cocktail [blue]{cocktail["name"]}[/]."
@@ -472,10 +480,11 @@ def show_cocktail_statistics(cocktail_id):
             number_of_ratings += 1
             total_score += ranking["score"]
 
-    average_score = round(total_score / number_of_ratings, 1)
+    if number_of_ratings > 0:
+        average_score = round(total_score / number_of_ratings, 1)
 
-    panel_content += f"Average score:    {average_score}\n"
-    panel_content += f"Number of votes:  {number_of_ratings}"
+        panel_content += f"Average score:    {average_score}\n"
+        panel_content += f"Number of votes:  {number_of_ratings}"
 
     display_panel(panel_content, title="Overview")
 
@@ -488,12 +497,12 @@ def show_cocktail_statistics(cocktail_id):
 
     for order in orders.values():
         if order["cocktail"] == cocktail_id and order["status"] == "served":
-            person_id = order["person"]
-            order_counts[person_id] = order_counts.get(person_id, 0) + 1
+            guest_id = order["guest"]
+            order_counts[guest_id] = order_counts.get(guest_id, 0) + 1
 
-    for person_id, count in sorted(order_counts.items(), key=lambda entry: entry[1], reverse=True):
-        person = persons[person_id]
-        name = f"{person['first_name']} {person['surname']}"
+    for guest_id, count in sorted(order_counts.items(), key=lambda entry: entry[1], reverse=True):
+        guest = guests[guest_id]
+        name = f"{guest['first_name']} {guest['surname']}"
 
         columns["Guest"].append(name)
         columns["Times served"].append(count)
@@ -514,8 +523,8 @@ def show_cocktail_statistics(cocktail_id):
 
     for ranking in sorted(rankings.values(), key=lambda entry: entry["score"], reverse=True):
         if ranking["cocktail"] == cocktail_id:
-            person = persons[ranking["person"]]
-            name = f"{person['first_name']} {person['surname']}"
+            guest = guests[ranking["guest"]]
+            name = f"{guest['first_name']} {guest['surname']}"
 
             columns["Guest"].append(name)
             columns["Date"].append(ranking["date"])

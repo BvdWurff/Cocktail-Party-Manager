@@ -75,7 +75,7 @@ Event date:         [blue]{event["date"]}[/]"""
         for guest_id in guest_ids:
             cocktail_counter = 0
             for order in orders.values():
-                if order["event"] == event_id and order["status"] == "served" and order["person"] == str(guest_id):
+                if order["event"] == event_id and order["status"] == "served" and order["guest"] == str(guest_id):
                     cocktail_counter += 1
             served_cocktails.append(str(cocktail_counter))
 
@@ -191,12 +191,12 @@ def show_all_events(event_filter):
         display_table(columns, auto_number=True)
 
         menu_choice = get_menu_choice(range(0, len(columns["Event"]) - 1))
-        event_id = event_ids[menu_choice - 1]
 
         if menu_choice == 0:
             break
 
         else:
+            event_id = event_ids[menu_choice - 1]
             show_event(events[event_id], event_id)
             break
 
@@ -268,7 +268,7 @@ Type [blue]Stop[/] to exit the registration process."""
 
         break
 
-    guests = []
+    guests_list = []
 
     while True:
         content = f"Here you can select guests you want to add the event."
@@ -278,14 +278,14 @@ Type [blue]Stop[/] to exit the registration process."""
                      content=content
                      )
 
-        persons = load_data("persons")
+        guests = load_data("guests")
 
         options = {}
 
-        for person in persons.keys():
-            if person not in guests and persons[person]["active"] == True:
-                name = f"{persons[person]["first_name"]} {persons[person]["surname"]}"
-                options[int(person)] = name
+        for guest in guests.keys():
+            if guest not in guests_list and guests[guest]["active"] == True:
+                name = f"{guests[guest]["first_name"]} {guests[guest]["surname"]}"
+                options[int(guest)] = name
 
         columns = {
             "Name": []
@@ -293,9 +293,9 @@ Type [blue]Stop[/] to exit the registration process."""
 
         guest_ids = []
 
-        for person_id, person_name in sorted(options.items(), key=lambda item: item[1].casefold()):
-            guest_ids.append(person_id)
-            columns["Name"].append(person_name)
+        for guest_id, guest_name in sorted(options.items(), key=lambda item: item[1].casefold()):
+            guest_ids.append(guest_id)
+            columns["Name"].append(guest_name)
 
         columns["Name"].extend(["", "Continue"])
 
@@ -307,7 +307,7 @@ Type [blue]Stop[/] to exit the registration process."""
             break
 
         guest_id = guest_ids[menu_choice - 1]
-        guests.append(str(guest_id))
+        guests_list.append(str(guest_id))
 
     event = {
         "id": str(len(events) + 1),
@@ -315,7 +315,7 @@ Type [blue]Stop[/] to exit the registration process."""
         "date": event_date,
         "current": current,
         "active": True,
-        "guests": guests
+        "guests": guests_list
     }
 
     save_data("events", event)
@@ -376,11 +376,11 @@ def get_event_guests(event=None):
     if event is None:
         event, _ = get_current_event()
 
-    persons = load_data("persons")
+    guests = load_data("guests")
     options = {}
 
     for guest_id in event["guests"]:
-        guest = persons[guest_id]
+        guest = guests[guest_id]
 
         if guest["active"]:
             name = f"{guest['first_name']} {guest['surname']}"
@@ -424,7 +424,7 @@ def get_event_cocktails(event_id=None):
 
 
 def add_guest_to_event(event=None, event_id=None, guest_id=None):
-    from modules.persons import new_person
+    from modules.guests import new_guest
 
     if event is None:
         event, event_id = get_current_event()
@@ -433,16 +433,16 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
             return None
 
     if guest_id is None:
-        persons = load_data("persons")
+        guests = load_data("guests")
         options = {}
 
-        for person_id, person in persons.items():
-            if person_id not in event["guests"]:
-                guest = persons[person_id]
+        for guest_id, guest in guests.items():
+            if guest_id not in event["guests"]:
+                guest = guests[guest_id]
 
                 if guest["active"]:
                     name = f"{guest["first_name"]} {guest["surname"]}"
-                    options[int(person_id)] = name
+                    options[int(guest_id)] = name
 
         guest_names = []
         guests_ids = []
@@ -452,7 +452,7 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
             guest_names.append(guest_name)
 
         if len(guest_names) == 0:
-            guest_id = new_person("new_order")
+            guest_id = new_guest("new_order")
 
             if guest_id is None:
                 return None
@@ -479,7 +479,7 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
             guest_id = guests_ids[menu_choice - 1]
 
             if menu_choice == 0:
-                guest_id = new_person("new_order")
+                guest_id = new_guest("new_order")
 
                 if guest_id is None:
                     return None

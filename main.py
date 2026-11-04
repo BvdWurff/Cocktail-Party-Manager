@@ -11,6 +11,7 @@ from utils.utils import (
     get_menu_choice,
     display_table,
     get_input,
+    update_record,
 )
 
 from menus import main_menu
@@ -22,6 +23,7 @@ from utils.constants import (
 
 def update_events():
     events = load_data("events")
+    orders = load_data("orders")
     today = datetime.date.today()
 
     for event_id, event in events.items():
@@ -44,6 +46,11 @@ def update_events():
 
         if event["current"] != current or event["active"] != active:
             save_data("events", event_update)
+
+            if not active:
+                for order_id, order in orders.items():
+                    if order["event"] == event_id:
+                        update_record("orders", order_id, "status", "cancelled")
 
     return
 

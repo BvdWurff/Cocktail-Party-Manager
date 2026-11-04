@@ -116,7 +116,7 @@ def get_menu_choice(valid_choices):
 
 
         if menu_choice not in valid_choices:
-            print_message(INVALID_INPUT, "red")
+            print_message(INVALID_INPUT)
             continue
 
         print()
@@ -155,11 +155,11 @@ def get_input(message=CONTINUE_PROMPT, data_type: type | str = str, color="brigh
     while True:
         value = console.input(f"{' ' * 5}[{color}]{message}[/]")
 
-        if data_type == float:
-            value = value.replace(",",".")
-            value = round(float(value), 1)
-
         try:
+            if data_type == float:
+                value = value.replace(",", ".")
+                value = round(float(value), 1)
+                
             if data_type != "enter":
                 return data_type(value)
 
@@ -167,7 +167,7 @@ def get_input(message=CONTINUE_PROMPT, data_type: type | str = str, color="brigh
                 return None
 
         except (ValueError, TypeError):
-            print_message(INVALID_INPUT, "red")
+            print_message(INVALID_INPUT)
 
 
 def display_panel(content, border_style="bright_yellow", title_color="bright_white", title="", top_padding=0):

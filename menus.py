@@ -9,7 +9,7 @@ from modules.orders import (
     process_order,
 )
 
-from modules.persons import show_all_persons
+from modules.guests import show_all_guests
 
 from modules.events import (
     new_event,
@@ -45,7 +45,7 @@ def main_menu():
                      )
 
         columns = {
-            "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Persons", "Unit convertor", "", "Exit"]
+            "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Guests", "Unit convertor", "", "Exit"]
         }
 
         display_table(columns, auto_number=True)
@@ -65,7 +65,7 @@ def main_menu():
             inventory_menu()
 
         elif menu_choice == 5:
-            show_all_persons()
+            show_all_guests()
 
         elif menu_choice == 6:
             unit_converter()
