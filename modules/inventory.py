@@ -67,7 +67,7 @@ def add_item_to_inventory(ingredient_id):
         save_data("inventory", item)
 
 
-def show_inventory(trigger):
+def show_inventory(trigger=None):
     while True:
         inventory = load_data("inventory")
 
@@ -102,70 +102,46 @@ def show_inventory(trigger):
         for item_id, item in sorted(inventory.items(), key=lambda entry: entry[1]["name"].casefold()):
             quantity = item["quantity"]
             minimum_quantity = item["minimum_quantity"]
+            shopping_list = item["shopping_list"]
 
-            if trigger == "below_min_quantity":
-                if quantity < minimum_quantity:
-                    item_ids.append(item_id)
-                    columns["Name"].append(item["name"])
+            if trigger == "below_min_quantity" and quantity >= minimum_quantity:
+                continue
 
-                    if quantity == 0:
-                        columns["Quantity"].append(f"[red]{quantity}[/]")
-                    else:
-                        columns["Quantity"].append(f"[orange1]{quantity}[/]")
+            if trigger == "shopping_list" and not shopping_list:
+                continue
 
-                    if item["shopping_list"]:
-                        columns["Shopping list"].append("Yes")
-                    else:
-                        columns["Shopping list"].append("No")
+            item_ids.append(item_id)
 
-            elif trigger == "shopping_card":
-                if item["shopping_list"]:
-                    item_ids.append(item_id)
-                    columns["Name"].append(item["name"])
-                    columns["Shopping list"].append("Yes")
-                    if quantity == 0:
-                        columns["Quantity"].append(f"[red]{quantity}[/]")
-                    elif quantity < minimum_quantity:
-                        columns["Quantity"].append(f"[orange1]{quantity}[/]")
-                    else:
-                        columns["Quantity"].append(f"[green]{quantity}[/]")
-
+            if quantity == 0:
+                color = "red"
+            elif quantity < minimum_quantity:
+                color = "orange1"
             else:
-                item_ids.append(item_id)
-                columns["Name"].append(item["name"])
+                color = "green"
 
-                if item["shopping_list"]:
-                    columns["Shopping list"].append("Yes")
-                else:
-                    columns["Shopping list"].append("No")
+            columns["Name"].append(item["name"])
+            columns["Quantity"].append(f"[{color}]{quantity}[/]")
+            columns["Shopping list"].append("Yes" if shopping_list else "No")
 
-                if quantity == 0:
-                    columns["Quantity"].append(f"[red]{quantity}[/]")
-                elif quantity < minimum_quantity:
-                    columns["Quantity"].append(f"[orange1]{quantity}[/]")
-                else:
-                    columns["Quantity"].append(f"[green]{quantity}[/]")
-
-        columns["Name"].extend(["", "Back"])
-        columns["Quantity"].extend(["", ""])
-        columns["Shopping list"].extend(["", ""])
-
-        if len(columns["Name"]) == 2:
+        if not item_ids:
             print_message("No items found.", "red")
             print()
             get_input("Press [blue]Enter[/] to return to the inventory menu.")
             break
 
-        else:
-            display_table(columns, auto_number=True)
+        columns["Name"].extend(["", "Back"])
+        columns["Quantity"].extend(["", ""])
+        columns["Shopping list"].extend(["", ""])
 
-            menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
+        display_table(columns, auto_number=True)
 
-            if menu_choice == 0:
-                break
+        menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
 
-            item_id = item_ids[menu_choice - 1]
-            show_inventory_item(item_id)
+        if menu_choice == 0:
+            break
+
+        item_id = item_ids[menu_choice - 1]
+        show_inventory_item(item_id)
 
     return
 

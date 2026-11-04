@@ -2,10 +2,6 @@
 # FUNCTION IMPORTS
 # ==============================
 
-from modules.inventory import (
-    check_cocktail_availability,
-)
-
 from modules.persons import select_guest
 from modules.events import (
     get_current_event,
@@ -175,7 +171,7 @@ def new_order(cocktail_id=None, guest_id=None):
                 return
 
         if cocktail_id is None:
-            cocktail_id = select_cocktail()
+            cocktail_id = select_cocktail("new_order")
 
         orders = load_data("orders")
 
@@ -186,43 +182,31 @@ def new_order(cocktail_id=None, guest_id=None):
             "cocktail": cocktail_id,
             "status": "ordered"
         }
-        low_on_stock = check_cocktail_availability(cocktail_id)
 
-        if low_on_stock:
-            print_message("Cocktail cannot be ordered.", "red")
-            print()
-            print_message(f"The following ingredients are low on stock:")
-            for ingredient in low_on_stock:
-                print_message(f" - {ingredient}")
+        save_data("orders", order)
 
-            print()
-            get_input("Click [blue]Enter[/] to select another cocktail.")
+        content = "[green]Order successfully placed.[/]"
+
+        display_page(location="Orders",
+                     title="Order placed",
+                     content=content
+                     )
+
+        columns = {
+            "Action": ["Place another order", "", "Back"]
+        }
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+        if menu_choice == 1:
+            guest_id = None
+            cocktail_id = None
+            order.clear()
             continue
 
-        else:
-            save_data("orders", order)
-
-            content = "[green]Order successfully placed.[/]"
-
-            display_page(location="Orders",
-                         title="Order placed",
-                         content=content
-                         )
-
-            columns = {
-                "Action": ["Place another order", "", "Back"]
-            }
-
-            display_table(columns, auto_number=True)
-
-            menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-
-            if menu_choice == 1:
-                cocktail_id = None
-                order.clear()
-                continue
-
-            break
+        break
     return
 
 
@@ -265,11 +249,13 @@ def show_guest_orders(guest_id):
 
         orders = load_data("orders")
         cocktails = load_data("cocktails")
+        events = load_data("events")
 
         order_ids = []
 
         columns = {
             "Cocktail": [],
+            "Event": [],
             "Status": [],
         }
 
@@ -277,9 +263,11 @@ def show_guest_orders(guest_id):
             if order["person"] == guest_id:
                 order_ids.append(order_id)
                 columns["Cocktail"].append(cocktails[order["cocktail"]]["name"])
+                columns["Event"].append(events[order["event"]]["name"])
                 columns["Status"].append(str(order["status"]).capitalize())
 
         columns["Cocktail"].extend(["", "Back"])
+        columns["Event"].extend(["", ""])
         columns["Status"].extend(["", ""])
 
         display_table(columns, auto_number=True)

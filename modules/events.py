@@ -12,6 +12,7 @@ from utils.utils import (
     save_data,
     get_menu_choice,
     display_page, update_record,
+    display_panel,
 )
 
 # ==============================
@@ -37,7 +38,7 @@ def get_current_event():
     return event, event_id
 
 
-def show_event(event=None, event_id=None):
+def show_event(event=None, event_id=None, trigger=None):
     if event is None:
         event, event_id = get_current_event()
         if event is None:
@@ -83,7 +84,13 @@ Event date:         [blue]{event["date"]}[/]"""
             "Served cocktails": served_cocktails,
         }
 
-        display_table(columns)
+        if columns["Guest"]:
+            display_table(columns)
+
+        else:
+            panel_content = "[red]No guests are added to this event.[/]"
+            display_panel(panel_content, title="Guest servings")
+
 
         cocktail_names, cocktail_servings = get_event_cocktails(event_id)
 
@@ -95,13 +102,22 @@ Event date:         [blue]{event["date"]}[/]"""
 
             display_table(columns)
 
+        else:
+            panel_content = "[red]No cocktails are yet serverd for this event.[/]"
+            display_panel(panel_content, title="Cocktails servings")
+
         today = datetime.datetime.now()
         event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y")
 
         if event_date.date() >= today.date():
             columns = {
-                "Action": ["Add guest",  "Cancel event", "", "Back"]
+                "Action": ["Add guest"]
             }
+
+            if trigger != "current_event":
+                columns["Action"].append("Cancel event")
+
+            columns["Action"].extend(["", "Back"])
 
             display_table(columns, auto_number=True)
 
@@ -413,6 +429,7 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
     if event is None:
         event, event_id = get_current_event()
         if event is None:
+            get_input("No event was selected.", color="red")
             return None
 
     if guest_id is None:
@@ -472,6 +489,28 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
     save_data("events", event, record_id=str(event_id))
 
     return guest_id
+
+
+def add_low_stock_items_to_shopping_list():
+    inventory = load_data("inventory")
+
+    counter = 0
+
+    for item_id, item in inventory.items():
+        if item["quantity"] < item["minimum_quantity"] and not item["shopping_list"]:
+            update_record("inventory", item_id, "shopping_list", True)
+            counter += 1
+
+    if counter == 0:
+        print_message("All ingredients were already added to the shopping list.", "red")
+
+    else:
+        print_message("Ingredients successfully added to the shopping list.", "green")
+
+    print()
+    get_input()
+
+    return
 
 
 

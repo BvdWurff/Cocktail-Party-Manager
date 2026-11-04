@@ -45,7 +45,7 @@
         "cocktail": "17105",
         "person": "1",
         "date": "03-11-2026",
-        "score": 6.3
+        "score": 1.0
     },
     "9": {
         "cocktail": "11024",
@@ -57,12 +57,24 @@
         "cocktail": "14071",
         "person": "1",
         "date": "03-11-2026",
-        "score": 3.2
+        "score": 7.0
     },
     "11": {
         "cocktail": "11418",
         "person": "1",
         "date": "03-11-2026",
         "score": 9.0
+    },
+    "12": {
+        "cocktail": "14229",
+        "person": "1",
+        "date": "03-11-2026",
+        "score": 7.0
+    },
+    "13": {
+        "cocktail": "16311",
+        "person": "10",
+        "date": "03-11-2026",
+        "score": 1.9
     }
 }

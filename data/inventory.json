@@ -32,7 +32,7 @@
         "description": "Curaçao (/ˈkjʊərəsaʊ/) is a liqueur flavored with the dried peel of the Laraha citrus fruit, grown on the island of Curaçao.\r\n\r\nAn official Curaçao liqueur has to be made with the dried peels of the \"Laraha\". Laraha is a bitter orange native of Curaçao with the Latin name: \"Citrus Aurantium Currasuviensis\", meaning \"Golden Orange of Curaçao\". Spanish explorers brought the sweet Valencia orange to the island in 1527, [2] but the nutrient-poor soil and arid climate of Curaçao proved unsuitable to Valencia cultivation, resulting in small, bitter fruit. Although the bitter flesh of the Laraha is hardly edible, the peels are aromatic and flavorful, maintaining much of the essence of the Valencia orange.\r\n\r\nThere are no definite facts that points out who and when the first Curaçao Liqueur was developed. The Lucas Bols distillery, founded in 1575 in Amsterdam, maintains that Lucas Bols (1652–1719) already developed a Laraha-based liqueur. The Dutch West Indies Company had taken possession of Curaçao in 1634 and Bols had shares in both the West and East India Companies to guarantee the cheap supply of spices for their distilled drinks. After the discovery that an aromatic oil could be extracted from the unripe peel of the otherwise useless bitter oranges, Bols had this oil exported back to Amsterdam to develop a liqueur similar to current day Curaçao. Bols tended to add an \"element of alchemical mystery\" to his products, explaining the unlikely addition of a blue coloring. In the past, the liqueur also had the name Crème de Ciel (\"cream of heaven\"), presumably for its blue color.\r\n\r\nAlternatively, the Senior & Co, a company that originates from Curaçao, are to this day the only company that always produced their liqueur with the peels of the Laraha. The Jewish family, Senior and Chumacairo, started selling their liqueur in 1896 in their pharmacy at small quantities. In 1947 they bought the Landhuis (Dutch for \"country manor\") Chobolobo in Willemstad, where the distillery has since been housed. As this company is the only one who uses laraha fruit from Curaçao, it has been permitted to put the word \"genuine\" on its labels.",
         "quantity": 7,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "308": {
         "name": "Lime juice",
@@ -53,14 +53,14 @@
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "337": {
         "name": "Mint",
         "description": "Lamiaceae (/ˌleɪmiˈeɪsiˌaɪ/ or /ˌleɪmiˈeɪsiiː/) or Labiatae is a family of flowering plants commonly known as the mint or deadnettle family. Many of the plants are aromatic in all parts and include widely used culinary herbs, such as basil, mint, rosemary, sage, savory, marjoram, oregano, hyssop, thyme, lavender, and perilla. Some species are shrubs, trees (such as teak), or, rarely, vines. Many members of the family are widely cultivated, not only for their aromatic qualities but also their ease of cultivation, since they are readily propagated by stem cuttings. Besides those grown for their edible leaves, some are grown for decorative foliage, such as Coleus. Others are grown for seed, such as Salvia hispanica (chia), or for their edible tubers, such as Plectranthus edulis, Plectranthus esculentus, Plectranthus rotundifolius, and Stachys affinis (Chinese artichoke).\r\n\r\nThe family has a cosmopolitan distribution. The enlarged Lamiaceae contains about 236 genera and has been stated to contain 6,900 to 7,200 species, but the World Checklist lists 7,534. The largest genera are Salvia (900), Scutellaria (360), Stachys (300), Plectranthus (300), Hyptis (280), Teucrium (250), Vitex (250), Thymus (220), and Nepeta (200). Clerodendrum was once a genus of over 400 species, but by 2010, it had been narrowed to about 150.\r\n\r\nThe family has traditionally been considered closely related to the Verbenaceae; in the 1990s, phylogenetic studies suggested that many genera classified in the Verbenaceae should be classified in the Lamiaceae  or to other families in the order Lamiales.\r\n\r\nThe alternate family name Labiatae refers to the fact that the flowers typically have petals fused into an upper lip and a lower lip (labia in Latin). The flowers are bilaterally symmetrical with five united petals and five united sepals. They are usually bisexual and verticillastrate (a flower cluster that looks like a whorl of flowers, but actually consists of two crowded clusters). Although this is still considered an acceptable alternative name, most botanists now use the name Lamiaceae in referring to this family. The leaves emerge oppositely, each pair at right angles to the previous one (decussate) or whorled. The stems are frequently square in cross section, but this is not found in all members of the family, and is sometimes found in other plant families.",
         "quantity": 4,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "523": {
         "name": "White Rum",
@@ -88,7 +88,7 @@
         "description": "Triple sec, originally Curaçao triple sec, is a variety of Curaçao liqueur, an orange-flavoured liqueur made from the dried peels of bitter and/or sweet oranges.\r\n\r\nTriple sec may be consumed neat as a digestif or on the rocks, but it is more often used as an ingredient in a variety of cocktails, such as sangria, margarita, Kamikaze, White Lady, Long Island Iced Tea, Sidecar, Skittle Bomb, Corpse Reviver #2, and Cosmopolitan.\r\n\r\nThe Combier distillery claims that triple sec was invented between 1834 and 1848 by Jean-Baptiste Combier in Saumur, France. However, Combier was more famous for its élixir Combier, which contained orange and many other flavorings.\r\n\r\nCointreau, on the other hand, claims that its orange liqueur was formulated in 1849.\r\n\r\nTriple sec was widely known by 1878: at the Exposition Universelle of 1878 in Paris, several distillers were offering \"Curaçao [sic] triple sec\", as well as \"Curaçao doux\".",
         "quantity": 9,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "312": {
         "name": "Lime",
@@ -102,7 +102,7 @@
         "description": null,
         "quantity": 2,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "179": {
         "name": "Dark rum",
@@ -116,14 +116,14 @@
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "492": {
         "name": "Tomato juice",
         "description": "Tomato juice is a juice made from tomatoes, usually used as a beverage, either plain or in cocktails such as a Bloody Mary or Michelada.\r\n\r\nIn Canada, tomato juice is unconcentrated and pasteurized, made from fine tomato pulp from ripe and whole tomatoes. The stems and skins must be removed without adding water to the final juice product. It may also contain a sweetening agent, citric acid and salt.",
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "529": {
         "name": "Worcestershire sauce",
@@ -172,7 +172,7 @@
         "description": "7 Up (stylized as 7up outside of the U.S.) is a brand of lemon-lime flavored, non-caffeinated soft drink. The rights to the brand are held by Dr Pepper Snapple Group in the United States, and PepsiCo (or its licensees) in the rest of the world. The U.S. version of the 7 Up logo includes a red cherry between the \"7\" and \"Up\"; this red cherry has been animated and used as a mascot for the brand as Cool Spot.\r\n\r\n7 Up was created by Charles Leiper Grigg, who launched his St. Louis–based company The Howdy Corporation in 1920.[1] Grigg came up with the formula for a lemon-lime soft drink in 1929. The product, originally named \"Bib-Label Lithiated Lemon-Lime Soda\", was launched two weeks before the Wall Street Crash of 1929.[2] It contained lithium citrate, a mood-stabilizing drug, until 1950.[3] It was one of a number of patent medicine products popular in the late-19th and early-20th centuries. Its name was later shortened to \"7 Up Lithiated Lemon Soda\" before being further shortened to just \"7 Up\" by 1936.\r\n\r\nWestinghouse bought 7 Up in 1969 and sold it in 1978 to Philip Morris, who then in 1986 sold it to a group led by the investment firm Hicks & Haas.[4] 7 Up merged with Dr Pepper in 1988; Cadbury Schweppes bought the combined company in 1995. The Dr Pepper Snapple Group was spun off from Cadbury Schweppes in 2008.\r\n\r\n7 Up has been reformulated several times since its launch in 1929. In 2006, the version of the product sold in the U.S. was re-formulated so that it could be marketed as being \"100% natural\". This was achieved by eliminating the chelating-agent calcium disodium EDTA, and replacing sodium citrate with potassium citrate in order to reduce the beverage's sodium content.[5] This re-formulation contains no fruit juice and, in the U.S., is sweetened with high-fructose corn syrup (HFCS). The manufacturing process used in the production of HFCS has led some public health and advocacy groups to challenge the ad campaign's \"natural\" claims.[6] In 2007, after the Center for Science in the Public Interest threatened to sue 7 Up, it was announced that 7 Up would stop being marketed as \"100% natural\". Instead, it is now promoted as having \"100% Natural Flavors\". The controversy does not extend to other countries, such as the United Kingdom, where HFCS is not generally used in foods, including 7 Up. In 2011, 7 Up began test-marketing a formula, called 7 Up Retro, using sugar rather than HFCS. Container labels sport the caption, \"Made With Real Sugar\".\r\n\r\nThere exists a myth that the 7 Up name comes from the drink having a pH over 7. That would make it neutral or basic on the scale; however, this is not the case, as the 7 Up pH is close to 3.79, similar to other drinks of the type.[7] The real origin of the name is unclear,[8] though Britvic claims that the name comes from the seven main ingredients in the drink,[9] while others have claimed that the number was a coded reference to the lithium contained in the original recipe, which has an atomic mass of approximately 7.",
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "305": {
         "name": "Light rum",
@@ -186,14 +186,14 @@
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "242": {
         "name": "Grapefruit Juice",
         "description": null,
         "quantity": 7,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "470": {
         "name": "Strawberries",
@@ -207,14 +207,14 @@
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "412": {
         "name": "Raisins",
         "description": null,
         "quantity": 8,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "69": {
         "name": "Blueberries",
@@ -228,7 +228,7 @@
         "description": "Grenadine is a commonly used, non-alcoholic bar syrup, characterized by a flavour that is both tart and sweet, and by a deep red colour. It is popular as an ingredient in cocktails, both for its flavour and to give a reddish/pink tint to mixed drinks.\r\n\r\nThe name grenadine originated from the French word grenade which means pomegranate, with pomme meaning apple and granate derived from the Italian word for seeds.\r\n\r\nGrenadine was originally prepared from pomegranate juice, sugar, and water.\r\n\r\nAs grenadine is subject to minimal regulation, its basic flavour profile can alternatively be obtained from a mixture of blackcurrant juice and other fruit juices with the blackcurrant flavour dominating.\r\n\r\nTo reduce production costs, manufacturers have widely replaced fruit bases with artificial ingredients. The Mott's brand \"Rose's\" is by far the most common brand of grenadine sold in the United States,[3] and is formulated from (in order of concentration): high fructose corn syrup, water, citric acid, sodium citrate, sodium benzoate, FD&C Red #40, natural and artificial flavours and FD&C Blue #1. In Europe, Bols still manufactures grenadine with pomegranate.",
         "quantity": 4,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "409": {
         "name": "Powdered sugar",
@@ -242,14 +242,14 @@
         "description": "The pineapple (Ananas comosus) is a tropical plant with an edible multiple fruit consisting of coalesced berries, also called pineapples, and the most economically significant plant in the Bromeliaceae family.\r\n\r\nPineapples may be cultivated from a crown cutting of the fruit, possibly flowering in 5–10 months and fruiting in the following six months. Pineapples do not ripen significantly after harvest.\r\n\r\nPineapples can be consumed fresh, cooked, juiced, or preserved. They are found in a wide array of cuisines. In addition to consumption, the pineapple leaves are used to produce the textile fiber piña in the Philippines, commonly used as the material for the men's barong Tagalog and women's baro't saya formal wear in the country. The fiber is also used as a component for wallpaper and other furnishings.",
         "quantity": 2,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "89": {
         "name": "Carbonated water",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "94": {
         "name": "Celery Salt",
@@ -270,7 +270,7 @@
         "description": "Schnapps (/ʃnɑːps/ or /ʃnæps/) or schnaps is a type of alcoholic beverage that may take several forms, including distilled fruit brandies, herbal liqueurs, infusions, and \"flavored liqueurs\" made by adding fruit syrups, spices, or artificial flavorings to neutral grain spirits.\n\nThe English loanword \"schnapps\" is derived from the colloquial German word Schnaps [ʃnaps] (About this sound listen) (plural: Schnäpse) which is used in reference to spirit drinks. The word Schnaps stems from Low German language and is related to the German term \"schnappen\", which refers to the fact that the spirit or liquor drink is usually consumed in a quick slug from a small glass (i.e., a shot glass). In British English, a corresponding term is \"dram\" [of liquor].",
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "457": {
         "name": "Sour Mix",
@@ -291,35 +291,35 @@
         "description": "Southern Comfort (often abbreviated SoCo) is an American liqueur made from neutral spirits with fruit, spice and whiskey flavoring. The brand was originally created by bartender Martin Wilkes Heron in New Orleans in 1874. Since March 1, 2016 the brand has been owned by the Sazerac Company after being sold by the Brown-Forman Group. Sazerac has announced that Southern Comfort's formula will be changed in 2017 to include whiskey as an ingredient, as it was until some time before the brand was sold to Brown-Forman in 1979.\r\n\r\nIn the US, Southern Comfort is available as 100 US proof (50% ABV), 70 US proof (35% ABV) and 42 US proof (21% ABV). Southern Comfort Special Reserve, found in duty-free shops, is a blend of Southern Comfort and bourbon, and is 80 US proof (40% ABV). Southern Comfort Lime, released in summer 2010, is 55 proof (27.5% ABV) (UK 2013 20% ABV) and Southern Comfort Bold Black Cherry, released in summer 2012, is 70 proof (35% ABV).\r\n\r\nSouthern Comfort also produces ready-to-pour cocktails available in the US including Southern Comfort Sweet Tea, Southern Comfort Hurricane and Southern Comfort Lemonade, which are all 30 proof (15% ABV).\r\n\r\nSouthern Comfort has expanded over the years and has several product offerings globally. Outside the US, Southern Comfort produces single-serve cocktails, including Southern Comfort Lemonade and Lime in the UK and Southern Comfort and Cola in Australia.",
         "quantity": 3,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "164": {
         "name": "Creme De Cacao",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "304": {
         "name": "Light Cream",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "241": {
         "name": "Grape soda",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "352": {
         "name": "Orange Juice",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "85": {
         "name": "Candy",
@@ -347,7 +347,7 @@
         "description": null,
         "quantity": 2,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "133": {
         "name": "Coconut Liqueur",
@@ -382,7 +382,7 @@
         "description": "The orange is the fruit of the citrus species Citrus × sinensis in the family Rutaceae. It is also called sweet orange, to distinguish it from the related Citrus × aurantium, referred to as bitter orange. The sweet orange reproduces asexually (apomixis through nucellar embryony); varieties of sweet orange arise through mutations.\r\n\r\nThe orange is a hybrid between pomelo (Citrus maxima) and mandarin (Citrus reticulata). It has genes that are ~25% pomelo and ~75% mandarin; however, it is not a simple backcrossed BC1 hybrid, but hybridized over multiple generations. The chloroplast genes, and therefore the maternal line, seem to be pomelo. The sweet orange has had its full genome sequenced. Earlier estimates of the percentage of pomelo genes varying from ~50% to 6% have been reported.\r\n\r\nSweet oranges were mentioned in Chinese literature in 314 BC. As of 1987, orange trees were found to be the most cultivated fruit tree in the world. Orange trees are widely grown in tropical and subtropical climates for their sweet fruit. The fruit of the orange tree can be eaten fresh, or processed for its juice or fragrant peel. As of 2012, sweet oranges accounted for approximately 70% of citrus production.\r\n\r\nIn 2014, 70.9 million tonnes of oranges were grown worldwide, with Brazil producing 24% of the world total followed by China and India.",
         "quantity": 5,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "322": {
         "name": "Maraschino Cherry",
@@ -410,7 +410,7 @@
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "279": {
         "name": "Jim Beam",
@@ -445,20 +445,41 @@
         "description": "Ruby Port is the most extensively produced and widely available style of port wine. In fact, for many people it serves as an introduction to fortified wines in general. Unlike Vintage Port, most Ruby Port is a blend of young wines from multiple vintages. ... Until the 1960s, it simply indicated a bulk-produced port.",
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "612": {
         "name": "Blood Orange",
         "description": "The blood orange is a variety of orange (Citrus × sinensis) with crimson, almost blood-colored flesh.\r\n\r\nThe distinctive dark flesh color is due to the presence of anthocyanins, a family of polyphenol pigments common to many flowers and fruit, but uncommon in citrus fruits. Chrysanthemin (cyanidin 3-O-glucoside) is the main compound found in red oranges. The flesh develops its characteristic maroon color when the fruit develops with low temperatures during the night. Sometimes, dark coloring is seen on the exterior of the rind, as well, depending on the variety of blood orange. The skin can be tougher and harder to peel than that of other oranges. Blood oranges have a unique flavor compared to other oranges, being distinctly raspberry-like in addition to the usual citrus notes. The anthocyanin pigments of blood oranges begin accumulating in the vesicles at the edges of the segments, and at the blossom end of the fruit, and continue accumulating in cold storage after harvest.",
         "quantity": 2,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
     },
     "354": {
         "name": "Orange Peel",
         "description": null,
         "quantity": 0,
         "minimum_quantity": 10,
-        "shopping_list": false
+        "shopping_list": true
+    },
+    "331": {
+        "name": "Midori Melon Liqueur",
+        "description": "Midori is a sweet, bright green-coloured, muskmelon-flavored liqueur made by Suntory. It is manufactured in Japan, the United States, Mexico, and France. It was made exclusively in Japan until 1987. Midori is typically 20–21% alcohol by volume. Its name is the Japanese word for \"green\". The Midori formulated in France is sweeter than the original Japanese version.\r\n\r\nAs it is extremely sweet, Midori is not usually taken \"straight\"; it is generally used in a cocktail, e.g., the Japanese slipper, which is a cocktail composed of lemonade, fresh lemon juice, lime juice, pineapple juice, or orange juice. Sour flavours are often combined with Midori in order to balance out its sweetness.\r\n\r\nMidori was launched by Suntory at Studio 54 in New York City in 1978 during a party held by the cast, crew, and producers of the movie, Saturday Night Fever. By 1983, Midori was distributed in 20 countries. In 2013, following consumer research, Suntory reduced the sugar content and began producing Midori with a redesigned label and frosted glass bottle.",
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "282": {
+        "name": "Kahlua",
+        "description": "Kahlúa is a coffee-flavored liqueur from Mexico. The drink contains rum, sugar, vanilla bean, and Arabica coffee.\r\n\r\nPedro Domecq began producing Kahlúa in 1936. It was named Kahlúa, meaning \"House of the Acolhua people\" in the Veracruz Nahuatl language spoken before the Spanish Conquest. Kahlúa was Hispanicized as Ulúa, forming the name of the modern San Juan de Ulúa fortress.\r\n\r\nThe company merged in 1994 with Allied Lyons to become Allied Domecq. In turn, that company was partially acquired in 2005 by Pernod Ricard, the largest spirits distributor in the world since its merger with the Swedish Vin & Sprit in March 2008.\r\n\r\nSince 2004, the alcohol content of Kahlúa is 20.0%; earlier versions had 26.5%. In 2002, a more expensive, high-end product called \"Kahlúa Especial\" became available in the United States, Canada and Australia after previously being offered only in duty-free markets. Made with premium Arabica coffee beans grown in Veracruz, Mexico, Kahlúa Especial has an alcohol content of 36%, has a lower viscosity, and is less sweet than the regular version.",
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "212": {
+        "name": "Frangelico",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": true
     }
 }

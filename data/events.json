@@ -93,10 +93,26 @@
     "8": {
         "name": "Rammenlapper",
         "date": "03-11-2026",
+        "current": false,
+        "active": false,
+        "guests": [
+            "1",
+            "10",
+            "4"
+        ]
+    },
+    "9": {
+        "name": "Pizzadag",
+        "date": "04-11-2026",
         "current": true,
         "active": true,
         "guests": [
-            "1"
+            "1",
+            "4",
+            "10",
+            "6",
+            "7",
+            "12"
         ]
     }
 }

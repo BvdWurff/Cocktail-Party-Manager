@@ -15,6 +15,7 @@ from modules.events import (
     new_event,
     show_event,
     show_all_events,
+    add_low_stock_items_to_shopping_list,
 )
 
 from modules.inventory import show_inventory
@@ -24,9 +25,6 @@ from utils.utils import (
     display_table,
     display_page,
     unit_converter,
-    get_input,
-    print_message,
-    load_data,
 )
 
 from modules.cocktails import (
@@ -47,7 +45,7 @@ def main_menu():
                      )
 
         columns = {
-            "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Persons", "Unit convertor", "Statistics", "", "Exit"]
+            "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Persons", "Unit convertor", "", "Exit"]
         }
 
         display_table(columns, auto_number=True)
@@ -71,9 +69,6 @@ def main_menu():
 
         elif menu_choice == 6:
             unit_converter()
-
-        elif menu_choice == 7:
-            stats_menu()
 
         else:
             break
@@ -155,6 +150,7 @@ def orders_menu():
 
     return
 
+
 def events_menu():
     while True:
         content = "Here you can manage your events."
@@ -176,7 +172,7 @@ def events_menu():
             new_event()
 
         elif menu_choice == 2:
-            show_event()
+            show_event(trigger="current_event")
 
         elif menu_choice == 3:
             show_all_events("upcoming")
@@ -200,7 +196,7 @@ def inventory_menu():
                      )
 
         columns = {
-            "Action": ["Show full inventory", "Items below minimum quantity", "Shopping list", "", "Back"]
+            "Action": ["Show full inventory", "Items below minimum quantity", "Add Low-Stock Items to Shopping List", "Shopping list", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -208,86 +204,16 @@ def inventory_menu():
         menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
-            show_inventory("full_inventory")
+            show_inventory(trigger="full_inventory")
 
         elif menu_choice == 2:
-            show_inventory("below_min_quantity")
+            show_inventory(trigger="below_min_quantity")
 
         elif menu_choice == 3:
-            show_inventory("shopping_list")
-
-        else:
-            break
-
-    return
-
-
-def admin_menu():
-    while True:
-        content = "Here you can manage your settings and data."
-
-        display_page(location="Cocktail Party Manager",
-                     title="Admin",
-                     content=content
-                     )
-
-        columns = {
-            "Action": ["Inventory", "Guests", "Events", "Cocktails", "Unit convertor", "Shopping lists", "", "Back"]
-        }
-
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-
-        if menu_choice == 1:
-            show_inventory()
-
-        elif menu_choice == 2:
-            pass
-
-        elif menu_choice == 3:
-            pass
+            add_low_stock_items_to_shopping_list()
 
         elif menu_choice == 4:
-            pass
-
-        elif menu_choice == 5:
-            unit_converter()
-
-        elif menu_choice == 6:
-            pass
-
-        else:
-            break
-
-    return
-
-
-def stats_menu():
-    while True:
-        content = "Here you can look into statistics"
-
-        display_page(location="Cocktail Party Manager",
-                     title="Statistics",
-                     content=content
-                     )
-
-        columns = {
-            "Action": ["Guests", "Events", "Cocktails", "", "Back"]
-        }
-
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-
-        if menu_choice == 1:
-            pass
-
-        elif menu_choice == 2:
-            pass
-
-        elif menu_choice == 3:
-            pass
+            show_inventory(trigger="shopping_list")
 
         else:
             break

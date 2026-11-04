@@ -194,5 +194,35 @@
             "354": "Garnish with"
         },
         "active": true
+    },
+    "16311": {
+        "name": "Applejack",
+        "instructions": "Add all ingredients into mixing glass, chill and strain into cocktail glass",
+        "ingredients": {
+            "275": "1 oz ",
+            "331": "1/2 oz ",
+            "457": "2 oz "
+        },
+        "active": true
+    },
+    "14229": {
+        "name": "747",
+        "instructions": "pour kaluha, then Baileys, then Frangelico not chilled and not layered -- SERVE!!!",
+        "ingredients": {
+            "282": "1/3 part ",
+            "43": "1/3 part ",
+            "212": "1/3 part "
+        },
+        "active": true
+    },
+    "178362": {
+        "name": "Vodka Slime",
+        "instructions": "Fill glass with ice. Add vodka, 7-up then finish with the lime juice.",
+        "ingredients": {
+            "466": "1 cup",
+            "308": "1/2 shot",
+            "1": "1 1/2 shot"
+        },
+        "active": true
     }
 }

@@ -121,13 +121,13 @@ def select_guest(trigger=""):
     if trigger == "new_order":
         content = "Select the guest you want to place an order for."
 
-    else:
-        content = f"A list off all the guests, linked to the current event."
+        display_page(location="Guests",
+                     title="Available guests",
+                     content=content
+                     )
 
-    display_page(location="Guests",
-                 title="Available guests",
-                 content=content
-                 )
+    else:
+        print_message("Select a guest:")
 
     guest_names, guest_ids = get_event_guests()
 
@@ -212,7 +212,7 @@ def show_person(person_id):
         events_list = []
 
         for event_id, event in events.items():
-            if person_id in event["guests"] and not event["active"]:
+            if person_id in event["guests"] and (not event["active"] or event["current"]):
                 events_list.append({"id": event_id, **event})
                 event_counter += 1
 
@@ -227,7 +227,7 @@ def show_person(person_id):
 
         content = f"""Here you can find all information about [blue]{name}[/].\n
 Events attended:     [blue]{event_counter}[/]
-Cocktails ordered:   [blue]{order_counter}[/]
+Cocktails served:   [blue]{order_counter}[/]
 Ranking votes:       [blue]{ranking_counter}[/]"""
 
         display_page(location="Persons",
@@ -235,7 +235,7 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
                      content=content
                      )
 
-        if len(events_list) > 0:
+        if events_list:
 
             columns = {
                 "Event": [],
@@ -244,13 +244,19 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
             }
 
             for event in events_list:
-                columns["Event"].append(event["name"])
-                columns["Date"].append(event["date"])
                 cocktail_counter = 0
                 for order in orders_list:
                     if order["event"] == event["id"]:
                         cocktail_counter += 1
-                columns["Cocktails"].append(cocktail_counter)
+
+                if event["current"]:
+                    columns["Event"].append(f"[blue]{event["name"]}[/]")
+                    columns["Date"].append(f"[blue]{event["date"]}[/]")
+                    columns["Cocktails"].append(f"[blue]{cocktail_counter}[/]")
+                else:
+                    columns["Event"].append(event["name"])
+                    columns["Date"].append(event["date"])
+                    columns["Cocktails"].append(cocktail_counter)
 
             display_table(columns)
 
@@ -258,10 +264,10 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
             panel_content = f"[red]{name} did not attend any events.[/]"
             display_panel(panel_content, title="Events")
 
-        if len(orders_list) > 0:
+        if orders_list:
             columns = {
                 "Cocktail": [],
-                "Ordered": [],
+                "Served": [],
             }
 
             cocktails_list = {}
@@ -272,16 +278,16 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
 
             for cocktail_id, counter in sorted(cocktails_list.items(), reverse=True, key=lambda item: item[1]):
                 columns["Cocktail"].append(cocktails[cocktail_id]["name"])
-                columns["Ordered"].append(counter)
+                columns["Served"].append(counter)
 
             display_table(columns)
 
         else:
-            panel_content = f"[red]{name} did not order any cocktails.[/]"
-            display_panel(panel_content, title="Cocktails")
+            panel_content = f"[red]No cocktails were serverd to {name}.[/]"
+            display_panel(panel_content, title="Serving")
 
 
-        if len(rankings_list) > 0:
+        if rankings_list:
             total_scores = {}
             number_of_ratings = {}
             average_scores = {}
@@ -315,7 +321,7 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
             display_panel(panel_content, title="Ranking")
 
         columns = {
-            "Action": ["Rank a cocktail", "Add to event", "Order a cocktail", "Show orders", "Deactivate person", "", "Back"]
+            "Action": ["Rank a cocktail", "Add to current event", "Order a cocktail", "Show orders", "Deactivate person", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -327,7 +333,22 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
             continue
 
         elif menu_choice == 2:
-            add_guest_to_event(guest_id=person_id)
+            event, event_id = get_current_event()
+            guests = event["guests"]
+            if person_id in guests:
+                print_message(f"{name} is already added to the current event.", "red")
+                print()
+                get_input()
+                continue
+
+            guests.append(person_id)
+
+            update_record("events", event_id, "guests", guests)
+
+            print_message(f"{name} successfully added to the current event.", "green")
+            print()
+            get_input()
+
             continue
 
         elif menu_choice == 3:

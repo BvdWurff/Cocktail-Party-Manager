@@ -141,7 +141,7 @@ def print_message(message, color="", end="\n", indent=5):
     )
 
 
-def get_input(message=CONTINUE_PROMPT, data_type=str, color="bright_white"):
+def get_input(message=CONTINUE_PROMPT, data_type: type | str = str, color="bright_white"):
     """
     Requests user input using a formatted Rich prompt.
 
@@ -156,7 +156,6 @@ def get_input(message=CONTINUE_PROMPT, data_type=str, color="bright_white"):
         value = console.input(f"{' ' * 5}[{color}]{message}[/]")
 
         if data_type == float:
-            str(value)
             value = value.replace(",",".")
             value = round(float(value), 1)
 
@@ -165,12 +164,10 @@ def get_input(message=CONTINUE_PROMPT, data_type=str, color="bright_white"):
                 return data_type(value)
 
             else:
-                return ""
+                return None
 
         except (ValueError, TypeError):
             print_message(INVALID_INPUT, "red")
-
-
 
 
 def display_panel(content, border_style="bright_yellow", title_color="bright_white", title="", top_padding=0):
