@@ -446,7 +446,7 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
                 name = f"{guest['first_name']} {guest['surname']}"
                 options[guest_id] = name
 
-        guest_ids = sorted(options, key=lambda option_id: options[guest_id].casefold())
+        guest_ids = sorted(options, key=lambda option_id: options[option_id].casefold())
 
         if not guest_ids:
             guest_id = new_guest("new_order")

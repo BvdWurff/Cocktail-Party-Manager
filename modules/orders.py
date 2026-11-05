@@ -132,7 +132,7 @@ def process_order(order_id):
                 menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
                 if menu_choice == 1:
-                    low_on_stock = check_cocktail_availability(order["cocktail"])
+                    low_on_stock = check_cocktail_availability(order["cocktail"], for_existing_order=True)
 
                     if low_on_stock:
                         print_message("Not all ingredients are available", "red")

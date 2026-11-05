@@ -300,7 +300,7 @@ def show_cocktail(cocktail_id, trigger=None):
         content=page_content
     )
 
-    low_on_stock = check_cocktail_availability(cocktail_id)
+    low_on_stock = check_cocktail_availability(cocktail_id, for_existing_order=trigger == "process_order")
     inventory = load_data("inventory")
 
     columns = {

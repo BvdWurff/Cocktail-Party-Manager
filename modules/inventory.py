@@ -13,7 +13,7 @@ from utils.utils import (
 from utils.constants import INVALID_INPUT
 
 
-def check_cocktail_availability(cocktail_id):
+def check_cocktail_availability(cocktail_id, for_existing_order=False):
     cocktails = load_data("cocktails")
     orders = load_data("orders")
     inventory = load_data("inventory")
@@ -39,7 +39,7 @@ def check_cocktail_availability(cocktail_id):
 
         # Subtract quantities reserved by open orders.
         for order in orders.values():
-            if order["status"] == "ordered":
+            if not for_existing_order and order["status"] == "ordered":
                 ordered_cocktail_id = str(order["cocktail"])
                 cocktail_ingredients = cocktails[ordered_cocktail_id]["ingredients"]
 
