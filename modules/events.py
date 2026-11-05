@@ -28,7 +28,7 @@ def get_current_event():
     events = load_data("events")
 
     for event_id, event in events.items():
-        if event["current"]:
+        if event["current"] and event["active"]:
             return event, event_id
 
     event, event_id = select_event()
@@ -217,7 +217,6 @@ Type [blue]Stop[/] to exit the registration process."""
     today = datetime.date.today().strftime("%d-%m-%Y")
 
     while True:
-        current = False
 
         event_name = get_input("What is the name of the event? ")
 
@@ -226,7 +225,6 @@ Type [blue]Stop[/] to exit the registration process."""
 
         if trigger == "new_order":
             event_date = today
-            current = True
 
         else:
             while True:
@@ -237,7 +235,6 @@ Type [blue]Stop[/] to exit the registration process."""
 
                 elif event_date == "today":
                     event_date = today
-                    current = True
 
                 else:
                     try:
@@ -256,6 +253,8 @@ Type [blue]Stop[/] to exit the registration process."""
                         continue
 
                 break
+
+        current = event_date == today
 
         for event in events.values():
             if event["date"] == event_date:
@@ -331,7 +330,7 @@ def select_event():
 
     for event_id, event in events.items():
         event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y")
-        if event_date.date() == today.date():
+        if event_date.date() == today.date() and event["active"]:
             current_event_id = event_id
             current_event = event
 
@@ -382,9 +381,14 @@ def get_event_guests(event=None):
     for guest_id in event["guests"]:
         guest = guests[guest_id]
 
-        if guest["active"]:
+        if not event["active"]:
             name = f"{guest['first_name']} {guest['surname']}"
             options[int(guest_id)] = name
+
+        else:
+            if guest["active"]:
+                name = f"{guest['first_name']} {guest['surname']}"
+                options[int(guest_id)] = name
 
     guest_names = []
     guest_ids = []
@@ -428,64 +432,57 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
 
     if event is None:
         event, event_id = get_current_event()
-        if event is None:
-            get_input("No event was selected.", color="red")
-            return None
+
+    if event is None or event_id is None:
+        get_input("No event was selected.", color="red")
+        return None
 
     if guest_id is None:
         guests = load_data("guests")
         options = {}
 
         for guest_id, guest in guests.items():
-            if guest_id not in event["guests"]:
-                guest = guests[guest_id]
+            if guest_id not in event["guests"] and guest["active"]:
+                name = f"{guest['first_name']} {guest['surname']}"
+                options[guest_id] = name
 
-                if guest["active"]:
-                    name = f"{guest["first_name"]} {guest["surname"]}"
-                    options[int(guest_id)] = name
+        guest_ids = sorted(options, key=lambda option_id: options[guest_id].casefold())
 
-        guest_names = []
-        guests_ids = []
-
-        for guest_id, guest_name in sorted(options.items(), key=lambda item: item[1].casefold()):
-            guests_ids.append(guest_id)
-            guest_names.append(guest_name)
-
-        if len(guest_names) == 0:
+        if not guest_ids:
             guest_id = new_guest("new_order")
 
-            if guest_id is None:
-                return None
-
         else:
-            guest_names.append("")
-            guest_names.append("Guest not on list")
-
-            content = f"Select the guest you want to add to the event."
-
-            display_page(location="Events",
-                         title="Add guests",
-                         content=content
-                         )
-
             columns = {
-                "Name": guest_names
+                "Name": [options[guest_id] for guest_id in guest_ids]
             }
+
+            columns["Name"].extend(["", "Guest not on list"])
+
+            display_page(
+                location="Events",
+                title="Add guests",
+                content="Select the guest you want to add to the event."
+            )
 
             print()
             display_table(columns, auto_number=True)
 
-            menu_choice = get_menu_choice(range(0, len(columns["Name"]) - 1))
-            guest_id = guests_ids[menu_choice - 1]
+            menu_choice = get_menu_choice(range(0, len(guest_ids) + 1))
 
             if menu_choice == 0:
                 guest_id = new_guest("new_order")
+            else:
+                guest_id = guest_ids[menu_choice - 1]
 
-                if guest_id is None:
-                    return None
+    if guest_id is None:
+        return None
 
-        event["guests"].append(str(guest_id))
+    guest_id = str(guest_id)
 
+    if guest_id in event["guests"]:
+        return None
+
+    event["guests"].append(guest_id)
     save_data("events", event, record_id=str(event_id))
 
     return guest_id

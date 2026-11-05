@@ -1,4 +1,5 @@
 import requests
+from urllib.parse import quote
 
 from utils.utils import (
     get_input,
@@ -16,60 +17,59 @@ from utils.constants import (
     URL,
     PARAM_ITEM_BY_ID,
     PARAM_ITEM_BY_NAME,
+    PARAM_COCKTAIL_BY_ID,
 )
 
 
 def add_cocktail_to_local_db(cocktail_id):
-    url = URL + f"{API_KEY}/lookup.php?i={cocktail_id}"
-
+    url = URL + API_KEY + PARAM_COCKTAIL_BY_ID + cocktail_id
     data = trigger_api(url)
 
     if not isinstance(data, dict) or not data.get("drinks"):
         print()
-        get_input(f"Cocktail was not found.", color="red")
-        return
+        get_input("Cocktail was not found.", color="red")
+        return False
 
-    else:
-        cocktail_name = ""
-        instructions = ""
-        ingredients = {}
+    drink = data["drinks"][0]
 
+    cocktail_name = drink["strDrink"]
+    instructions = drink.get("strInstructions") or "No instructions found."
+    ingredients = {}
 
-        for drink in data["drinks"]:
-            cocktail_name = drink["strDrink"]
+    # Retrieve and validate all ingredients.
+    for counter in range(1, 16):
+        ingredient = drink.get(f"strIngredient{counter}")
 
-            if "strInstructions" in drink:
-                instructions = drink["strInstructions"]
-            else:
-                instructions = "No instructions found."
+        if not ingredient:
+            break
 
-            counter = 1
-            while True:
-                ingredient = drink[f"strIngredient{counter}"]
+        ingredient_id, ingredient_name, _ = get_ingredient("name", ingredient)
 
-                if ingredient:
-                    ingredient_id, _, _ = get_ingredient("name", ingredient)
-                    measure = drink[f"strMeasure{counter}"]
-                    ingredients[ingredient_id] = measure
-                    counter += 1
+        if not ingredient_id or not ingredient_name:
+            get_input(f"Could not retrieve ingredient: {ingredient}. Cocktail was not saved.", color="red")
+            return False
 
-                else:
-                    break
+        measure = drink.get(f"strMeasure{counter}")
+        ingredients[ingredient_id] = measure
 
-        cocktail = {
-            "id": cocktail_id,
-            "name": cocktail_name,
-            "instructions": instructions,
-            "ingredients": ingredients,
-            "active": True
-        }
+    # Ensure all ingredients are available in the local inventory.
+    for ingredient_id in ingredients:
+        if not add_item_to_inventory(ingredient_id):
+            get_input("Could not update the inventory. Cocktail was not saved.", color="red")
+            return False
 
-        save_data("cocktails", cocktail)
+    # Save the cocktail only after all ingredients have been processed.
+    cocktail = {
+        "id": cocktail_id,
+        "name": cocktail_name,
+        "instructions": instructions,
+        "ingredients": ingredients,
+        "active": True
+    }
 
-        for ingredient in ingredients.keys():
-            add_item_to_inventory(ingredient)
+    save_data("cocktails", cocktail)
 
-    return
+    return True
 
 
 
@@ -105,7 +105,7 @@ def get_ingredient(trigger, ingredient):
     else:
         return None, None, None
 
-    url = URL + API_KEY + param + ingredient
+    url = URL + API_KEY + param + quote(ingredient, safe="")
 
     data = trigger_api(url)
 
@@ -129,20 +129,21 @@ def get_ingredient(trigger, ingredient):
 def trigger_api(url):
     try:
         response = requests.get(url, timeout=10)
+        response.raise_for_status()
+
+        return response.json()
 
     except requests.exceptions.ConnectionError:
         get_input("Error: Cannot connect to TheCocktailDB.", color="red")
-        return None
 
     except requests.exceptions.Timeout:
         get_input("Error: TheCocktailDB response timeout.", color="red")
-        return None
 
-    if response.ok:
-        data = response.json()
-        return data
+    except ValueError:
+        get_input("Error: Invalid API response.", color="red")
 
-    else:
-        get_input(f"Error: {response.status_code} - {response.text}", "red")
-        return None
+    except requests.exceptions.RequestException as error:
+        get_input(f"API error: {error}", color="red")
+
+    return None
 

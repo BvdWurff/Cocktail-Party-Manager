@@ -39,13 +39,13 @@
         "event": "1",
         "guest": "4",
         "cocktail": "11118",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "8": {
         "event": "1",
         "guest": "13",
         "cocktail": "178358",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "9": {
         "event": "6",
@@ -69,66 +69,66 @@
         "event": "8",
         "guest": "1",
         "cocktail": "11145",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "13": {
         "event": "8",
         "guest": "1",
         "cocktail": "14510",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "14": {
         "event": "8",
         "guest": "1",
         "cocktail": "14071",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "15": {
         "event": "8",
         "guest": "1",
         "cocktail": "14071",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "16": {
         "event": "8",
         "guest": "1",
         "cocktail": "17252",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "17": {
         "event": "8",
         "guest": "1",
         "cocktail": "14510",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "18": {
         "event": "8",
         "guest": "1",
         "cocktail": "14071",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "19": {
         "event": "8",
         "guest": "1",
         "cocktail": "11118",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "20": {
         "event": "8",
         "guest": "1",
         "cocktail": "17252",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "21": {
         "event": "8",
         "guest": "1",
         "cocktail": "178362",
-        "status": "ordered"
+        "status": "cancelled"
     },
     "22": {
         "event": "8",
         "guest": "1",
         "cocktail": "11007",
-        "status": "ordered"
+        "status": "cancelled"
     }
 }

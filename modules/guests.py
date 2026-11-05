@@ -334,6 +334,12 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
 
         elif menu_choice == 2:
             event, event_id = get_current_event()
+            if event is None:
+                print_message("No current event.", "red")
+                print()
+                get_input()
+                continue
+
             guests = event["guests"]
             if guests is None:
                 print_message("The event has no guests.", "red")
@@ -358,6 +364,7 @@ Ranking votes:       [blue]{ranking_counter}[/]"""
             continue
 
         elif menu_choice == 3:
+            add_guest_to_event(guest_id=guest_id)
             from modules.orders import new_order
             new_order(guest_id=guest_id)
             continue

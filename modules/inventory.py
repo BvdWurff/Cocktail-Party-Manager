@@ -10,40 +10,44 @@ from utils.utils import (
     print_message,
 )
 
+from utils.constants import INVALID_INPUT
+
 
 def check_cocktail_availability(cocktail_id):
     cocktails = load_data("cocktails")
     orders = load_data("orders")
+    inventory = load_data("inventory")
 
     low_on_stock = []
-
     ingredients = cocktails[cocktail_id]["ingredients"]
 
-    for ingredient in ingredients:
-        inventory = load_data("inventory")
-        found = False
+    for ingredient_id in ingredients:
 
-        for item_id, item in inventory.items():
-            if item_id == ingredient:
-                quantity = inventory[item_id]["quantity"]
+        # Add missing ingredients to the inventory.
+        if ingredient_id not in inventory:
+            if add_item_to_inventory(ingredient_id):
+                inventory = load_data("inventory")
 
-                for order in orders:
-                    if orders[order]["status"] == "ordered":
-                        ordered_cocktail_id = str(orders[order]["cocktail"])
-                        cocktail_ingredients = cocktails[ordered_cocktail_id]["ingredients"]
+        # Check whether the ingredient is available.
+        item = inventory.get(ingredient_id)
 
-                        if ingredient in cocktail_ingredients:
-                            quantity -= 1
+        if item is None:
+            low_on_stock.append(ingredient_id)
+            continue
 
-                if quantity <= 0:
-                    low_on_stock.append(ingredient)
+        quantity = item["quantity"]
 
-                found = True
-                break
+        # Subtract quantities reserved by open orders.
+        for order in orders.values():
+            if order["status"] == "ordered":
+                ordered_cocktail_id = str(order["cocktail"])
+                cocktail_ingredients = cocktails[ordered_cocktail_id]["ingredients"]
 
-        if not found:
-            add_item_to_inventory(ingredient)
-            low_on_stock.append(ingredient)
+                if ingredient_id in cocktail_ingredients:
+                    quantity -= 1
+
+        if quantity <= 0:
+            low_on_stock.append(ingredient_id)
 
     return low_on_stock
 
@@ -52,19 +56,28 @@ def add_item_to_inventory(ingredient_id):
     inventory = load_data("inventory")
     from modules.cocktail_api import get_ingredient
 
-    if not any(item == ingredient_id for item in inventory.keys()):
-        item_id, item_name, item_description = get_ingredient("id", ingredient_id)
+    # Ingredient already exists in the inventory.
+    if ingredient_id in inventory:
+        return True
 
-        item = {
-            "id": item_id,
-            "name": item_name,
-            "description": item_description,
-            "quantity": 0,
-            "minimum_quantity": 10,
-            "shopping_list": False
-        }
+    # Retrieve ingredient details from TheCocktailDB.
+    item_id, item_name, item_description = get_ingredient("id", ingredient_id)
 
-        save_data("inventory", item)
+    if not item_id or not item_name:
+        return False
+
+    item = {
+        "id": item_id,
+        "name": item_name,
+        "description": item_description,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": False
+    }
+
+    save_data("inventory", item)
+
+    return True
 
 
 def show_inventory(trigger=None):
@@ -214,13 +227,29 @@ Added to shopping list:   {add_to_shopping_list}"""
         menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
-            quantity = int(get_input("What is the new quantity? ", int))
+            while True:
+                quantity = int(get_input("What is the new quantity? ", int))
+
+                if quantity >= 0:
+                    break
+                else:
+                    print_message(INVALID_INPUT)
+                    continue
+
             print()
             update_record("inventory", item_id, "quantity", quantity)
             continue
 
         elif menu_choice == 2:
-            min_quantity = int(get_input("What is the new minimum quantity? ", int))
+            while True:
+                min_quantity = int(get_input("What is the new minimum quantity? ", int))
+
+                if min_quantity >= 0:
+                    break
+                else:
+                    print_message(INVALID_INPUT)
+                    continue
+
             print()
             update_record("inventory", item_id, "minimum_quantity", min_quantity)
             continue

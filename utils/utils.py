@@ -6,6 +6,8 @@ import os
 import subprocess
 import json
 
+from pathlib import Path
+
 from rich.console import Console
 from rich.padding import Padding
 from rich.panel import Panel
@@ -28,6 +30,7 @@ from utils.constants import (
 # ==============================
 
 console = Console(width=80)
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
 
 # ==============================
@@ -45,9 +48,9 @@ def load_data(data_type):
         dict: The stored data of the specified JSON file.
     """
 
-    file_path = os.path.join("data", data_type)
+    file_path = DATA_DIR / f"{data_type}.json"
 
-    with open(f"{file_path}.json", "r", encoding="utf-8") as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         return json.load(file)
 
 
@@ -73,10 +76,17 @@ def save_data(data_type, data, record_id=""):
             continue
         stored_data[record_id][field] = data[field]
 
-    file_path = os.path.join("data", data_type)
+    file_path = DATA_DIR / f"{data_type}.json"
+    temporary_path = DATA_DIR / f"{data_type}.json.tmp"
 
-    with open(f"{file_path}.json", "w", encoding="utf-8") as file:
-        json.dump(stored_data, file, indent=4, ensure_ascii=False)
+    try:
+        with open(temporary_path, "w", encoding="utf-8") as file:
+            json.dump(stored_data, file, indent=4, ensure_ascii=False)
+
+        os.replace(temporary_path, file_path)
+
+    finally:
+        temporary_path.unlink(missing_ok=True)
 
 
 def update_record(data_type, record_id, key, new_value):
@@ -302,7 +312,7 @@ def unit_converter():
 
         volume = float(get_input("What is the volume of the unit you want to convert? ", float))
         print()
-        volume_ml = int(volume * factor)
+        volume_ml = round(volume * factor)
         print_message(f"[purple]{volume} {columns["Unit"][menu_choice -1]}[/] is [blue]{volume_ml} ml[/]")
         print()
         get_input()

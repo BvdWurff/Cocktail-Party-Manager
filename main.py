@@ -20,14 +20,16 @@ from utils.constants import (
     CONTINUE_PROMPT,
 )
 
+from modules.orders import cancel_order
+
 
 def update_events():
     events = load_data("events")
-    orders = load_data("orders")
     today = datetime.date.today()
 
     for event_id, event in events.items():
         if not event["active"]:
+            cancel_order(event_id=event_id)
             continue
 
         event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y").date()
@@ -48,9 +50,7 @@ def update_events():
             save_data("events", event_update)
 
             if not active:
-                for order_id, order in orders.items():
-                    if order["event"] == event_id:
-                        update_record("orders", order_id, "status", "cancelled")
+                cancel_order(event_id=event_id)
 
     return
 

@@ -1,4 +1,5 @@
 import datetime
+from urllib.parse import quote
 
 from modules.cocktail_api import (
     add_cocktail_to_local_db,
@@ -215,19 +216,19 @@ def show_cocktail_ranking():
 
 
 
-def select_cocktail(trigger=""):
+
+def select_cocktail(trigger=None):
     while True:
         cocktails = load_data("cocktails")
 
         if trigger == "new_order":
+            content = "Select the cocktail you want to order."
 
-
-            content = f"Select the cocktail you want to order."
-
-            display_page(location="Cocktails",
-                         title="Available Cocktails",
-                         content=content
-                         )
+            display_page(
+                location="Cocktails",
+                title="Available Cocktails",
+                content=content
+            )
         else:
             print_message("Select a cocktail:")
 
@@ -237,79 +238,96 @@ def select_cocktail(trigger=""):
             "Cocktail": []
         }
 
-        for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda item: item[1]["name"].casefold()):
+        for cocktail_id, cocktail in sorted(cocktails.items(), key=lambda entry: entry[1]["name"].casefold()):
+            if not cocktail["active"]:
+                continue
 
-            if cocktail["active"]:
-                if trigger == "new_order":
-                    low_on_stock = check_cocktail_availability(cocktail_id)
-                    if not low_on_stock:
-                        cocktail_ids.append(cocktail_id)
-                        columns["Cocktail"].append(cocktail["name"])
+            if trigger == "new_order":
+                if check_cocktail_availability(cocktail_id):
+                    continue
 
-                else:
-                    cocktail_ids.append(cocktail_id)
-                    columns["Cocktail"].append(cocktail["name"])
+            cocktail_ids.append(cocktail_id)
+            columns["Cocktail"].append(cocktail["name"])
+
+        search_option = 0
 
         if trigger == "new_order":
-            columns["Cocktail"].extend(["", "Cocktail not on list"])
+            search_option = len(cocktail_ids) + 1
+            columns["Cocktail"].extend(["Cocktail not on list", "", "Back"])
+            valid_choices = range(0, search_option + 1)
 
-        if trigger != "new_order":
+        else:
             columns["Cocktail"].extend(["", "Back"])
+            valid_choices = range(0, len(cocktail_ids) + 1)
 
         display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, len(columns["Cocktail"]) - 1))
+        menu_choice = get_menu_choice(valid_choices)
 
         if menu_choice == 0:
-            if trigger == "new_order":
-                search_cocktail("name")
-            else:
-                return None
+            return None
 
-        cocktail_id = cocktail_ids[menu_choice - 1]
+        if trigger == "new_order" and menu_choice == search_option:
+            cocktail_id = search_cocktail("name", for_order=True)
 
-        break
+            if cocktail_id is None:
+                continue
 
-    return cocktail_id
+            if check_cocktail_availability(cocktail_id):
+                get_input("Cocktail cannot be ordered because not all ingredients are available.", color="red")
+                continue
+
+            return cocktail_id
+
+        return cocktail_ids[menu_choice - 1]
+
 
 
 def show_cocktail(cocktail_id, trigger=None):
     cocktails = load_data("cocktails")
-    inventory = load_data("inventory")
 
-    cocktail =  cocktails[cocktail_id]
+    cocktail = cocktails[cocktail_id]
     cocktail_name = cocktail["name"]
     ingredients = cocktail["ingredients"]
     instructions = cocktail["instructions"]
 
     page_content = f"Ingredients and instructions for a [blue]{cocktail_name}[/].\n\n"
-    page_content += "Ingredients marked [red]red[/] are not available in the inventory."
+    page_content += "Ingredients marked [red]red[/] are not available."
 
-    display_page(location="Cocktails",
-                 title=cocktail_name,
-                 content=page_content
-                 )
+    display_page(
+        location="Cocktails",
+        title=cocktail_name,
+        content=page_content
+    )
 
-    low_on_stock = []
+    low_on_stock = check_cocktail_availability(cocktail_id)
+    inventory = load_data("inventory")
 
     columns = {
         "Ingredient": [],
         "Measure": []
     }
 
-    for ingredient, measure in ingredients.items():
-        if inventory[ingredient]["quantity"] == 0:
-            low_on_stock.append(ingredient)
-            columns["Ingredient"].append(f"[red]{inventory[ingredient]["name"]}[/]")
-        else:
-            columns["Ingredient"].append(inventory[ingredient]["name"])
+    for ingredient_id, measure in ingredients.items():
+        ingredient_name = (inventory[ingredient_id]["name"] if ingredient_id in inventory else f"Unknown ingredient ({ingredient_id})")
+
+        if ingredient_id in low_on_stock:
+            ingredient_name = f"[red]{ingredient_name}[/]"
+
+        columns["Ingredient"].append(ingredient_name)
         columns["Measure"].append(measure if measure is not None else "-")
 
     display_table(columns)
 
     panel_content = "- " + instructions.replace(". ", ".\n- ")
-
     display_panel(panel_content, title="instructions")
+
+    # Only existing inventory items can be added to the shopping list.
+    shopping_list_ids = [
+        ingredient_id
+        for ingredient_id in low_on_stock
+        if ingredient_id in inventory
+    ]
 
     if trigger != "process_order":
         while True:
@@ -317,7 +335,7 @@ def show_cocktail(cocktail_id, trigger=None):
                 "Action": ["Order cocktail", "Statistics", "Deactivate cocktail"]
             }
 
-            if low_on_stock:
+            if shopping_list_ids:
                 columns["Action"].append("Add unavailable ingredients to shopping list")
 
             columns["Action"].extend(["", "Back"])
@@ -328,8 +346,12 @@ def show_cocktail(cocktail_id, trigger=None):
 
             if menu_choice == 1:
                 if low_on_stock:
-                    get_input("Cocktail cannot be ordered because not all ingredients are available.", color="red")
+                    get_input(
+                        "Cocktail cannot be ordered because not all ingredients are available.",
+                        color="red"
+                    )
                     break
+
                 from modules.orders import new_order
                 new_order(cocktail_id)
 
@@ -340,10 +362,14 @@ def show_cocktail(cocktail_id, trigger=None):
             elif menu_choice == 3:
                 deactivate_cocktail(cocktail_id)
 
-            elif menu_choice == 4:
-                for item_id in low_on_stock:
+            elif menu_choice == 4 and shopping_list_ids:
+                for item_id in shopping_list_ids:
                     update_record("inventory", item_id, "shopping_list", True)
-                print_message("Ingredients successfully added to shopping list.\n", "green")
+
+                print_message(
+                    "Ingredients successfully added to shopping list.\n",
+                    "green"
+                )
                 get_input()
 
             break
@@ -351,27 +377,30 @@ def show_cocktail(cocktail_id, trigger=None):
     return
 
 
-def search_cocktail(search_method=""):
+
+def search_cocktail(search_method="", for_order=False):
     if search_method == "lucky_shot":
         params = PARAM_LUCKY_SHOT
         cocktail_id = search_cocktails_in_db(params, "lucky_shot")
 
         if cocktail_id is None:
-            return
+            return None
 
     else:
         content = f"Here you can search cocktails by {search_method}."
 
-        display_page(location="Cocktails",
-                     title=f"Search by {search_method}",
-                     content=content
-                     )
+        display_page(
+            location="Cocktails",
+            title=f"Search by {search_method}",
+            content=content
+        )
 
         cocktails = None
 
         if search_method == "name":
-            name = get_input("What is the name of the cocktail you would you like to search for? ").lower()
-            params = PARAM_SEARCH_BY_NAME + name
+            name = get_input("What is the name of the cocktail you would like to search for? ").lower()
+
+            params = PARAM_SEARCH_BY_NAME + quote(name, safe="")
             cocktails = search_cocktails_in_db(params, "name")
 
         elif search_method == "ingredient":
@@ -380,10 +409,10 @@ def search_cocktail(search_method=""):
             inventory = load_data("inventory")
 
             columns = {
-                "Ingredient": [],
+                "Ingredient": []
             }
 
-            for item_id, item in inventory.items():
+            for item in inventory.values():
                 if item["quantity"] > 0:
                     columns["Ingredient"].append(item["name"])
 
@@ -394,48 +423,50 @@ def search_cocktail(search_method=""):
             menu_choice = get_menu_choice(range(0, len(columns["Ingredient"]) - 1))
 
             if menu_choice == 0:
-                return
+                return None
 
             ingredient = columns["Ingredient"][menu_choice - 1]
-            params = PARAM_SEARCH_BY_INGREDIENT + ingredient
+            params = PARAM_SEARCH_BY_INGREDIENT + quote(ingredient, safe="")
             cocktails = search_cocktails_in_db(params, "ingredient")
 
-        if not isinstance(cocktails, dict):
-            return
+        if not isinstance(cocktails, dict) or not cocktails:
+            return None
 
         content = "The following cocktails were found:"
 
-        display_page(location="Cocktails",
-                     title=f"Search by {search_method}",
-                     content=content
-                     )
+        display_page(
+            location="Cocktails",
+            title=f"Search by {search_method}",
+            content=content
+        )
+
+        sorted_cocktails = sorted(cocktails.items(), key=lambda entry: entry[0].casefold())
 
         columns = {
-            "Cocktail": []
+            "Cocktail": [name for name, _ in sorted_cocktails]
         }
-
-        for cocktail, cocktail_id in sorted(cocktails.items(), key=lambda entry: entry[0].casefold()):
-            columns["Cocktail"].append(cocktail)
 
         columns["Cocktail"].extend(["", "Back"])
 
         display_table(columns, auto_number=True)
 
-        menu_choice = get_menu_choice(range(0, len(columns["Cocktail"]) - 1))
+        menu_choice = get_menu_choice(range(0, len(sorted_cocktails) + 1))
 
         if menu_choice == 0:
-            return
+            return None
 
-        cocktail_name = columns["Cocktail"][menu_choice -1]
-        cocktail_id = cocktails[cocktail_name]
+        cocktail_id = sorted_cocktails[menu_choice - 1][1]
 
-    add_cocktail_to_local_db(cocktail_id)
-    cocktails = load_data("cocktails")
+    if not add_cocktail_to_local_db(cocktail_id):
+        return None
 
-    if cocktail_id in cocktails:
-        show_cocktail(cocktail_id)
+    if for_order:
+        return cocktail_id
 
-    return
+    show_cocktail(cocktail_id)
+
+    return None
+
 
 
 def deactivate_cocktail(cocktail_id):
