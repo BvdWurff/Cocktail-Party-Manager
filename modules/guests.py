@@ -551,4 +551,4 @@ def get_guest_full_name(guest):
     Returns:
         str: The guest's full name.
     """
-    return f"{guest['first_name']} {guest['surname']}"
+    return f"{guest["first_name"]} {guest["surname"]}"

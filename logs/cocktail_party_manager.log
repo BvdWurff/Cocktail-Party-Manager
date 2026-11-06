@@ -1,0 +1,196 @@
+06-11-2026 15:00:34 | ERROR | modules.cocktail_api | TheCocktailDB request failed.
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\modules\cocktail_api.py", line 64, in trigger_api
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://www.thecocktaildb.com/api/json/v1/1/search.php1?s=Margarita
+06-11-2026 15:05:54 | ERROR | modules.cocktail_api | Could not connect to TheCocktailDB.
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connection.py", line 239, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\bvdwu\AppData\Local\Python\pythoncore-3.14-64\Lib\socket.py", line 989, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 494, in _make_request
+    raise new_e
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 470, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1125, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connection.py", line 827, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connection.py", line 246, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='www.thecocktaildb.com', port=443): Failed to resolve 'www.thecocktaildb.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\adapters.py", line 696, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 847, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\util\retry.py", line 555, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='www.thecocktaildb.com', port=443): Max retries exceeded with url: /api/json/v1/1/filter.php1?i=Vodka (Caused by NameResolutionError("HTTPSConnection(host='www.thecocktaildb.com', port=443): Failed to resolve 'www.thecocktaildb.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\modules\cocktail_api.py", line 63, in trigger_api
+    response = requests.get(url, timeout=10)
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\api.py", line 87, in get
+    return request("get", url, params=params, **kwargs)
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\adapters.py", line 729, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='www.thecocktaildb.com', port=443): Max retries exceeded with url: /api/json/v1/1/filter.php1?i=Vodka (Caused by NameResolutionError("HTTPSConnection(host='www.thecocktaildb.com', port=443): Failed to resolve 'www.thecocktaildb.com' ([Errno 11001] getaddrinfo failed)"))
+06-11-2026 15:06:45 | ERROR | modules.cocktail_api | Could not connect to TheCocktailDB.
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connection.py", line 239, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\bvdwu\AppData\Local\Python\pythoncore-3.14-64\Lib\socket.py", line 989, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 494, in _make_request
+    raise new_e
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 470, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 1125, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connection.py", line 827, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connection.py", line 246, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='www.thecocktaildb.com', port=443): Failed to resolve 'www.thecocktaildb.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\adapters.py", line 696, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\connectionpool.py", line 847, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\urllib3\util\retry.py", line 555, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='www.thecocktaildb.com', port=443): Max retries exceeded with url: /api/json/v1/1/search.php1?s=margartia (Caused by NameResolutionError("HTTPSConnection(host='www.thecocktaildb.com', port=443): Failed to resolve 'www.thecocktaildb.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\modules\cocktail_api.py", line 63, in trigger_api
+    response = requests.get(url, timeout=10)
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\api.py", line 87, in get
+    return request("get", url, params=params, **kwargs)
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\adapters.py", line 729, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='www.thecocktaildb.com', port=443): Max retries exceeded with url: /api/json/v1/1/search.php1?s=margartia (Caused by NameResolutionError("HTTPSConnection(host='www.thecocktaildb.com', port=443): Failed to resolve 'www.thecocktaildb.com' ([Errno 11001] getaddrinfo failed)"))
+06-11-2026 15:08:22 | ERROR | modules.cocktail_api | TheCocktailDB request failed.
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\modules\cocktail_api.py", line 64, in trigger_api
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://www.thecocktaildb.com/api/json/v1/1/random.php1
+06-11-2026 15:27:53 | ERROR | utils.utils | Failed to load JSON file: C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\data\events.json
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\utils\utils.py", line 62, in load_data
+    with open(file_path, "r", encoding="utf-8") as file:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\bvdwu\\PycharmProjects\\cocktail_party_manager\\data\\events.json'
+06-11-2026 16:38:41 | ERROR | utils.utils | Failed to load JSON file: C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\data\events.json
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\utils\utils.py", line 62, in load_data
+    with open(file_path, "r", encoding="utf-8") as file:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\bvdwu\\PycharmProjects\\cocktail_party_manager\\data\\events.json'
+
+
+06-11-2026 16:38:41 | ERROR | root | The application encountered a critical error.
+Traceback (most recent call last):
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\main.py", line 116, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\main.py", line 67, in main
+    update_events()
+    ~~~~~~~~~~~~~^^
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\modules\events.py", line 660, in update_events
+    events = load_data("events")
+  File "C:\Users\bvdwu\PycharmProjects\cocktail_party_manager\utils\utils.py", line 62, in load_data
+    with open(file_path, "r", encoding="utf-8") as file:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\bvdwu\\PycharmProjects\\cocktail_party_manager\\data\\events.json'
+
+

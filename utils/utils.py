@@ -3,6 +3,7 @@
 # ==============================
 
 import json
+import logging
 import os
 import subprocess
 
@@ -23,6 +24,14 @@ from utils.constants import (
     INVALID_INPUT,
     CONTINUE_PROMPT,
 )
+
+
+# ==============================
+# LOGGING
+# ==============================
+
+logger = logging.getLogger(__name__)
+
 
 # ==============================
 # CONFIGURATION
@@ -49,8 +58,13 @@ def load_data(data_type):
 
     file_path = DATA_DIR / f"{data_type}.json"
 
-    with open(file_path, "r", encoding="utf-8") as file:
-        return json.load(file)
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            return json.load(file)
+
+    except (OSError, ValueError, UnicodeError):
+        logger.exception("Failed to load JSON file: %s", file_path)
+        raise
 
 
 def save_data(data_type, data, record_id=""):
@@ -78,6 +92,7 @@ def save_data(data_type, data, record_id=""):
     for field in data:
         if field == "id":
             continue
+
         stored_data[record_id][field] = data[field]
 
     file_path = DATA_DIR / f"{data_type}.json"
@@ -89,8 +104,16 @@ def save_data(data_type, data, record_id=""):
 
         os.replace(temporary_path, file_path)
 
+    except (OSError, TypeError, ValueError):
+        logger.exception("Failed to save JSON file: %s", file_path)
+        raise
+
     finally:
-        temporary_path.unlink(missing_ok=True)
+        try:
+            temporary_path.unlink(missing_ok=True)
+
+        except OSError:
+            logger.warning("Could not remove temporary file: %s", temporary_path, exc_info=True)
 
 
 def update_record(data_type, record_id, key, new_value):

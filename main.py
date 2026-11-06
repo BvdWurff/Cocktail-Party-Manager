@@ -1,4 +1,13 @@
 # ==============================
+# LIBRARY IMPORTS
+# ==============================
+
+import logging
+
+from pathlib import Path
+
+
+# ==============================
 # FUNCTION IMPORTS
 # ==============================
 
@@ -12,11 +21,43 @@ from utils.constants import (
 
 from utils.utils import (
     display_page,
-    get_menu_choice,
     display_table,
+    get_menu_choice,
     get_input,
+    print_message,
 )
 
+
+# ==============================
+# LOGGING
+# ==============================
+
+class SpacedFormatter(logging.Formatter):
+    def format(self, record):
+        return super().format(record) + "\n\n"
+
+LOG_DIR = Path(__file__).resolve().parent / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+
+handler = logging.FileHandler(
+    LOG_DIR / "cocktail_party_manager.log",
+    encoding="utf-8"
+)
+
+handler.setFormatter(SpacedFormatter(
+    "%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+    datefmt="%d-%m-%Y %H:%M:%S"
+))
+
+logging.basicConfig(
+    level=logging.WARNING,
+    handlers=[handler]
+)
+
+
+# ==============================
+# MAIN APPLICATION FLOW
+# ==============================
 
 def main():
     """
@@ -27,8 +68,8 @@ def main():
 
     content = """Welcome to [bright_yellow]the Cocktail Party Manager[/]!
 
-For the best experience, it is recommended to run the program 
-in a [green]terminal[/] or to enable [green]Emulate terminal in output console[/] 
+For the best experience, it is recommended to run the program
+in a [green]terminal[/] or to enable [green]Emulate terminal in output console[/]
 in PyCharm."""
 
     display_page(location="Cocktail Party Manager",
@@ -71,4 +112,14 @@ in PyCharm."""
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+
+    except (OSError, ValueError, UnicodeError, TypeError):
+        logging.exception("The application encountered a critical error.")
+
+        print()
+        print_message("A critical error occurred. Please check the application log.", "red")
+        print()
+        get_input("Press Enter to close the application.")
+        print()

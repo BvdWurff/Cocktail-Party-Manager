@@ -481,5 +481,12 @@
         "quantity": 0,
         "minimum_quantity": 10,
         "shopping_list": true
+    },
+    "475": {
+        "name": "Sugar Syrup",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": false
     }
 }

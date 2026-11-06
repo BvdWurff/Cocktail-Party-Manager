@@ -2,9 +2,10 @@
 # LIBRARY IMPORTS
 # ==============================
 
-from urllib.parse import quote
-
+import logging
 import requests
+
+from urllib.parse import quote
 
 
 # ==============================
@@ -33,6 +34,13 @@ from utils.constants import (
 
 
 # ==============================
+# LOGGING
+# ==============================
+
+logger = logging.getLogger(__name__)
+
+
+# ==============================
 # API REQUEST HANDLING
 # ==============================
 
@@ -58,16 +66,24 @@ def trigger_api(url):
         return response.json()
 
     except requests.exceptions.ConnectionError:
+        logger.exception("Could not connect to TheCocktailDB.")
+        print()
         get_input("Error: Cannot connect to TheCocktailDB.", color="red")
 
     except requests.exceptions.Timeout:
+        logger.warning("TheCocktailDB request timed out.", exc_info=True)
+        print()
         get_input("Error: The request to TheCocktailDB timed out.", color="red")
 
     except ValueError:
+        logger.exception("TheCocktailDB returned an invalid JSON response.")
+        print()
         get_input("Error: Invalid API response.", color="red")
 
-    except requests.exceptions.RequestException as error:
-        get_input(f"API error: {error}", color="red")
+    except requests.exceptions.RequestException:
+        logger.exception("TheCocktailDB request failed.")
+        print()
+        get_input("Error: TheCocktailDB request failed.", color="red")
 
     return None
 
@@ -94,26 +110,35 @@ def search_cocktails_in_db(params, search_type):
             no matching cocktails are found.
     """
     url = URL + API_KEY + params
-
     data = trigger_api(url)
 
-    if not isinstance(data, dict) or not data.get("drinks"):
-        print()
-        get_input(f"No cocktails matching that {search_type} were found.", color="red")
-
+    # API request failed. Error has already been handled.
+    if data is None:
         return None
 
-    else:
-        cocktails = {}
+    # API returned an unexpected response structure.
+    if not isinstance(data, dict):
+        logger.error("Unexpected response structure from TheCocktailDB.")
+        print()
+        get_input("Error: Invalid API response.", color="red")
+        return None
 
-        for drink in data["drinks"]:
-            if search_type == "lucky_shot":
-                return drink["idDrink"]
+    # API request succeeded, but no cocktails were found.
+    if not data.get("drinks"):
+        print()
+        get_input(f"No cocktails matching that {search_type} were found.", color="red")
+        return None
 
-            elif "strDrink" in drink:
-                cocktails[drink["strDrink"]] = drink["idDrink"]
+    cocktails = {}
 
-        return cocktails
+    for drink in data["drinks"]:
+        if search_type == "lucky_shot":
+            return drink["idDrink"]
+
+        elif "strDrink" in drink:
+            cocktails[drink["strDrink"]] = drink["idDrink"]
+
+    return cocktails
 
 
 # ==============================
@@ -143,24 +168,34 @@ def get_ingredient(trigger, ingredient):
         return None, None, None
 
     url = URL + API_KEY + param + quote(ingredient, safe="")
-
     data = trigger_api(url)
 
-    if not isinstance(data, dict) or not data.get("ingredients"):
+    # API request failed. Error has already been handled.
+    if data is None:
+        return None, None, None
+
+    # API returned an unexpected response structure.
+    if not isinstance(data, dict):
+        logger.error("Unexpected response structure from TheCocktailDB.")
+        print()
+        get_input("Error: Invalid API response.", color="red")
+        return None, None, None
+
+    # API request succeeded, but no ingredient was found.
+    if not data.get("ingredients"):
         print()
         get_input("The ingredient was not found.", color="red")
-
         return None, None, None
 
-    else:
-        for ingredient in data["ingredients"]:
-            ingredient_id = ingredient["idIngredient"]
-            ingredient_name = ingredient["strIngredient"]
-            ingredient_description = ingredient["strDescription"]
 
-            return ingredient_id, ingredient_name, ingredient_description
+    for ingredient in data["ingredients"]:
+        ingredient_id = ingredient["idIngredient"]
+        ingredient_name = ingredient["strIngredient"]
+        ingredient_description = ingredient["strDescription"]
 
-        return None, None, None
+        return ingredient_id, ingredient_name, ingredient_description
+
+    return None, None, None
 
 
 # ==============================
@@ -188,7 +223,19 @@ def add_cocktail_to_local_db(cocktail_id):
     url = URL + API_KEY + PARAM_COCKTAIL_BY_ID + cocktail_id
     data = trigger_api(url)
 
-    if not isinstance(data, dict) or not data.get("drinks"):
+    # API request failed. Error has already been handled.
+    if data is None:
+        return False
+
+    # API returned an unexpected response structure.
+    if not isinstance(data, dict):
+        logger.error("Unexpected response structure from TheCocktailDB.")
+        print()
+        get_input("Error: Invalid API response.", color="red")
+        return False
+
+    # API request succeeded, but no cocktail was found.
+    if not data.get("drinks"):
         print()
         get_input("Cocktail was not found.", color="red")
         return False

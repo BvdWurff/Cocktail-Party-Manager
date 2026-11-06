@@ -1,4 +1,11 @@
 # ==============================
+# LIBRARY IMPORTS
+# ==============================
+
+import logging
+
+
+# ==============================
 # FUNCTION IMPORTS
 # ==============================
 
@@ -14,6 +21,13 @@ from utils.utils import (
     save_data,
     update_record,
 )
+
+
+# ==============================
+# LOGGING
+# ==============================
+
+logger = logging.getLogger(__name__)
 
 
 # ==============================
@@ -46,6 +60,7 @@ def add_item_to_inventory(ingredient_id):
     item_id, item_name, item_description = get_ingredient("id", ingredient_id)
 
     if not item_id or not item_name:
+        logger.warning("Ingredient %s could not be retrieved or added to inventory.", ingredient_id)
         return False
 
     item = {

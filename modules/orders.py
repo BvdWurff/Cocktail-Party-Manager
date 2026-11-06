@@ -216,13 +216,13 @@ def process_order(order_id):
     guests = load_data("guests")
     cocktails = load_data("cocktails")
 
-    guest = guests[order["guest"]]
-    guest_name = f"{guest['first_name']} {guest['surname']}"
+    guest_id = guests[order["guest"]]
+    guest_name = get_guest_full_name(guest_id)
     cocktail_name = cocktails[order["cocktail"]]["name"]
 
     content = f"Guest:      [blue]{guest_name}[/]\n"
     content += f"Cocktail:   [blue]{cocktail_name}[/]\n"
-    content += f"Status:     [blue]{str(order['status']).capitalize()}"
+    content += f"Status:     [blue]{str(order["status"]).capitalize()}"
 
     display_page(
         location="Orders",

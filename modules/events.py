@@ -443,7 +443,7 @@ Event date:         [blue]{event["date"]}[/]"""
 
             elif menu_choice == 2:
                 if event["current"]:
-                    print_message("You cannot cancel the current event.","red")
+                    print_message("You cannot cancel the current event.", "red")
                     print()
                     get_input()
                     continue

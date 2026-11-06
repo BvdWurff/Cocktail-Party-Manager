@@ -232,7 +232,7 @@ def events_menu():
                      )
 
         columns = {
-            "Action": ["New Event", "Current Event", "Upcoming Events", "Past Events",  "", "Back"]
+            "Action": ["New Event", "Current Event", "Upcoming Events", "Past Events", "", "Back"]
         }
 
         display_table(columns, auto_number=True)

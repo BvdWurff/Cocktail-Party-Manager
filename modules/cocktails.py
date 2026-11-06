@@ -549,7 +549,7 @@ def show_cocktail_ranking():
             "Votes": []
         }
 
-        for place, (cocktail_id, rating) in enumerate(sorted(average_ratings.items(), key=lambda item: item[1]["average"], reverse=True),start=1):
+        for place, (cocktail_id, rating) in enumerate(sorted(average_ratings.items(), key=lambda item: item[1]["average"], reverse=True), start=1):
             columns["Place"].append(place)
             columns["Cocktail"].append(cocktails[cocktail_id]["name"])
             columns["Rating"].append(rating["average"])
@@ -605,7 +605,7 @@ def show_cocktail_statistics(cocktail_id):
     content = f"Statistics for cocktail [blue]{cocktail["name"]}[/]."
 
     display_page(location="Cocktails",
-                 title=f"Statistics",
+                 title="Statistics",
                  content=content
                  )
 
@@ -622,8 +622,8 @@ def show_cocktail_statistics(cocktail_id):
     if cocktail_id in average_ratings:
         rating = average_ratings[cocktail_id]
 
-        panel_content += f"Average rating:    {rating['average']}\n"
-        panel_content += f"Number of votes:  {rating['votes']}"
+        panel_content += f"Average rating:    {rating["average"]}\n"
+        panel_content += f"Number of votes:  {rating["votes"]}"
 
     display_panel(panel_content, title="Overview")
 
