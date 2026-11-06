@@ -15,17 +15,20 @@ from modules.events import (
     new_event,
     show_event,
     show_all_events,
-    add_low_stock_items_to_shopping_list,
 )
 
-from modules.inventory import show_inventory
+from modules.inventory import (
+    show_inventory,
+    add_low_stock_items_to_shopping_list,
+)
 
 from utils.utils import (
     get_menu_choice,
     display_table,
     display_page,
-    unit_converter,
 )
+
+from modules.unit_converter import unit_converter
 
 from modules.cocktails import (
     all_available_cocktails,

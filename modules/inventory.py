@@ -8,10 +8,8 @@ from utils.utils import (
     display_panel,
     update_record,
     print_message,
+    get_non_negative_integer,
 )
-
-from utils.constants import INVALID_INPUT
-
 
 def check_cocktail_availability(cocktail_id, for_existing_order=False):
     cocktails = load_data("cocktails")
@@ -23,19 +21,12 @@ def check_cocktail_availability(cocktail_id, for_existing_order=False):
 
     for ingredient_id in ingredients:
 
-        # Add missing ingredients to the inventory.
-        if ingredient_id not in inventory:
-            if add_item_to_inventory(ingredient_id):
-                inventory = load_data("inventory")
-
         # Check whether the ingredient is available.
-        item = inventory.get(ingredient_id)
-
-        if item is None:
+        if ingredient_id not in inventory:
             low_on_stock.append(ingredient_id)
             continue
 
-        quantity = item["quantity"]
+        quantity = inventory[ingredient_id]["quantity"]
 
         # Subtract quantities reserved by open orders.
         for order in orders.values():
@@ -125,15 +116,8 @@ def show_inventory(trigger=None):
 
             item_ids.append(item_id)
 
-            if quantity == 0:
-                color = "red"
-            elif quantity < minimum_quantity:
-                color = "orange1"
-            else:
-                color = "green"
-
             columns["Name"].append(item["name"])
-            columns["Quantity"].append(f"[{color}]{quantity}[/]")
+            columns["Quantity"].append(format_stock_quantity(quantity, minimum_quantity))
             columns["Shopping list"].append("Yes" if shopping_list else "No")
 
         if not item_ids:
@@ -166,14 +150,7 @@ def show_inventory_item(item_id):
         item = inventory[item_id]
         shopping_list = item["shopping_list"]
 
-        if item["quantity"] == 0:
-            quantity = f"[red]{item["quantity"]}[/]"
-
-        elif item["quantity"] < item["minimum_quantity"]:
-            quantity = f"[orange1]{item["quantity"]}[/]"
-
-        else:
-            quantity = f"[green]{item["quantity"]}[/]"
+        quantity = format_stock_quantity(item["quantity"], item["minimum_quantity"])
 
         if shopping_list:
             add_to_shopping_list = "Yes"
@@ -227,31 +204,17 @@ Added to shopping list:   {add_to_shopping_list}"""
         menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
         if menu_choice == 1:
-            while True:
-                quantity = int(get_input("What is the new quantity? ", int))
-
-                if quantity >= 0:
-                    break
-                else:
-                    print_message(INVALID_INPUT)
-                    continue
+            quantity = get_non_negative_integer("What is the new quantity? ")
 
             print()
             update_record("inventory", item_id, "quantity", quantity)
             continue
 
         elif menu_choice == 2:
-            while True:
-                min_quantity = int(get_input("What is the new minimum quantity? ", int))
-
-                if min_quantity >= 0:
-                    break
-                else:
-                    print_message(INVALID_INPUT)
-                    continue
+            minimum_quantity = get_non_negative_integer("What is the new minimum quantity? ")
 
             print()
-            update_record("inventory", item_id, "minimum_quantity", min_quantity)
+            update_record("inventory", item_id, "minimum_quantity", minimum_quantity)
             continue
 
         elif menu_choice == 3:
@@ -264,4 +227,35 @@ Added to shopping list:   {add_to_shopping_list}"""
     return
 
 
+def format_stock_quantity(quantity, minimum_quantity):
+    if quantity == 0:
+        color = "red"
+    elif quantity < minimum_quantity:
+        color = "orange1"
+    else:
+        color = "green"
+
+    return f"[{color}]{quantity}[/]"
+
+
+def add_low_stock_items_to_shopping_list():
+    inventory = load_data("inventory")
+
+    counter = 0
+
+    for item_id, item in inventory.items():
+        if item["quantity"] < item["minimum_quantity"] and not item["shopping_list"]:
+            update_record("inventory", item_id, "shopping_list", True)
+            counter += 1
+
+    if counter == 0:
+        print_message("All ingredients were already added to the shopping list.", "red")
+
+    else:
+        print_message("Ingredients successfully added to the shopping list.", "green")
+
+    print()
+    get_input()
+
+    return
 

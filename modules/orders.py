@@ -2,7 +2,11 @@
 # FUNCTION IMPORTS
 # ==============================
 
-from modules.guests import select_guest
+from modules.guests import (
+    select_guest,
+    get_guest_full_name,
+)
+
 from modules.events import (
     get_current_event,
 )
@@ -23,8 +27,10 @@ from utils.utils import (
     get_menu_choice,
     display_page,
     update_record,
-    unit_converter,
+    confirm_action,
 )
+
+from modules.unit_converter import unit_converter
 
 
 def get_next_order():
@@ -64,8 +70,8 @@ def all_open_orders():
         if order["status"] == "ordered" and order["event"] == current_event_id:
             order_ids.append(order_id)
 
-            guest = guests[order["guest"]]
-            guest_name = f"{guest['first_name']} {guest['surname']}"
+            guest_id = order["guest"]
+            guest_name = get_guest_full_name(guests[guest_id])
 
             columns["Name"].append(guest_name)
             columns["Cocktail"].append(cocktails[order["cocktail"]]["name"])
@@ -85,26 +91,69 @@ def all_open_orders():
     return order_id, orders[order_id]
 
 
+def serve_order(order_id):
+    """Serves an order and updates the inventory and order status."""
+    orders = load_data("orders")
+    order_id = str(order_id)
+
+    # Validate the order.
+    if order_id not in orders:
+        return False
+
+    order = orders[order_id]
+
+    if order["status"] != "ordered":
+        return False
+
+    cocktail_id = order["cocktail"]
+    cocktails = load_data("cocktails")
+    ingredients = cocktails[cocktail_id]["ingredients"]
+
+    # Check whether all ingredients are available.
+    if check_cocktail_availability(cocktail_id, for_existing_order=True):
+        return False
+
+    inventory = load_data("inventory")
+
+    # Validate all quantities before changing the inventory.
+    for ingredient_id in ingredients:
+        if ingredient_id not in inventory:
+            return False
+
+        if inventory[ingredient_id]["quantity"] <= 0:
+            return False
+
+    # Deduct one unit of each ingredient.
+    for ingredient_id in ingredients:
+        quantity = inventory[ingredient_id]["quantity"] - 1
+        update_record("inventory", ingredient_id, "quantity", quantity)
+
+    # Mark the order as served.
+    update_record("orders", order_id, "status", "served")
+
+    return True
+
+
 def process_order(order_id):
     orders = load_data("orders")
     order = orders[order_id]
 
     guests = load_data("guests")
-    inventory = load_data("inventory")
     cocktails = load_data("cocktails")
-    cocktail = cocktails[order["cocktail"]]
 
-    guest_name = f"{guests[order["guest"]]["first_name"]} {guests[order["guest"]]["surname"]}"
+    guest = guests[order["guest"]]
+    guest_name = f"{guest['first_name']} {guest['surname']}"
     cocktail_name = cocktails[order["cocktail"]]["name"]
 
     content = f"Guest:      [blue]{guest_name}[/]\n"
     content += f"Cocktail:   [blue]{cocktail_name}[/]\n"
-    content += f"Status:     [blue]{str(order["status"]).capitalize()}"
+    content += f"Status:     [blue]{str(order['status']).capitalize()}"
 
-    display_page(location="Orders",
-                 title="Process order",
-                 content=content
-                 )
+    display_page(
+        location="Orders",
+        title="Process order",
+        content=content
+    )
 
     if order["status"] == "ordered":
 
@@ -132,28 +181,22 @@ def process_order(order_id):
                 menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
                 if menu_choice == 1:
-                    low_on_stock = check_cocktail_availability(order["cocktail"], for_existing_order=True)
+                    if serve_order(order_id):
+                        print_message("Order successfully served", "green")
+                        print()
+                        get_input()
+                        break
 
-                    if low_on_stock:
-                        print_message("Not all ingredients are available", "red")
+                    else:
+                        print_message("Not all ingredients are available or the order cannot be served.", "red")
                         print()
                         get_input()
                         continue
 
-                    else:
-                        for ingredient in cocktail["ingredients"].keys():
-                            for item_id, item in inventory.items():
-                                if ingredient == item_id:
-                                    quantity = item["quantity"] - 1
-                                    update_record("inventory", item_id, "quantity", quantity)
-
-                        update_record("orders", order_id, "status", "served")
-
-                        print_message("Order successfully served", "green")
-                        print()
-                        get_input()
-
                 elif menu_choice == 2:
+                    if not confirm_action("cancel", "order"):
+                        continue
+
                     update_record("orders", order_id, "status", "cancelled")
                     print_message("Order successfully cancelled", "green")
                     print()
@@ -161,12 +204,14 @@ def process_order(order_id):
 
                 elif menu_choice == 3:
                     unit_converter()
-
                     continue
 
                 break
 
         elif menu_choice == 2:
+            if not confirm_action("cancel", "order"):
+                return
+
             update_record("orders", order_id, "status", "cancelled")
             print_message("Order successfully cancelled", "green")
             print()

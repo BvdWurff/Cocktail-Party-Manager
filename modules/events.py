@@ -13,6 +13,7 @@ from utils.utils import (
     get_menu_choice,
     display_page, update_record,
     display_panel,
+    confirm_action,
 )
 
 # ==============================
@@ -134,6 +135,9 @@ Event date:         [blue]{event["date"]}[/]"""
                     get_input()
                     continue
 
+                if not confirm_action("cancel", "event"):
+                    continue
+
                 from modules.orders import cancel_order
                 cancel_order(event_id=event_id)
 
@@ -216,9 +220,16 @@ Type [blue]Stop[/] to exit the registration process."""
     events = load_data("events")
     today = datetime.date.today().strftime("%d-%m-%Y")
 
+    event_date = today
+    current = False
+
     while True:
 
-        event_name = get_input("What is the name of the event? ")
+        event_name = get_input("What is the name of the event? ").strip()
+
+        if not event_name:
+            print_message(INVALID_INPUT)
+            continue
 
         if event_name.lower() == "stop":
             return None, None
@@ -343,7 +354,7 @@ def select_event():
                      )
 
         while True:
-            create_event = get_input("Would you like to create a new event? (Yes/No) ").lower()
+            create_event = get_input("Would you like to create a new event? (Yes/No) ").strip().casefold()
 
             if create_event not in ["yes", "no"]:
                 print_message(INVALID_INPUT)
@@ -372,6 +383,8 @@ def select_event():
 
 
 def get_event_guests(event=None):
+    from modules.guests import get_guest_full_name
+
     if event is None:
         event, _ = get_current_event()
 
@@ -382,12 +395,12 @@ def get_event_guests(event=None):
         guest = guests[guest_id]
 
         if not event["active"]:
-            name = f"{guest['first_name']} {guest['surname']}"
+            name = get_guest_full_name(guests[guest_id])
             options[int(guest_id)] = name
 
         else:
             if guest["active"]:
-                name = f"{guest['first_name']} {guest['surname']}"
+                name = get_guest_full_name(guests[guest_id])
                 options[int(guest_id)] = name
 
     guest_names = []
@@ -429,6 +442,7 @@ def get_event_cocktails(event_id=None):
 
 def add_guest_to_event(event=None, event_id=None, guest_id=None):
     from modules.guests import new_guest
+    from modules.guests import get_guest_full_name
 
     if event is None:
         event, event_id = get_current_event()
@@ -443,7 +457,7 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
 
         for guest_id, guest in guests.items():
             if guest_id not in event["guests"] and guest["active"]:
-                name = f"{guest['first_name']} {guest['surname']}"
+                name = get_guest_full_name(guests[guest_id])
                 options[guest_id] = name
 
         guest_ids = sorted(options, key=lambda option_id: options[option_id].casefold())
@@ -480,7 +494,7 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
     guest_id = str(guest_id)
 
     if guest_id in event["guests"]:
-        return None
+        return guest_id
 
     event["guests"].append(guest_id)
     save_data("events", event, record_id=str(event_id))
@@ -488,24 +502,36 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
     return guest_id
 
 
-def add_low_stock_items_to_shopping_list():
-    inventory = load_data("inventory")
+def update_events():
+    from modules.orders import cancel_order
 
-    counter = 0
+    events = load_data("events")
+    today = datetime.date.today()
 
-    for item_id, item in inventory.items():
-        if item["quantity"] < item["minimum_quantity"] and not item["shopping_list"]:
-            update_record("inventory", item_id, "shopping_list", True)
-            counter += 1
+    for event_id, event in events.items():
+        if not event["active"]:
+            cancel_order(event_id=event_id)
+            continue
 
-    if counter == 0:
-        print_message("All ingredients were already added to the shopping list.", "red")
+        event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y").date()
 
-    else:
-        print_message("Ingredients successfully added to the shopping list.", "green")
+        current = event_date == today
+        active = event_date >= today
 
-    print()
-    get_input()
+        event_update = {
+            "id": event_id,
+            "name": event["name"],
+            "date": event["date"],
+            "current": current,
+            "active": active,
+            "guests": event["guests"]
+        }
+
+        if event["current"] != current or event["active"] != active:
+            save_data("events", event_update)
+
+            if not active:
+                cancel_order(event_id=event_id)
 
     return
 

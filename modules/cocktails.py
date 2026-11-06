@@ -10,6 +10,8 @@ from modules.inventory import (
     check_cocktail_availability,
 )
 
+from modules.ratings import calculate_average_ratings
+
 from modules.events import get_current_event
 
 from utils.utils import (
@@ -22,6 +24,7 @@ from utils.utils import (
     display_table,
     display_page,
     update_record,
+    confirm_action,
 )
 
 from utils.constants import (
@@ -103,9 +106,9 @@ def rank_a_cocktail(guest_id=None, trigger=None):
             continue
 
         while True:
-            score = float(get_input("How would you rate this cocktail (1–10)? ", float))
+            rating = float(get_input("How would you rate this cocktail (1–10)? ", float))
 
-            if 1 <= score <= 10:
+            if 1 <= rating <= 10:
                 break
 
             else:
@@ -124,7 +127,7 @@ def rank_a_cocktail(guest_id=None, trigger=None):
             "cocktail": cocktail_id,
             "guest": guest_id,
             "date": today,
-            "score": score
+            "rating": rating
         }
 
         save_data("rankings", update_ranking)
@@ -169,32 +172,20 @@ def show_cocktail_ranking():
                      content=content
                      )
 
-        total_scores = {}
-        number_of_ratings = {}
-        average_scores = {}
-
-        for ranking in rankings.values():
-            cocktail = cocktails[ranking["cocktail"]]["name"]
-            total_scores[cocktail] = total_scores.get(cocktail, 0) + ranking["score"]
-            number_of_ratings[cocktail] = number_of_ratings.get(cocktail, 0) + 1
-
-        for cocktail, score in total_scores.items():
-            number = number_of_ratings[cocktail]
-            average_score = round(score / number, 1)
-            average_scores[cocktail] = average_score
+        average_ratings = calculate_average_ratings(rankings.values())
 
         columns = {
             "Place": [],
             "Cocktail": [],
-            "Score": [],
+            "Rating": [],
             "Votes": []
         }
 
-        for place, (cocktail, score) in enumerate(sorted(average_scores.items(), key=lambda item: item[1], reverse=True), start=1):
+        for place, (cocktail_id, rating) in enumerate(sorted(average_ratings.items(), key=lambda item: item[1]["average"], reverse=True),start=1):
             columns["Place"].append(place)
-            columns["Cocktail"].append(cocktail)
-            columns["Score"].append(score)
-            columns["Votes"].append(number_of_ratings[cocktail])
+            columns["Cocktail"].append(cocktails[cocktail_id]["name"])
+            columns["Rating"].append(rating["average"])
+            columns["Votes"].append(rating["votes"])
 
         display_table(columns)
 
@@ -398,7 +389,13 @@ def search_cocktail(search_method="", for_order=False):
         cocktails = None
 
         if search_method == "name":
-            name = get_input("What is the name of the cocktail you would like to search for? ").lower()
+            while True:
+                name = get_input("What is the name of the cocktail you would like to search for? ").strip()
+
+                if name:
+                    break
+
+                print_message(INVALID_INPUT)
 
             params = PARAM_SEARCH_BY_NAME + quote(name, safe="")
             cocktails = search_cocktails_in_db(params, "name")
@@ -470,6 +467,9 @@ def search_cocktail(search_method="", for_order=False):
 
 
 def deactivate_cocktail(cocktail_id):
+    if not confirm_action("deactivate", "cocktail"):
+        return
+
     from modules.orders import cancel_order
     cancel_order(cocktail_id=cocktail_id)
 
@@ -481,6 +481,8 @@ def deactivate_cocktail(cocktail_id):
 
 
 def show_cocktail_statistics(cocktail_id):
+    from modules.guests import get_guest_full_name
+
     cocktails = load_data("cocktails")
     cocktail = cocktails[cocktail_id]
 
@@ -503,19 +505,11 @@ def show_cocktail_statistics(cocktail_id):
 
     panel_content = f"Times served:     {times_served}\n"
 
-    total_score = 0.0
-    number_of_ratings = 0
+    rating = calculate_average_ratings(rankings.values()).get(cocktail_id)
 
-    for ranking in rankings.values():
-        if ranking["cocktail"] == cocktail_id:
-            number_of_ratings += 1
-            total_score += ranking["score"]
-
-    if number_of_ratings > 0:
-        average_score = round(total_score / number_of_ratings, 1)
-
-        panel_content += f"Average score:    {average_score}\n"
-        panel_content += f"Number of votes:  {number_of_ratings}"
+    if rating is not None:
+        panel_content += f"Average rating:    {rating['average']}\n"
+        panel_content += f"Number of votes:  {rating['votes']}"
 
     display_panel(panel_content, title="Overview")
 
@@ -532,8 +526,7 @@ def show_cocktail_statistics(cocktail_id):
             order_counts[guest_id] = order_counts.get(guest_id, 0) + 1
 
     for guest_id, count in sorted(order_counts.items(), key=lambda entry: entry[1], reverse=True):
-        guest = guests[guest_id]
-        name = f"{guest['first_name']} {guest['surname']}"
+        name = get_guest_full_name(guests[guest_id])
 
         columns["Guest"].append(name)
         columns["Times served"].append(count)
@@ -549,17 +542,17 @@ def show_cocktail_statistics(cocktail_id):
     columns = {
         "Guest": [],
         "Date": [],
-        "Score": [],
+        "Rating": [],
     }
 
-    for ranking in sorted(rankings.values(), key=lambda entry: entry["score"], reverse=True):
+    for ranking in sorted(rankings.values(), key=lambda entry: entry["rating"], reverse=True):
         if ranking["cocktail"] == cocktail_id:
-            guest = guests[ranking["guest"]]
-            name = f"{guest['first_name']} {guest['surname']}"
+            guest_id = ranking["guest"]
+            name = get_guest_full_name(guests[guest_id])
 
             columns["Guest"].append(name)
             columns["Date"].append(ranking["date"])
-            columns["Score"].append(ranking["score"])
+            columns["Rating"].append(ranking["rating"])
 
     if columns["Guest"]:
         display_table(columns)

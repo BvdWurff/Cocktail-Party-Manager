@@ -273,55 +273,28 @@ def display_page(location, title, content):
             (1, 5))
     )
 
-def unit_converter():
+
+
+
+def get_non_negative_integer(message):
     while True:
-        content = "Convert different units of measurement to milliliters (ml)."
+        value = int(get_input(message, int))
 
-        display_page(location="Cocktail Party Manager",
-                     title="Unit converter",
-                     content=content
-                     )
+        if value >= 0:
+            return value
 
-        print_message("Select the unit you would like to convert:\n")
+        print_message(INVALID_INPUT, "red")
 
-        columns = {
-            "Unit": ["oz (fl oz)", "cup", "liter (L)", "centiliter (cl)", "teaspoon (tsp)", "tablespoon (tbsp)", "", "Back"]
-        }
+def confirm_action(action, record_type):
+    while True:
+        answer = get_input(f"Are you sure you want to {action} the {record_type}? (Yes/No) ").strip().casefold()
 
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Unit"]) - 1))
-        if menu_choice == 0:
-            break
-
-        factor = float(0)
-
-        match menu_choice:
-            case 1:
-                factor = 29.5735
-            case 2:
-                factor = 236.5882
-            case 3:
-                factor = 1000
-            case 4:
-                factor = 10
-            case 5:
-                factor = 4.9289
-            case 6:
-                factor = 14.7868
-
-        volume = float(get_input("What is the volume of the unit you want to convert? ", float))
-        print()
-        volume_ml = round(volume * factor)
-        print_message(f"[purple]{volume} {columns["Unit"][menu_choice -1]}[/] is [blue]{volume_ml} ml[/]")
-        print()
-        get_input()
-        continue
-
-    return
-
-
-
+        if answer == "yes":
+            return True
+        elif answer == "no":
+            return False
+        else:
+            print_message(INVALID_INPUT)
 
 
 
