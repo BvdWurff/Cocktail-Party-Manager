@@ -1,18 +1,36 @@
+# ==============================
+# FUNCTION IMPORTS
+# ==============================
+
 from utils.utils import (
+    display_page,
     display_table,
     get_input,
-    print_message,
     get_menu_choice,
-    display_page,
+    print_message,
 )
 
 
+# ==============================
+# UNIT CONVERTER
+# ==============================
+
 def unit_converter():
+    """
+    Provides an interactive menu for converting common volume units
+    to milliliters (ml).
+
+    Supports fluid ounces, cups, liters, centiliters, teaspoons,
+    and tablespoons using predefined conversion factors.
+
+    Returns:
+        None: Returns when the user exits the converter.
+    """
     while True:
         content = "Convert different units of measurement to milliliters (ml)."
 
         display_page(location="Cocktail Party Manager",
-                     title="Unit converter",
+                     title="Unit Converter",
                      content=content
                      )
 
@@ -30,6 +48,7 @@ def unit_converter():
 
         factor = float(0)
 
+        # Determine the conversion factor for the selected unit.
         match menu_choice:
             case 1:
                 factor = 29.5735
@@ -44,6 +63,7 @@ def unit_converter():
             case 6:
                 factor = 14.7868
 
+        # Request a non-negative volume and display the converted value.
         while True:
             volume = float(get_input("What is the volume of the unit you want to convert? ", float))
 

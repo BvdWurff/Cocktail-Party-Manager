@@ -2,6 +2,13 @@
 # FUNCTION IMPORTS
 # ==============================
 
+from menus import main_menu
+
+from modules.events import update_events
+
+from utils.constants import (
+    CONTINUE_PROMPT,
+)
 
 from utils.utils import (
     display_page,
@@ -10,22 +17,15 @@ from utils.utils import (
     get_input,
 )
 
-from menus import main_menu
-
-from utils.constants import (
-    CONTINUE_PROMPT,
-)
-
-from modules.events import update_events
-
 
 def main():
     """
-        Controls the main program flow.
+    Initializes the application, displays the welcome screen,
+    and manages the main menu and exit confirmation.
     """
     update_events()
 
-    content = f"""Welcome to [bright_yellow]the Cocktail Party Manager[/]!
+    content = """Welcome to [bright_yellow]the Cocktail Party Manager[/]!
 
 For the best experience, it is recommended to run the program 
 in a [green]terminal[/] or to enable [green]Emulate terminal in output console[/] 
@@ -44,7 +44,7 @@ in PyCharm."""
         content = "Are you sure you want to exit [bright_yellow]the Cocktail Party Manager[/]?"
 
         display_page(location="Cocktail Party Manager",
-                     title="Exit confirmation",
+                     title="Exit Confirmation",
                      content=content
                      )
 
@@ -60,14 +60,15 @@ in PyCharm."""
             continue
 
         else:
-            content = ("Thank you for using [bright_yellow]the Cocktail Party Manager[/].\n\n"
-                       "[blue]Until we drink again![/]")
+            content = "Thank you for using [bright_yellow]the Cocktail Party Manager[/].\n\n"
+            content += "[blue]Until we drink again![/]"
 
             display_page(location="Cocktail Party Manager",
                          title="Exit",
                          content=content
                          )
             break
+
 
 if __name__ == "__main__":
     main()

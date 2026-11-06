@@ -1,19 +1,18 @@
 # ==============================
-# FUNCTION IMPORTS
+# LIBRARY IMPORTS
 # ==============================
 
+import json
 import os
 import subprocess
-import json
 
 from pathlib import Path
 
+from rich import box
 from rich.console import Console
 from rich.padding import Padding
 from rich.panel import Panel
 from rich.table import Table
-from rich import box
-
 
 # ==============================
 # CONSTANTS
@@ -34,18 +33,18 @@ DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
 
 # ==============================
-# LOAD DATA
+# DATA MANAGEMENT
 # ==============================
 
 def load_data(data_type):
     """
-    Loads stored data from the specified JSON file.
+    Loads data from the specified JSON file.
 
     Args:
-        data_type (str): The name of the JSON file thas needs to be loaded.
+        data_type (str): The name of the JSON file, without its extension.
 
     Returns:
-        dict: The stored data of the specified JSON file.
+        dict: The data loaded from the JSON file.
     """
 
     file_path = DATA_DIR / f"{data_type}.json"
@@ -56,13 +55,18 @@ def load_data(data_type):
 
 def save_data(data_type, data, record_id=""):
     """
-    Saves data to the specified JSON file.
+    Adds or updates a record in the specified JSON file.
+
+    Existing fields are updated with the supplied values, while
+    unspecified fields remain unchanged.
 
     Args:
-        data_type (str): The name of the JSON file that needs to be updated.
-        data (dict): The dictionary with data that has to be saved
-        record_id (str): Value to identify the record that has to be updated
+        data_type (str): The name of the JSON file, without its extension.
+        data (dict): The record data to be saved.
+        record_id (str): Optional ID of the record to update. If omitted,
+            the ID is retrieved from the supplied data.
     """
+
     stored_data = load_data(data_type)
 
     if not record_id:
@@ -90,6 +94,15 @@ def save_data(data_type, data, record_id=""):
 
 
 def update_record(data_type, record_id, key, new_value):
+    """
+    Updates a single field of an existing record.
+
+    Args:
+        data_type (str): The name of the JSON file, without its extension.
+        record_id (str): The ID of the record to update.
+        key (str): The field to update.
+        new_value: The value to assign to the specified field.
+    """
     data = load_data(data_type)
     record = data[record_id]
     record[key] = new_value
@@ -98,69 +111,25 @@ def update_record(data_type, record_id, key, new_value):
 
     return
 
+
 # ==============================
-# GENERAL UTILITIES
+# USER INPUT AND VALIDATION
 # ==============================
-
-
-def clear_terminal():
-    """
-    Clears the terminal based on the operating system.
-    """
-    command = "cls" if os.name == "nt" else "clear"
-    subprocess.run(command, shell=True, check=False)
-
-
-def get_menu_choice(valid_choices):
-    """
-    Requests and validates a numeric menu choice.
-
-    Args:
-        valid_choices (range or collection): The allowed menu choices.
-
-    Returns:
-        int: The validated menu choice.
-    """
-    while True:
-        menu_choice = get_input(f"{SELECT_OPTION}", data_type=int)
-
-
-        if menu_choice not in valid_choices:
-            print_message(INVALID_INPUT)
-            continue
-
-        print()
-        return menu_choice
-
-
-def print_message(message, color="", end="\n", indent=5):
-    """
-    Prints a formatted and indented message using Rich.
-
-    Args:
-        message (str): The message to display.
-        color (str): The optional Rich style applied to the message.
-        end (str): The string appended after the message.
-        indent (int): The number of spaces used for left indentation.
-    """
-
-    console.print(
-        f"{" " * indent}{message}",
-        style=f"{color}",
-        end=end
-    )
-
 
 def get_input(message=CONTINUE_PROMPT, data_type: type | str = str, color="bright_white"):
     """
-    Requests user input using a formatted Rich prompt.
+    Requests user input using a formatted Rich prompt and converts
+    the input to the specified data type.
 
     Args:
         message (str): The message displayed to the user.
-        color (str): The color of the input prompt.
+        data_type (type or str): The expected input type, or "enter" to
+            wait for user input without returning a value.
+        color (str): The Rich color used for the input prompt.
 
     Returns:
-        str: The user's input.
+        str, int, float, or None: The converted input value, or None
+        when data_type is "enter".
     """
     while True:
         value = console.input(f"{' ' * 5}[{color}]{message}[/]")
@@ -169,7 +138,7 @@ def get_input(message=CONTINUE_PROMPT, data_type: type | str = str, color="brigh
             if data_type == float:
                 value = value.replace(",", ".")
                 value = round(float(value), 1)
-                
+
             if data_type != "enter":
                 return data_type(value)
 
@@ -180,16 +149,142 @@ def get_input(message=CONTINUE_PROMPT, data_type: type | str = str, color="brigh
             print_message(INVALID_INPUT)
 
 
+def get_menu_choice(valid_choices):
+    """
+    Requests a numeric menu choice and validates it against
+    the supplied collection of allowed choices.
+
+    Args:
+        valid_choices (range or collection): The allowed menu choices.
+
+    Returns:
+        int: The validated menu choice.
+    """
+    while True:
+        menu_choice = get_input(f"{SELECT_OPTION}", data_type=int)
+
+        if menu_choice not in valid_choices:
+            print_message(INVALID_INPUT)
+            continue
+
+        print()
+        return menu_choice
+
+
+def get_non_negative_integer(message):
+    """
+    Requests an integer from the user and ensures it is not negative.
+
+    Args:
+        message (str): The input prompt displayed to the user.
+
+    Returns:
+        int: The validated non-negative integer.
+    """
+    while True:
+        value = int(get_input(message, int))
+
+        if value >= 0:
+            return value
+
+        print_message(INVALID_INPUT, "red")
+
+
+def confirm_action(action, record_type):
+    """
+    Requests confirmation before performing an action on a record.
+
+    Args:
+        action (str): The action described in the confirmation prompt.
+        record_type (str): The type of record affected by the action.
+
+    Returns:
+        bool: True if the user confirms, or False if the user declines.
+    """
+    print()
+    while True:
+        answer = get_input(f"Are you sure you want to {action} the {record_type}? (Yes/No) ").strip().casefold()
+
+        if answer == "yes":
+            return True
+        elif answer == "no":
+            return False
+        else:
+            print_message(INVALID_INPUT)
+
+
+# ==============================
+# TERMINAL AND MESSAGE UTILITIES
+# ==============================
+
+def clear_terminal():
+    """
+    Clears the terminal using the command appropriate
+    for the operating system.
+    """
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
+
+
+def print_message(message, color="", end="\n", indent=5):
+    """
+    Displays a formatted message with optional styling and indentation.
+
+    Args:
+        message (str): The message to display.
+        color (str): The optional Rich style applied to the message.
+        end (str): The string appended after the message.
+        indent (int): The number of spaces used for left indentation.
+    """
+
+    console.print(
+        f"{' ' * indent}{message}",
+        style=f"{color}",
+        end=end
+    )
+
+
+# ==============================
+# DISPLAY UTILITIES
+# ==============================
+
+def display_page(location, title, content):
+    """
+    Clears the terminal and displays a formatted page using a Rich Panel.
+
+    Args:
+        location (str): The location displayed in the panel title.
+        title (str): The title of the current page.
+        content (str or Rich renderable): The content to display.
+    """
+    clear_terminal()
+
+    console.print(
+        Padding(
+            Panel(
+                content,
+                title=f"[bold bright_yellow]{location}[/] [bold bright_white]- {title}[/]",
+                title_align="left",
+                border_style="bright_yellow",
+                padding=(1, 2),
+            ),
+            (1, 5))
+    )
+
+
 def display_panel(content, border_style="bright_yellow", title_color="bright_white", title="", top_padding=0):
     """
-    Displays content in a formatted Rich Panel.
+    Displays content in a formatted Rich Panel with optional
+    title, styling, and top padding.
 
     Args:
         content (str or Rich renderable): The content to display.
         border_style (str): The color or style of the panel border.
         title_color (str): The color of the panel title.
         title (str): The optional panel title.
+        top_padding (int): The amount of padding above the panel.
     """
+
     console.print(
         Padding(
             Panel(
@@ -200,7 +295,7 @@ def display_panel(content, border_style="bright_yellow", title_color="bright_whi
                 padding=(1, 2),
                 width=70,
             ),
-            (top_padding, 0,0, 5)
+            (top_padding, 0, 0, 5)
         )
     )
     print()
@@ -208,12 +303,16 @@ def display_panel(content, border_style="bright_yellow", title_color="bright_whi
 
 def display_table(columns: dict, auto_number=False):
     """
-    Creates and displays a formatted Rich Table with dynamically defined columns.
+    Creates and displays a Rich Table using dynamically defined columns.
+
+    Optionally generates numbered menu choices based on the values
+    in the first supplied column.
 
     Args:
         columns (dict): Dictionary containing column names and their values.
-        auto_number (bool): Automatically generate a numbered option column.
+        auto_number (bool): Whether to generate a numbered option column.
     """
+
     table = Table(
         box=box.SQUARE,
         expand=True,
@@ -248,55 +347,3 @@ def display_table(columns: dict, auto_number=False):
     console.print(
         Padding(table, (0, 0, 1, 5))
     )
-
-
-def display_page(location, title, content):
-    """
-    Clears the terminal and displays a formatted page in a Rich Panel.
-
-    Args:
-        location (str): The location displayed in the panel title.
-        title (str): The title of the current page.
-        content (str or Rich renderable): The content to display.
-    """
-    clear_terminal()
-
-    console.print(
-        Padding(
-            Panel(
-                content,
-                title=f"[bold bright_yellow]{location}[/] [bold bright_white]- {title}[/]",
-                title_align="left",
-                border_style="bright_yellow",
-                padding=(1, 2),
-            ),
-            (1, 5))
-    )
-
-
-
-
-def get_non_negative_integer(message):
-    while True:
-        value = int(get_input(message, int))
-
-        if value >= 0:
-            return value
-
-        print_message(INVALID_INPUT, "red")
-
-def confirm_action(action, record_type):
-    while True:
-        answer = get_input(f"Are you sure you want to {action} the {record_type}? (Yes/No) ").strip().casefold()
-
-        if answer == "yes":
-            return True
-        elif answer == "no":
-            return False
-        else:
-            print_message(INVALID_INPUT)
-
-
-
-
-

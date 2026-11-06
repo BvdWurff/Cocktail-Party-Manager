@@ -1,31 +1,28 @@
+
+# ==============================
+# LIBRARY IMPORTS
+# ==============================
+
 import datetime
 from urllib.parse import quote
+
+
+# ==============================
+# FUNCTION IMPORTS
+# ==============================
 
 from modules.cocktail_api import (
     add_cocktail_to_local_db,
     search_cocktails_in_db,
 )
 
+from modules.events import get_current_event
+
 from modules.inventory import (
     check_cocktail_availability,
 )
 
 from modules.ratings import calculate_average_ratings
-
-from modules.events import get_current_event
-
-from utils.utils import (
-    load_data,
-    save_data,
-    get_menu_choice,
-    print_message,
-    get_input,
-    display_panel,
-    display_table,
-    display_page,
-    update_record,
-    confirm_action,
-)
 
 from utils.constants import (
     INVALID_INPUT,
@@ -34,15 +31,41 @@ from utils.constants import (
     PARAM_SEARCH_BY_INGREDIENT,
 )
 
+from utils.utils import (
+    confirm_action,
+    display_page,
+    display_panel,
+    display_table,
+    get_input,
+    get_menu_choice,
+    load_data,
+    print_message,
+    save_data,
+    update_record,
+)
+
+
+# ==============================
+# COCKTAIL OVERVIEWS AND SELECTION
+# ==============================
 
 def all_available_cocktails():
+    """
+    Displays an alphabetical overview of all active local cocktails.
+
+    Allows users to select a cocktail to view its ingredients,
+    preparation instructions, statistics, and available actions.
+
+    Returns:
+        None: Returns when the user leaves the cocktail overview.
+    """
     while True:
         cocktails = load_data("cocktails")
 
         content = "Browse all available cocktails and explore their recipes and ingredients."
 
         display_page(location="Cocktails",
-                     title="All available cocktails",
+                     title="All Available Cocktails",
                      content=content
                      )
 
@@ -75,140 +98,22 @@ def all_available_cocktails():
     return
 
 
-def rank_a_cocktail(guest_id=None, trigger=None):
-    current_event, current_event_id = get_current_event()
-    if current_event is None:
-        return
-
-    cocktail_id = None
-    today = datetime.date.today().strftime("%d-%m-%Y")
-
-    while True:
-        rankings = load_data("rankings")
-        content = "Here you can rank the cocktails you drank."
-
-        display_page(location="Cocktails",
-                     title="Rank a cocktail",
-                     content=content
-                     )
-
-        if guest_id is None:
-            from modules.guests import select_guest
-            guest_id = select_guest("rank_a_cocktail")
-            if guest_id is None:
-                break
-            continue
-
-        if cocktail_id is None:
-            cocktail_id = select_cocktail(trigger="rank_a_cocktail")
-            if cocktail_id is None:
-                break
-            continue
-
-        while True:
-            rating = float(get_input("How would you rate this cocktail (1–10)? ", float))
-
-            if 1 <= rating <= 10:
-                break
-
-            else:
-                print_message(INVALID_INPUT)
-                continue
-
-        update_id = str(len(rankings) + 1)
-        for ranking_id, ranking in rankings.items():
-            if ranking["guest"] == guest_id and ranking["cocktail"] == cocktail_id:
-                update_id = ranking_id
-                break
-
-
-        update_ranking = {
-            "id": update_id,
-            "cocktail": cocktail_id,
-            "guest": guest_id,
-            "date": today,
-            "rating": rating
-        }
-
-        save_data("rankings", update_ranking)
-
-        print()
-        print_message("The cocktail was rated successfully.", "green")
-
-
-        columns = {
-            "Action": ["Rank another cocktail", "View ranking", "", "Back"]
-        }
-
-        print()
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-
-        if menu_choice == 1:
-            if trigger is None:
-                guest_id = None
-            cocktail_id = None
-            continue
-
-        elif menu_choice == 2:
-            show_cocktail_ranking()
-            break
-
-        break
-
-    return
-
-
-def show_cocktail_ranking():
-    while True:
-        rankings = load_data("rankings")
-        cocktails = load_data("cocktails")
-
-        content = "Discover the all-time favorite cocktails, ranked by their average rating."
-
-        display_page(location="Cocktails",
-                     title="All-time favorites",
-                     content=content
-                     )
-
-        average_ratings = calculate_average_ratings(rankings.values())
-
-        columns = {
-            "Place": [],
-            "Cocktail": [],
-            "Rating": [],
-            "Votes": []
-        }
-
-        for place, (cocktail_id, rating) in enumerate(sorted(average_ratings.items(), key=lambda item: item[1]["average"], reverse=True),start=1):
-            columns["Place"].append(place)
-            columns["Cocktail"].append(cocktails[cocktail_id]["name"])
-            columns["Rating"].append(rating["average"])
-            columns["Votes"].append(rating["votes"])
-
-        display_table(columns)
-
-        columns = {
-            "Action": ["Rank a cocktail", "", "Back"]
-        }
-
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-
-        if menu_choice == 1:
-            rank_a_cocktail()
-            continue
-
-        break
-
-    return
-
-
-
-
 def select_cocktail(trigger=None):
+    """
+    Allows the user to select an active cocktail from the local collection.
+
+    When selecting a cocktail for a new order, only cocktails with
+    sufficient available ingredients are displayed. Users can also
+    search for a cocktail that is not yet in the local collection.
+
+    Args:
+        trigger (str, optional): Determines whether the selection
+            is performed for a new order or another application feature.
+
+    Returns:
+        str or None: The selected cocktail ID, or None if the user
+            cancels the selection.
+    """
     while True:
         cocktails = load_data("cocktails")
 
@@ -259,22 +164,45 @@ def select_cocktail(trigger=None):
             return None
 
         if trigger == "new_order" and menu_choice == search_option:
-            cocktail_id = search_cocktail("name", for_order=True)
+            selected_cocktail_id = search_cocktail("name", for_order=True)
 
-            if cocktail_id is None:
+            if not isinstance(selected_cocktail_id, str):
                 continue
 
-            if check_cocktail_availability(cocktail_id):
-                get_input("Cocktail cannot be ordered because not all ingredients are available.", color="red")
+            if check_cocktail_availability(selected_cocktail_id):
+                get_input(
+                    "This cocktail cannot be ordered because not all ingredients are available.",
+                    color="red"
+                )
                 continue
 
-            return cocktail_id
+            return selected_cocktail_id
 
         return cocktail_ids[menu_choice - 1]
 
 
+# ==============================
+# COCKTAIL DETAILS
+# ==============================
 
 def show_cocktail(cocktail_id, trigger=None):
+    """
+    Displays a cocktail's ingredients and preparation instructions.
+
+    Highlights unavailable ingredients and provides options to order
+    the cocktail, view statistics, deactivate the cocktail, or add
+    unavailable ingredients to the shopping list.
+
+    During order preparation, only the cocktail details are displayed.
+
+    Args:
+        cocktail_id (str): The ID of the cocktail to display.
+        trigger (str, optional): Controls the available actions.
+            The value "process_order" indicates order preparation.
+
+    Returns:
+        None: Returns after the user leaves the cocktail details.
+    """
     cocktails = load_data("cocktails")
 
     cocktail = cocktails[cocktail_id]
@@ -283,7 +211,7 @@ def show_cocktail(cocktail_id, trigger=None):
     instructions = cocktail["instructions"]
 
     page_content = f"Ingredients and instructions for a [blue]{cocktail_name}[/].\n\n"
-    page_content += "Ingredients marked [red]red[/] are not available."
+    page_content += "Ingredients marked in [red]red[/] are unavailable."
 
     display_page(
         location="Cocktails",
@@ -311,7 +239,7 @@ def show_cocktail(cocktail_id, trigger=None):
     display_table(columns)
 
     panel_content = "- " + instructions.replace(". ", ".\n- ")
-    display_panel(panel_content, title="instructions")
+    display_panel(panel_content, title="Instructions")
 
     # Only existing inventory items can be added to the shopping list.
     shopping_list_ids = [
@@ -323,11 +251,11 @@ def show_cocktail(cocktail_id, trigger=None):
     if trigger != "process_order":
         while True:
             columns = {
-                "Action": ["Order cocktail", "Statistics", "Deactivate cocktail"]
+                "Action": ["Order Cocktail", "Statistics", "Deactivate Cocktail"]
             }
 
             if shopping_list_ids:
-                columns["Action"].append("Add unavailable ingredients to shopping list")
+                columns["Action"].append("Add Unavailable Ingredients to Shopping List")
 
             columns["Action"].extend(["", "Back"])
 
@@ -338,7 +266,7 @@ def show_cocktail(cocktail_id, trigger=None):
             if menu_choice == 1:
                 if low_on_stock:
                     get_input(
-                        "Cocktail cannot be ordered because not all ingredients are available.",
+                        "This cocktail cannot be ordered because not all ingredients are available.",
                         color="red"
                     )
                     break
@@ -358,7 +286,7 @@ def show_cocktail(cocktail_id, trigger=None):
                     update_record("inventory", item_id, "shopping_list", True)
 
                 print_message(
-                    "Ingredients successfully added to shopping list.\n",
+                    "Ingredients successfully added to the shopping list.\n",
                     "green"
                 )
                 get_input()
@@ -368,8 +296,28 @@ def show_cocktail(cocktail_id, trigger=None):
     return
 
 
+# ==============================
+# COCKTAIL SEARCH
+# ==============================
 
 def search_cocktail(search_method="", for_order=False):
+    """
+    Searches TheCocktailDB for cocktails using the selected search method.
+
+    Supports searching by cocktail name, ingredient, or a random cocktail.
+    Selected cocktails are added to the local database before being
+    displayed or returned to the ordering workflow.
+
+    Args:
+        search_method (str): The search method, either "name",
+            "ingredient", or "lucky_shot".
+        for_order (bool): Whether the selected cocktail ID should
+            be returned to the ordering workflow.
+
+    Returns:
+        str or None: The selected cocktail ID when searching for
+            an order, or None otherwise.
+    """
     if search_method == "lucky_shot":
         params = PARAM_LUCKY_SHOT
         cocktail_id = search_cocktails_in_db(params, "lucky_shot")
@@ -378,7 +326,7 @@ def search_cocktail(search_method="", for_order=False):
             return None
 
     else:
-        content = f"Here you can search cocktails by {search_method}."
+        content = f"Search for cocktails by {search_method}."
 
         display_page(
             location="Cocktails",
@@ -401,7 +349,7 @@ def search_cocktail(search_method="", for_order=False):
             cocktails = search_cocktails_in_db(params, "name")
 
         elif search_method == "ingredient":
-            print_message("The following ingredients are available in the inventory.")
+            print_message("The following ingredients are available in your inventory.")
 
             inventory = load_data("inventory")
 
@@ -465,22 +413,185 @@ def search_cocktail(search_method="", for_order=False):
     return None
 
 
+# ==============================
+# COCKTAIL RATINGS AND RANKINGS
+# ==============================
 
-def deactivate_cocktail(cocktail_id):
-    if not confirm_action("deactivate", "cocktail"):
+def rank_a_cocktail(guest_id=None, trigger=None):
+    """
+    Allows a guest to rate a cocktail on a scale from 1 to 10.
+
+    Stores the rating with the guest ID, cocktail ID, and current date.
+    Existing ratings for the same guest and cocktail are updated
+    instead of creating duplicate rating records.
+
+    Args:
+        guest_id (str, optional): The ID of the guest submitting the rating.
+        trigger (str, optional): Controls whether the guest selection
+            is retained when rating another cocktail.
+
+    Returns:
+        None: Returns when the user leaves the rating process.
+    """
+    current_event, current_event_id = get_current_event()
+    if current_event is None:
         return
 
-    from modules.orders import cancel_order
-    cancel_order(cocktail_id=cocktail_id)
+    cocktail_id = None
+    today = datetime.date.today().strftime("%d-%m-%Y")
 
-    update_record("cocktails", cocktail_id, "active", False)
+    while True:
+        rankings = load_data("rankings")
+        content = "Rate the cocktails you've tried."
 
-    print_message("Cocktail successfully deactivated.", "green")
-    print()
-    get_input()
+        display_page(location="Cocktails",
+                     title="Rate a Cocktail",
+                     content=content
+                     )
 
+        if guest_id is None:
+            from modules.guests import select_guest
+            guest_id = select_guest("rank_a_cocktail")
+            if guest_id is None:
+                break
+            continue
+
+        if cocktail_id is None:
+            cocktail_id = select_cocktail(trigger="rank_a_cocktail")
+            if cocktail_id is None:
+                break
+            continue
+
+        while True:
+            rating = float(get_input("How would you rate this cocktail (1–10)? ", float))
+
+            if 1 <= rating <= 10:
+                break
+
+            else:
+                print_message(INVALID_INPUT)
+                continue
+
+        update_id = str(len(rankings) + 1)
+        for ranking_id, ranking in rankings.items():
+            if ranking["guest"] == guest_id and ranking["cocktail"] == cocktail_id:
+                update_id = ranking_id
+                break
+
+
+        update_ranking = {
+            "id": update_id,
+            "cocktail": cocktail_id,
+            "guest": guest_id,
+            "date": today,
+            "rating": rating
+        }
+
+        save_data("rankings", update_ranking)
+
+        print()
+        print_message("Cocktail successfully rated.", "green")
+
+
+        columns = {
+            "Action": ["Rate Another Cocktail", "View Rankings", "", "Back"]
+        }
+
+        print()
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+        if menu_choice == 1:
+            if trigger is None:
+                guest_id = None
+            cocktail_id = None
+            continue
+
+        elif menu_choice == 2:
+            show_cocktail_ranking()
+            break
+
+        break
+
+    return
+
+
+def show_cocktail_ranking():
+    """
+    Displays the all-time cocktail rankings based on average ratings.
+
+    Calculates each cocktail's average score and number of votes,
+    then sorts the results from highest to lowest average rating.
+
+    Allows the user to return to the cocktail rating process.
+
+    Returns:
+        None: Returns when the user leaves the rankings overview.
+    """
+    while True:
+        rankings = load_data("rankings")
+        cocktails = load_data("cocktails")
+
+        content = "Discover the all-time favorite cocktails, ranked by their average rating."
+
+        display_page(location="Cocktails",
+                     title="All-Time Favorites",
+                     content=content
+                     )
+
+        average_ratings = calculate_average_ratings(rankings.values())
+
+        columns = {
+            "Place": [],
+            "Cocktail": [],
+            "Rating": [],
+            "Votes": []
+        }
+
+        for place, (cocktail_id, rating) in enumerate(sorted(average_ratings.items(), key=lambda item: item[1]["average"], reverse=True),start=1):
+            columns["Place"].append(place)
+            columns["Cocktail"].append(cocktails[cocktail_id]["name"])
+            columns["Rating"].append(rating["average"])
+            columns["Votes"].append(rating["votes"])
+
+        display_table(columns)
+
+        columns = {
+            "Action": ["Rate a Cocktail", "", "Back"]
+        }
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+        if menu_choice == 1:
+            rank_a_cocktail()
+            continue
+
+        break
+
+    return
+
+
+# ==============================
+# COCKTAIL STATISTICS
+# ==============================
 
 def show_cocktail_statistics(cocktail_id):
+    """
+    Displays detailed statistics for a selected cocktail.
+
+    Includes the number of times served, average rating, voting
+    statistics, servings per guest, individual ratings, and
+    servings per event.
+
+    Args:
+        cocktail_id (str): The ID of the cocktail to analyze.
+
+    Returns:
+        None: Returns after the user leaves the statistics page.
+    """
     from modules.guests import get_guest_full_name
 
     cocktails = load_data("cocktails")
@@ -498,6 +609,7 @@ def show_cocktail_statistics(cocktail_id):
                  content=content
                  )
 
+    # Calculate the total number of served orders for this cocktail.
     times_served = 0
     for order in orders.values():
         if order["cocktail"] == cocktail_id and order["status"] == "served":
@@ -505,9 +617,11 @@ def show_cocktail_statistics(cocktail_id):
 
     panel_content = f"Times served:     {times_served}\n"
 
-    rating = calculate_average_ratings(rankings.values()).get(cocktail_id)
+    average_ratings = calculate_average_ratings(rankings.values())
 
-    if rating is not None:
+    if cocktail_id in average_ratings:
+        rating = average_ratings[cocktail_id]
+
         panel_content += f"Average rating:    {rating['average']}\n"
         panel_content += f"Number of votes:  {rating['votes']}"
 
@@ -520,6 +634,7 @@ def show_cocktail_statistics(cocktail_id):
 
     order_counts = {}
 
+    # Count how often each guest received the cocktail.
     for order in orders.values():
         if order["cocktail"] == cocktail_id and order["status"] == "served":
             guest_id = order["guest"]
@@ -535,7 +650,7 @@ def show_cocktail_statistics(cocktail_id):
         display_table(columns)
 
     else:
-        panel_content = f"[red]Cocktail is never served to a guest.[/]"
+        panel_content = f"[red]This cocktail has never been served to a guest.[/]"
         display_panel(panel_content, title="Served")
 
 
@@ -545,6 +660,7 @@ def show_cocktail_statistics(cocktail_id):
         "Rating": [],
     }
 
+    # Display individual ratings, starting with the highest score.
     for ranking in sorted(rankings.values(), key=lambda entry: entry["rating"], reverse=True):
         if ranking["cocktail"] == cocktail_id:
             guest_id = ranking["guest"]
@@ -558,17 +674,18 @@ def show_cocktail_statistics(cocktail_id):
         display_table(columns)
 
     else:
-        panel_content = f"[red]Cocktail is never rated by a guest.[/]"
+        panel_content = f"[red]This cocktail has not been rated by any guests.[/]"
         display_panel(panel_content, title="Rated")
 
     columns = {
         "Event": [],
         "Date": [],
-        "Times ordered": [],
+        "Times served": [],
     }
 
     order_counts = {}
 
+    # Count cocktail servings per event.
     for order in orders.values():
         if order["cocktail"] == cocktail_id and order["status"] == "served":
             event_id = order["event"]
@@ -577,17 +694,42 @@ def show_cocktail_statistics(cocktail_id):
     for event_id, count in sorted(order_counts.items(), key=lambda entry: entry[1], reverse=True):
         columns["Event"].append(events[event_id]["name"])
         columns["Date"].append(events[event_id]["date"])
-        columns["Times ordered"].append(count)
+        columns["Times served"].append(count)
 
     if columns["Event"]:
         display_table(columns)
 
     else:
-        panel_content = f"[red]Cocktail is never served on an event.[/]"
-        display_panel(panel_content, title="Event")
+        panel_content = f"[red]This cocktail has never been served at an event.[/]"
+        display_panel(panel_content, title="Events")
 
 
     get_input()
     return
 
 
+# ==============================
+# COCKTAIL STATUS MANAGEMENT
+# ==============================
+
+def deactivate_cocktail(cocktail_id):
+    """
+    Deactivates a cocktail after user confirmation.
+
+    Cancels open orders containing the cocktail and marks the
+    cocktail as inactive while retaining its historical records.
+
+    Args:
+        cocktail_id (str): The ID of the cocktail to deactivate.
+    """
+    if not confirm_action("deactivate", "cocktail"):
+        return
+
+    from modules.orders import cancel_order
+    cancel_order(cocktail_id=cocktail_id)
+
+    update_record("cocktails", cocktail_id, "active", False)
+
+    print_message("Cocktail successfully deactivated.", "green")
+    print()
+    get_input()

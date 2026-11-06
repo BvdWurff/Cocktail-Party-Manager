@@ -1,20 +1,9 @@
 # ==============================
-# FUNCTION IMPORTS
+# LIBRARY IMPORTS
 # ==============================
 
 import datetime
 
-from utils.utils import (
-    get_input,
-    load_data,
-    display_table,
-    print_message,
-    save_data,
-    get_menu_choice,
-    display_page, update_record,
-    display_panel,
-    confirm_action,
-)
 
 # ==============================
 # CONSTANTS
@@ -25,195 +14,51 @@ from utils.constants import (
 )
 
 
-def get_current_event():
-    events = load_data("events")
+# ==============================
+# FUNCTION IMPORTS
+# ==============================
 
-    for event_id, event in events.items():
-        if event["current"] and event["active"]:
-            return event, event_id
-
-    event, event_id = select_event()
-    if event is None:
-        return None, None
-
-    return event, event_id
-
-
-def show_event(event=None, event_id=None, trigger=None):
-    if event is None:
-        event, event_id = get_current_event()
-        if event is None:
-            return
-
-    while True:
-        orders = load_data("orders")
-
-        content = f"""Here you can find all relevant event information.\n
-Event name:         [blue]{event["name"]}[/]
-Event date:         [blue]{event["date"]}[/]"""
-
-        guests, guest_ids = get_event_guests(event)
-        if len(guests) > 0:
-            content = f"{content}\nNumber of guests:   [blue]{len(guests)}[/]"
-
-        cocktail_counter = 0
-
-        for order in orders.values():
-            if order["event"] == event_id and order["status"] == "served":
-                cocktail_counter += 1
-
-        if cocktail_counter > 0:
-            content = f"{content}\nCocktails serverd:  [blue]{cocktail_counter}[/]"
-
-        display_page(location="Events",
-                     title="Event details",
-                     content=content
-                     )
-
-        guests, guest_ids = get_event_guests(event)
-        served_cocktails = []
-
-        for guest_id in guest_ids:
-            cocktail_counter = 0
-            for order in orders.values():
-                if order["event"] == event_id and order["status"] == "served" and order["guest"] == str(guest_id):
-                    cocktail_counter += 1
-            served_cocktails.append(str(cocktail_counter))
-
-        columns = {
-            "Guest": guests,
-            "Served cocktails": served_cocktails,
-        }
-
-        if columns["Guest"]:
-            display_table(columns)
-
-        else:
-            panel_content = "[red]No guests are added to this event.[/]"
-            display_panel(panel_content, title="Guest servings")
+from utils.utils import (
+    confirm_action,
+    display_page,
+    display_panel,
+    display_table,
+    get_input,
+    get_menu_choice,
+    load_data,
+    print_message,
+    save_data,
+    update_record,
+)
 
 
-        cocktail_names, cocktail_servings = get_event_cocktails(event_id)
-
-        if cocktail_names:
-            columns = {
-                "Cocktail": cocktail_names,
-                "Times served": cocktail_servings,
-            }
-
-            display_table(columns)
-
-        else:
-            panel_content = "[red]No cocktails are yet serverd for this event.[/]"
-            display_panel(panel_content, title="Cocktails servings")
-
-        today = datetime.datetime.now()
-        event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y")
-
-        if event_date.date() >= today.date():
-            columns = {
-                "Action": ["Add guest"]
-            }
-
-            if trigger != "current_event":
-                columns["Action"].append("Cancel event")
-
-            columns["Action"].extend(["", "Back"])
-
-            display_table(columns, auto_number=True)
-
-            menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-
-            if menu_choice == 1:
-                _ = add_guest_to_event(event, event_id)
-                continue
-
-            elif menu_choice == 2:
-                if event["current"]:
-                    print_message("You cannot cancel the current event.","red")
-                    print()
-                    get_input()
-                    continue
-
-                if not confirm_action("cancel", "event"):
-                    continue
-
-                from modules.orders import cancel_order
-                cancel_order(event_id=event_id)
-
-                update_record("events", event_id, "active", False)
-                update_record("events", event_id, "current", False)
-                print_message("The event was successfully canceled", "green")
-                print()
-                get_input()
-                break
-
-        else:
-            get_input()
-
-        break
-
-    return
-
-
-def show_all_events(event_filter):
-    while True:
-        content = f"Here you find an overview of all {event_filter} events."
-
-        display_page(
-            location="Events",
-            title=f"All {event_filter} events",
-            content=content
-        )
-
-        today = datetime.date.today()
-        events = load_data("events")
-
-        event_ids = []
-
-        columns = {
-            "Event": [],
-            "Date": []
-        }
-
-        for event_id, event in sorted(events.items(), key=lambda item: datetime.datetime.strptime(item[1]["date"], "%d-%m-%Y"), reverse=event_filter == "past"):
-            event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y").date()
-
-            if event_filter == "upcoming":
-                include_event = event["active"] and event_date > today
-            else:
-                include_event = event_date < today
-
-            if include_event:
-                event_ids.append(event_id)
-                columns["Event"].append(event["name"])
-                columns["Date"].append(event["date"])
-
-        columns["Event"].extend(["", "Back"])
-        columns["Date"].extend(["", ""])
-
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Event"]) - 1))
-
-        if menu_choice == 0:
-            break
-
-        else:
-            event_id = event_ids[menu_choice - 1]
-            show_event(events[event_id], event_id)
-            break
-
-    return
-
+# ==============================
+# EVENT CREATION
+# ==============================
 
 def new_event(trigger=""):
+    """
+    Creates a new event and allows guests to be assigned to it.
+
+    Validates the event name and date, prevents duplicate event dates,
+    and allows the user to select registered guests.
+
+    When triggered by a new order, the event date is automatically
+    set to today.
+
+    Args:
+        trigger (str): When set to "new_order", creates an event for today.
+
+    Returns:
+        tuple: The created event dictionary and its ID, or
+            (None, None) if event creation is cancelled.
+    """
     content = """Here you can create a new event.
 
 Type [blue]Stop[/] to exit the registration process."""
 
     display_page(location="Events",
-                 title="Create event",
+                 title="Create Event",
                  content=content
                  )
 
@@ -267,12 +112,13 @@ Type [blue]Stop[/] to exit the registration process."""
 
         current = event_date == today
 
+        # Allow only one registered event per date.
         for event in events.values():
             if event["date"] == event_date:
                 print()
                 print_message(f"An event is already registered for {event_date}.", "red")
                 print()
-                get_input("Press [blue]Enter[/] to return to the events menu")
+                get_input("Press [blue]Enter[/] to return to the events menu.")
 
                 return None, None
 
@@ -280,11 +126,12 @@ Type [blue]Stop[/] to exit the registration process."""
 
     guests_list = []
 
+    # Allow registered, active guests to be added to the new event.
     while True:
-        content = f"Here you can select guests you want to add the event."
+        content = f"Here you can select the guests you want to add to the event."
 
         display_page(location="Events",
-                     title="Add guests",
+                     title="Add Guests",
                      content=content
                      )
 
@@ -333,7 +180,21 @@ Type [blue]Stop[/] to exit the registration process."""
     return event, event["id"]
 
 
+# ==============================
+# EVENT SELECTION
+# ==============================
+
 def select_event():
+    """
+    Selects an active event scheduled for today.
+
+    If no event is available, the user can create a new event
+    for the current date.
+
+    Returns:
+        tuple: The selected event dictionary and its ID, or
+            (None, None) if no event is selected or created.
+    """
     events = load_data("events")
     today = datetime.datetime.now()
     current_event: dict | None = None
@@ -349,7 +210,7 @@ def select_event():
         content = "[red]There is no event available for today.[/]"
 
         display_page(location="Events",
-                     title="Select event",
+                     title="Select Event",
                      content=content
                      )
 
@@ -382,7 +243,251 @@ def select_event():
     return current_event, current_event_id
 
 
+def get_current_event():
+    """
+    Retrieves the active event marked as current.
+
+    If no active current event exists, starts the event selection
+    process to find or create an event for today.
+
+    Returns:
+        tuple: The current event dictionary and its ID, or
+            (None, None) if no event is available.
+    """
+    events = load_data("events")
+
+    for event_id, event in events.items():
+        if event["current"] and event["active"]:
+            return event, event_id
+
+    event, event_id = select_event()
+    if event is None:
+        return None, None
+
+    return event, event_id
+
+
+# ==============================
+# EVENT OVERVIEWS
+# ==============================
+
+def show_all_events(event_filter):
+    """
+    Displays an overview of upcoming or past events.
+
+    Events are sorted chronologically, with past events displayed
+    in reverse order. Users can select an event to view its details.
+
+    Args:
+        event_filter (str): The event filter, either "upcoming" or "past".
+
+    Returns:
+        None: Returns when the user leaves the event overview.
+    """
+    while True:
+        content = f"Here you can find an overview of all {event_filter} events."
+
+        display_page(
+            location="Events",
+            title=f"All {event_filter} Events",
+            content=content
+        )
+
+        today = datetime.date.today()
+        events = load_data("events")
+
+        event_ids = []
+
+        columns = {
+            "Event": [],
+            "Date": []
+        }
+
+        for event_id, event in sorted(events.items(), key=lambda item: datetime.datetime.strptime(item[1]["date"], "%d-%m-%Y"), reverse=event_filter == "past"):
+            event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y").date()
+
+            if event_filter == "upcoming":
+                include_event = event["active"] and event_date > today
+            else:
+                include_event = event_date < today
+
+            if include_event:
+                event_ids.append(event_id)
+                columns["Event"].append(event["name"])
+                columns["Date"].append(event["date"])
+
+        columns["Event"].extend(["", "Back"])
+        columns["Date"].extend(["", ""])
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Event"]) - 1))
+
+        if menu_choice == 0:
+            break
+
+        else:
+            event_id = event_ids[menu_choice - 1]
+            show_event(events[event_id], event_id)
+            break
+
+    return
+
+
+def show_event(event=None, event_id=None, trigger=None):
+    """
+    Displays detailed information and statistics for an event.
+
+    Shows event details, registered guests, cocktails served per guest,
+    and total servings per cocktail.
+
+    For current or future events, provides options to add guests
+    and, where permitted, cancel the event.
+
+    Args:
+        event (dict, optional): The event record to display.
+        event_id (str, optional): The ID of the event.
+        trigger (str, optional): Controls the available event actions.
+
+    Returns:
+        None: Returns when the user leaves the event details.
+    """
+    if event is None:
+        event, event_id = get_current_event()
+        if event is None:
+            return
+
+    while True:
+        orders = load_data("orders")
+
+        content = f"""Here you can find all relevant event information.\n
+Event name:         [blue]{event["name"]}[/]
+Event date:         [blue]{event["date"]}[/]"""
+
+        guests, guest_ids = get_event_guests(event)
+        if len(guests) > 0:
+            content = f"{content}\nNumber of guests:   [blue]{len(guests)}[/]"
+
+        cocktail_counter = 0
+
+        for order in orders.values():
+            if order["event"] == event_id and order["status"] == "served":
+                cocktail_counter += 1
+
+        if cocktail_counter > 0:
+            content = f"{content}\nCocktails served:   [blue]{cocktail_counter}[/]"
+
+        display_page(location="Events",
+                     title="Event Details",
+                     content=content
+                     )
+
+        guests, guest_ids = get_event_guests(event)
+        served_cocktails = []
+
+        # Count served orders for each registered guest.
+        for guest_id in guest_ids:
+            cocktail_counter = 0
+            for order in orders.values():
+                if order["event"] == event_id and order["status"] == "served" and order["guest"] == str(guest_id):
+                    cocktail_counter += 1
+            served_cocktails.append(str(cocktail_counter))
+
+        columns = {
+            "Guest": guests,
+            "Served cocktails": served_cocktails,
+        }
+
+        if columns["Guest"]:
+            display_table(columns)
+
+        else:
+            panel_content = "[red]No guests have been added to this event.[/]"
+            display_panel(panel_content, title="Guest Servings")
+
+
+        cocktail_names, cocktail_servings = get_event_cocktails(event_id)
+
+        if cocktail_names:
+            columns = {
+                "Cocktail": cocktail_names,
+                "Times served": cocktail_servings,
+            }
+
+            display_table(columns)
+
+        else:
+            panel_content = "[red]No cocktails have been served at this event yet.[/]"
+            display_panel(panel_content, title="Cocktail Servings")
+
+        today = datetime.datetime.now()
+        event_date = datetime.datetime.strptime(event["date"], "%d-%m-%Y")
+
+        if event_date.date() >= today.date():
+            columns = {
+                "Action": ["Add guest"]
+            }
+
+            if trigger != "current_event":
+                columns["Action"].append("Cancel event")
+
+            columns["Action"].extend(["", "Back"])
+
+            display_table(columns, auto_number=True)
+
+            menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+            if menu_choice == 1:
+                _ = add_guest_to_event(event, event_id)
+                continue
+
+            elif menu_choice == 2:
+                if event["current"]:
+                    print_message("You cannot cancel the current event.","red")
+                    print()
+                    get_input()
+                    continue
+
+                if not confirm_action("cancel", "event"):
+                    continue
+
+                from modules.orders import cancel_order
+                cancel_order(event_id=event_id)
+
+                update_record("events", event_id, "active", False)
+                update_record("events", event_id, "current", False)
+                print_message("The event was successfully cancelled.", "green")
+                print()
+                get_input()
+                break
+
+        else:
+            get_input()
+
+        break
+
+    return
+
+
+# ==============================
+# EVENT GUEST MANAGEMENT
+# ==============================
+
 def get_event_guests(event=None):
+    """
+    Retrieves and alphabetically sorts the guests assigned to an event.
+
+    Active events include only active guests. Inactive events include
+    all registered guests associated with the event.
+
+    Args:
+        event (dict, optional): The event whose guests are requested.
+            Defaults to the current event.
+
+    Returns:
+        tuple: Two lists containing guest names and corresponding
+            numerical guest IDs.
+    """
     from modules.guests import get_guest_full_name
 
     if event is None:
@@ -413,34 +518,22 @@ def get_event_guests(event=None):
     return guest_names, guest_ids
 
 
-def get_event_cocktails(event_id=None):
-    if event_id is None:
-        _, event_id = get_current_event()
-
-    orders = load_data("orders")
-    cocktails = load_data("cocktails")
-    cocktail_dict = {}
-
-    for order in orders.values():
-        if order["event"] == event_id and order["status"] == "served":
-            cocktail_name = cocktails[order["cocktail"]]["name"]
-
-            if cocktail_name in cocktail_dict:
-                cocktail_dict[cocktail_name] += 1
-            else:
-                cocktail_dict[cocktail_name] = 1
-
-    cocktail_names = []
-    cocktail_servings = []
-
-    for cocktail, number in sorted(cocktail_dict.items(), key=lambda item: item[0].casefold()):
-        cocktail_names.append(cocktail)
-        cocktail_servings.append(str(number))
-
-    return cocktail_names, cocktail_servings
-
-
 def add_guest_to_event(event=None, event_id=None, guest_id=None):
+    """
+    Adds a guest to an event and saves the updated guest list.
+
+    When no guest is specified, displays available registered guests
+    and provides an option to register a new guest.
+
+    Args:
+        event (dict, optional): The event to update.
+        event_id (str, optional): The ID of the event.
+        guest_id (str, optional): The ID of the guest to add.
+
+    Returns:
+        str or None: The selected or added guest ID, or None if
+            no event or guest is available.
+    """
     from modules.guests import new_guest
     from modules.guests import get_guest_full_name
 
@@ -474,7 +567,7 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
 
             display_page(
                 location="Events",
-                title="Add guests",
+                title="Add Guests",
                 content="Select the guest you want to add to the event."
             )
 
@@ -502,7 +595,66 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
     return guest_id
 
 
+# ==============================
+# EVENT COCKTAIL STATISTICS
+# ==============================
+
+def get_event_cocktails(event_id=None):
+    """
+    Retrieves the number of times each cocktail was served at an event.
+
+    Only orders with the status "served" are included.
+    Results are sorted alphabetically by cocktail name.
+
+    Args:
+        event_id (str, optional): The event ID. Defaults to the current event.
+
+    Returns:
+        tuple: Two lists containing cocktail names and their
+            corresponding serving counts as strings.
+    """
+    if event_id is None:
+        _, event_id = get_current_event()
+
+    orders = load_data("orders")
+    cocktails = load_data("cocktails")
+    cocktail_dict = {}
+
+    # Count served orders per cocktail.
+    for order in orders.values():
+        if order["event"] == event_id and order["status"] == "served":
+            cocktail_name = cocktails[order["cocktail"]]["name"]
+
+            if cocktail_name in cocktail_dict:
+                cocktail_dict[cocktail_name] += 1
+            else:
+                cocktail_dict[cocktail_name] = 1
+
+    cocktail_names = []
+    cocktail_servings = []
+
+    for cocktail, number in sorted(cocktail_dict.items(), key=lambda item: item[0].casefold()):
+        cocktail_names.append(cocktail)
+        cocktail_servings.append(str(number))
+
+    return cocktail_names, cocktail_servings
+
+
+# ==============================
+# EVENT STATUS MANAGEMENT
+# ==============================
+
 def update_events():
+    """
+    Updates event statuses based on the current date.
+
+    Marks today's events as current, keeps future events active,
+    and deactivates past events. Open orders belonging to inactive
+    or expired events are cancelled.
+
+    Returns:
+        None: Returns after all event records have been checked.
+    """
     from modules.orders import cancel_order
 
     events = load_data("events")
@@ -534,6 +686,3 @@ def update_events():
                 cancel_order(event_id=event_id)
 
     return
-
-
-

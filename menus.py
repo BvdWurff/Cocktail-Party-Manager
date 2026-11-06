@@ -2,34 +2,6 @@
 # FUNCTION IMPORTS
 # ==============================
 
-from modules.orders import (
-    new_order,
-    get_next_order,
-    all_open_orders,
-    process_order,
-)
-
-from modules.guests import show_all_guests
-
-from modules.events import (
-    new_event,
-    show_event,
-    show_all_events,
-)
-
-from modules.inventory import (
-    show_inventory,
-    add_low_stock_items_to_shopping_list,
-)
-
-from utils.utils import (
-    get_menu_choice,
-    display_table,
-    display_page,
-)
-
-from modules.unit_converter import unit_converter
-
 from modules.cocktails import (
     all_available_cocktails,
     rank_a_cocktail,
@@ -37,18 +9,54 @@ from modules.cocktails import (
     search_cocktail,
 )
 
+from modules.events import (
+    new_event,
+    show_event,
+    show_all_events,
+)
+
+from modules.guests import show_all_guests
+
+from modules.inventory import (
+    show_inventory,
+    add_low_stock_items_to_shopping_list,
+)
+
+from modules.orders import (
+    new_order,
+    get_next_order,
+    all_open_orders,
+    process_order,
+)
+
+from modules.unit_converter import unit_converter
+
+from utils.utils import (
+    get_menu_choice,
+    display_table,
+    display_page,
+)
+
+
+# ==============================
+# MAIN MENU
+# ==============================
 
 def main_menu():
+    """
+    Displays the main menu and handles navigation to the different
+    sections of the Cocktail Party Manager.
+    """
     while True:
-        content = "Discover cocktails, take orders, manage events, keep track of your inventory or see statistics.\n\nSelect an option below to get started."
+        content = "Discover cocktails, take orders, manage events, keep track of your inventory, or explore the available features.\n\nSelect an option below to get started."
 
         display_page(location="Cocktail Party Manager",
-                     title="Main menu",
+                     title="Main Menu",
                      content=content
                      )
 
         columns = {
-            "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Guests", "Unit convertor", "", "Exit"]
+            "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Guests", "Unit Converter", "", "Exit"]
         }
 
         display_table(columns, auto_number=True)
@@ -79,9 +87,17 @@ def main_menu():
     return
 
 
+# ==============================
+# COCKTAIL MENUS
+# ==============================
+
 def cocktail_menu():
+    """
+    Displays the cocktail menu and provides access to the local cocktail
+    collection, API searches, ratings, and all-time favorites.
+    """
     while True:
-        content = "Here you can find your favorite cocktails and get recipes."
+        content = "Discover your favorite cocktails, explore recipes, and rate the drinks you've tried."
 
         display_page(location="Cocktail Party Manager",
                      title="Cocktails",
@@ -89,7 +105,7 @@ def cocktail_menu():
                      )
 
         columns = {
-            "Action": ["All available cocktails", "Find new cocktails", "Rank a cocktail", "All-time favorites", "", "Back"]
+            "Action": ["All Available Cocktails", "Find New Cocktails", "Rate a Cocktail", "All-Time Favorites", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -114,9 +130,53 @@ def cocktail_menu():
     return
 
 
-def orders_menu():
+def find_new_cocktails_menu():
+    """
+    Displays the cocktail search menu and directs the user to the selected
+    search method using TheCocktailDB API.
+    """
     while True:
-        content = "Here you can manage your orders."
+        content = "Search for new cocktails by name or ingredient, or discover a random cocktail."
+
+        display_page(location="Cocktails",
+                     title="Find Cocktails",
+                     content=content
+                     )
+
+        columns = {
+            "Action": ["Search by Name", "Search by Ingredient", "Lucky 'Shot'", "", "Back"]
+        }
+
+        display_table(columns, auto_number=True)
+
+        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
+
+        if menu_choice == 1:
+            search_cocktail("name")
+
+        elif menu_choice == 2:
+            search_cocktail("ingredient")
+
+        elif menu_choice == 3:
+            search_cocktail("lucky_shot")
+
+        else:
+            break
+
+    return
+
+
+# ==============================
+# ORDER MENU
+# ==============================
+
+def orders_menu():
+    """
+    Displays the orders menu and allows users to create new orders,
+    process the next open order, or select an existing open order.
+    """
+    while True:
+        content = "Create new cocktail orders or manage existing orders that are waiting to be served."
 
         display_page(location="Cocktail Party Manager",
                      title="Orders",
@@ -124,7 +184,7 @@ def orders_menu():
                      )
 
         columns = {
-            "Action": ["New order", "Next open order", "All open orders", "", "Back"]
+            "Action": ["New Order", "Next Open Order", "All Open Orders", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -135,7 +195,7 @@ def orders_menu():
             new_order()
 
         elif menu_choice == 2:
-            order_id, order = get_next_order()
+            order_id, _ = get_next_order()
             if order_id is None:
                 continue
 
@@ -154,9 +214,17 @@ def orders_menu():
     return
 
 
+# ==============================
+# EVENT MENU
+# ==============================
+
 def events_menu():
+    """
+    Displays the events menu and provides options to create an event,
+    view the current event, or browse upcoming and past events.
+    """
     while True:
-        content = "Here you can manage your events."
+        content = "Create new events, manage the current event, or explore upcoming and past events."
 
         display_page(location="Cocktail Party Manager",
                      title="Events",
@@ -164,7 +232,7 @@ def events_menu():
                      )
 
         columns = {
-            "Action": ["New event", "Current event", "Upcoming events", "Past events",  "", "Back"]
+            "Action": ["New Event", "Current Event", "Upcoming Events", "Past Events",  "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -189,9 +257,17 @@ def events_menu():
     return
 
 
+# ==============================
+# INVENTORY MENU
+# ==============================
+
 def inventory_menu():
+    """
+    Displays the inventory menu and provides access to inventory
+    overviews, low-stock items, and the shopping list.
+    """
     while True:
-        content = "Here you can manage the inventory."
+        content = "View and manage your ingredient inventory, monitor low-stock items, and update your shopping list."
 
         display_page(location="Cocktail Party Manager",
                      title="Inventory",
@@ -199,7 +275,7 @@ def inventory_menu():
                      )
 
         columns = {
-            "Action": ["Show full inventory", "Items below minimum quantity", "Add Low-Stock Items to Shopping List", "Shopping list", "", "Back"]
+            "Action": ["Full Inventory", "Items Below Minimum Quantity", "Add Low-Stock Items to Shopping List", "Shopping List", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -222,36 +298,3 @@ def inventory_menu():
             break
 
     return
-
-
-def find_new_cocktails_menu():
-    while True:
-        content = "Here you can search for new cocktails and get recipes."
-
-        display_page(location="Cocktails",
-                     title="Find cocktails",
-                     content=content
-                     )
-
-        columns = {
-            "Action": ["Search by name", "Search by ingredient", "Lucky 'shot'", "", "Back"]
-        }
-
-        display_table(columns, auto_number=True)
-
-        menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
-
-        if menu_choice == 1:
-            search_cocktail("name")
-
-        elif menu_choice == 2:
-            search_cocktail("ingredient")
-
-        elif menu_choice == 3:
-            search_cocktail("lucky_shot")
-
-        else:
-            break
-
-    return
-

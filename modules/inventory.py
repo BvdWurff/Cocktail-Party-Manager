@@ -1,17 +1,88 @@
+# ==============================
+# FUNCTION IMPORTS
+# ==============================
+
 from utils.utils import (
-    load_data,
-    save_data,
     display_page,
+    display_panel,
     display_table,
     get_input,
     get_menu_choice,
-    display_panel,
-    update_record,
-    print_message,
     get_non_negative_integer,
+    load_data,
+    print_message,
+    save_data,
+    update_record,
 )
 
+
+# ==============================
+# INVENTORY MANAGEMENT
+# ==============================
+
+def add_item_to_inventory(ingredient_id):
+    """
+    Adds an ingredient from TheCocktailDB to the local inventory.
+
+    Retrieves ingredient details from the API and creates a new inventory
+    record with zero stock, a default minimum quantity of 10 units,
+    and an inactive shopping list flag.
+
+    Args:
+        ingredient_id (str): The unique ingredient ID from TheCocktailDB.
+
+    Returns:
+        bool: True if the ingredient already exists or is successfully
+            added, or False if the ingredient details cannot be retrieved.
+    """
+    inventory = load_data("inventory")
+    from modules.cocktail_api import get_ingredient
+
+    # Skip creation if the ingredient is already registered.
+    if ingredient_id in inventory:
+        return True
+
+    # Retrieve ingredient details from TheCocktailDB.
+    item_id, item_name, item_description = get_ingredient("id", ingredient_id)
+
+    if not item_id or not item_name:
+        return False
+
+    item = {
+        "id": item_id,
+        "name": item_name,
+        "description": item_description,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": False
+    }
+
+    save_data("inventory", item)
+
+    return True
+
+
+# ==============================
+# COCKTAIL AVAILABILITY
+# ==============================
+
 def check_cocktail_availability(cocktail_id, for_existing_order=False):
+    """
+    Checks whether the required ingredients are available for a cocktail.
+
+    Each ingredient requires one inventory unit. When checking a new
+    order, units reserved by existing open orders are deducted from
+    the available stock.
+
+    Args:
+        cocktail_id (str): The ID of the cocktail to check.
+        for_existing_order (bool): Whether the check is performed for
+            an existing order rather than a new one.
+
+    Returns:
+        list: Ingredient IDs with insufficient or missing inventory.
+            An empty list indicates that all ingredients are available.
+    """
     cocktails = load_data("cocktails")
     orders = load_data("orders")
     inventory = load_data("inventory")
@@ -43,49 +114,40 @@ def check_cocktail_availability(cocktail_id, for_existing_order=False):
     return low_on_stock
 
 
-def add_item_to_inventory(ingredient_id):
-    inventory = load_data("inventory")
-    from modules.cocktail_api import get_ingredient
-
-    # Ingredient already exists in the inventory.
-    if ingredient_id in inventory:
-        return True
-
-    # Retrieve ingredient details from TheCocktailDB.
-    item_id, item_name, item_description = get_ingredient("id", ingredient_id)
-
-    if not item_id or not item_name:
-        return False
-
-    item = {
-        "id": item_id,
-        "name": item_name,
-        "description": item_description,
-        "quantity": 0,
-        "minimum_quantity": 10,
-        "shopping_list": False
-    }
-
-    save_data("inventory", item)
-
-    return True
-
+# ==============================
+# INVENTORY DISPLAY
+# ==============================
 
 def show_inventory(trigger=None):
+    """
+    Displays an inventory overview based on the selected filter.
+
+    Supports the full inventory, ingredients below their minimum
+    quantity, and ingredients included in the shopping list.
+    Users can select an ingredient to view or update its details.
+
+    Args:
+        trigger (str, optional): Determines which inventory overview
+            to display: "full_inventory", "below_min_quantity",
+            or "shopping_list".
+
+    Returns:
+        None: Returns when the user leaves the inventory overview.
+    """
     while True:
         inventory = load_data("inventory")
 
         if trigger == "full_inventory":
-            content = "An overview of the full inventory."
-            title = "Inventory overview"
+            content = "An overview of all ingredients in your inventory."
+            title = "Inventory Overview"
 
         elif trigger == "below_min_quantity":
-            content = "An overview of the items in the inventory below the minimum quantity."
-            title = "Below minimum quantity"
+            content = "An overview of ingredients with quantities below their minimum stock levels."
+            title = "Below Minimum Quantity"
 
         elif trigger == "shopping_list":
-            content = "An overview of the items in the shopping list"
-            title = "Shopping list"
+            content = "An overview of the ingredients on your shopping list."
+            title = "Shopping List"
 
         else:
             break
@@ -144,6 +206,20 @@ def show_inventory(trigger=None):
 
 
 def show_inventory_item(item_id):
+    """
+    Displays detailed information for an inventory ingredient.
+
+    Shows the current quantity, minimum quantity, shopping list
+    status, ingredient description, and cocktails using the ingredient.
+
+    Allows the user to update quantities or toggle shopping list status.
+
+    Args:
+        item_id (str): The ID of the ingredient to display.
+
+    Returns:
+        None: Returns when the user leaves the ingredient details.
+    """
     while True:
         inventory = load_data("inventory")
         cocktails = load_data("cocktails")
@@ -171,7 +247,7 @@ Added to shopping list:   {add_to_shopping_list}"""
             panel_content = item["description"]
 
         else:
-            panel_content = "[red]No description available for this ingredient[/]"
+            panel_content = "[red]No description available for this ingredient.[/]"
 
         display_panel(panel_content, title="Description")
 
@@ -227,7 +303,24 @@ Added to shopping list:   {add_to_shopping_list}"""
     return
 
 
+# ==============================
+# INVENTORY FORMATTING
+# ==============================
+
 def format_stock_quantity(quantity, minimum_quantity):
+    """
+    Formats an inventory quantity using Rich color markup.
+
+    Quantities are displayed in red when empty, orange when below
+    the minimum quantity, and green when sufficient.
+
+    Args:
+        quantity (int): The available inventory quantity.
+        minimum_quantity (int): The configured minimum stock level.
+
+    Returns:
+        str: The quantity formatted with Rich color markup.
+    """
     if quantity == 0:
         color = "red"
     elif quantity < minimum_quantity:
@@ -238,7 +331,20 @@ def format_stock_quantity(quantity, minimum_quantity):
     return f"[{color}]{quantity}[/]"
 
 
+# ==============================
+# SHOPPING LIST MANAGEMENT
+# ==============================
+
 def add_low_stock_items_to_shopping_list():
+    """
+    Adds all ingredients below their minimum stock level to the shopping list.
+
+    Only ingredients not already included are updated. A confirmation
+    message is displayed indicating whether any ingredients were added.
+
+    Returns:
+        None: Returns after the shopping list has been updated.
+    """
     inventory = load_data("inventory")
 
     counter = 0
@@ -249,13 +355,12 @@ def add_low_stock_items_to_shopping_list():
             counter += 1
 
     if counter == 0:
-        print_message("All ingredients were already added to the shopping list.", "red")
+        print_message("All low-stock ingredients are already on the shopping list.", "red")
 
     else:
-        print_message("Ingredients successfully added to the shopping list.", "green")
+        print_message("Low-stock ingredients successfully added to the shopping list.", "green")
 
     print()
     get_input()
 
     return
-
