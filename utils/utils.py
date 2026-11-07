@@ -27,6 +27,13 @@ from utils.constants import (
 
 
 # ==============================
+# APP STATE
+# ==============================
+
+from utils import app_state
+
+
+# ==============================
 # LOGGING
 # ==============================
 
@@ -210,7 +217,7 @@ def get_non_negative_integer(message):
         if value >= 0:
             return value
 
-        print_message(INVALID_INPUT, "red")
+        print_message(INVALID_INPUT)
 
 
 def confirm_action(action, record_type):
@@ -275,7 +282,7 @@ def print_message(message, color="", end="\n", indent=5):
 # DISPLAY UTILITIES
 # ==============================
 
-def display_page(location, title, content, color="bright_yellow"):
+def display_page(location, title, content):
     """
     Clears the terminal and displays a formatted page using a Rich Panel.
 
@@ -283,7 +290,6 @@ def display_page(location, title, content, color="bright_yellow"):
         location (str): The location displayed in the panel title.
         title (str): The title of the current page.
         content (str or Rich renderable): The content to display.
-        color (Rich renderable): The color of the border.
     """
     clear_terminal()
 
@@ -293,21 +299,20 @@ def display_page(location, title, content, color="bright_yellow"):
                 content,
                 title=f"[bold bright_yellow]{location}[/] [bold bright_white]- {title}[/]",
                 title_align="left",
-                border_style=color,
+                border_style=get_border_color(),
                 padding=(1, 2),
             ),
             (1, 5))
     )
 
 
-def display_panel(content, border_style="bright_yellow", title_color="bright_white", title="", top_padding=0):
+def display_panel(content, title_color="bright_white", title="", top_padding=0):
     """
     Displays content in a formatted Rich Panel with optional
     title, styling, and top padding.
 
     Args:
         content (str or Rich renderable): The content to display.
-        border_style (str): The color or style of the panel border.
         title_color (str): The color of the panel title.
         title (str): The optional panel title.
         top_padding (int): The amount of padding above the panel.
@@ -317,7 +322,7 @@ def display_panel(content, border_style="bright_yellow", title_color="bright_whi
         Padding(
             Panel(
                 content,
-                border_style=border_style,
+                border_style=get_border_color(),
                 title=f"[bold {title_color}]{title}[/]" if title else None,
                 title_align="left",
                 padding=(1, 2),
@@ -345,7 +350,7 @@ def display_table(columns: dict, auto_number=False):
         box=box.SQUARE,
         expand=True,
         header_style="bold bright_white",
-        border_style="bright_yellow",
+        border_style=get_border_color(),
         padding=(0, 1),
         width=70
     )
@@ -375,3 +380,10 @@ def display_table(columns: dict, auto_number=False):
     console.print(
         Padding(table, (0, 0, 1, 5))
     )
+
+
+def get_border_color():
+    if app_state.DEMO_MODE:
+        return app_state.DEMO_BORDER_COLOR
+
+    return app_state.DEFAULT_BORDER_COLOR

@@ -1,4 +1,3 @@
-
 # ==============================
 # LIBRARY IMPORTS
 # ==============================
@@ -44,7 +43,7 @@ logger = logging.getLogger(__name__)
 # ==============================
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
-SOURCE_DIR = PROJECT_DIR / "demo_data"
+SOURCE_DIR = PROJECT_DIR / "data" / "demo_data"
 TARGET_DIR = PROJECT_DIR / "data"
 
 
@@ -52,7 +51,7 @@ TARGET_DIR = PROJECT_DIR / "data"
 # DEMO DATA MANAGEMENT
 # ==============================
 
-def load_demo_data():
+def load_demo_data(trigger=None):
     """
     Loads the demo JSON files into the application data directory.
 
@@ -67,8 +66,9 @@ def load_demo_data():
         None: Returns when the operation is completed, cancelled,
             or aborted due to an error.
     """
-    if not confirm_action("load", "demo data"):
-        return
+    if trigger is None:
+        if not confirm_action("load", "demo data"):
+            return
 
     try:
         source_files = [
@@ -101,9 +101,6 @@ def load_demo_data():
         get_input()
         return
 
-    print_message("Demo data successfully loaded.\n", "green")
-    get_input()
-
     return
 
 
@@ -111,7 +108,7 @@ def load_demo_data():
 # APPLICATION DATA MANAGEMENT
 # ==============================
 
-def reset_application_data():
+def reset_application_data(trigger=None):
     """
     Resets all application JSON files to empty dictionaries.
 
@@ -126,8 +123,9 @@ def reset_application_data():
         None: Returns when the operation is completed, cancelled,
             or aborted due to an error.
     """
-    if not confirm_action("reset", "application data"):
-        return
+    if trigger is None:
+        if not confirm_action("reset", "application data"):
+            return
 
     try:
         # Create the target directory if it does not exist.
@@ -158,7 +156,8 @@ def reset_application_data():
         get_input()
         return
 
-    print_message("Application data successfully reset.\n", "green")
-    get_input()
+    if trigger is None:
+        print_message("Application data successfully reset.\n", "green")
+        get_input()
 
     return

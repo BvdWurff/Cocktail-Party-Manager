@@ -15,6 +15,10 @@ from menus import main_menu
 
 from modules.events import update_events
 
+from utils import app_state
+
+from utils.demo_data import load_demo_data
+
 from utils.utils import (
     display_page,
     display_table,
@@ -22,6 +26,7 @@ from utils.utils import (
     get_input,
     print_message,
 )
+
 
 # ==============================
 # CONSTANTS
@@ -66,7 +71,11 @@ def main():
     Initializes the application, displays the welcome screen,
     and manages the main menu and exit confirmation.
     """
-    update_events()
+    if app_state.DEMO_MODE:
+        load_demo_data(trigger="startup")
+
+    else:
+        update_events()
 
     content = """Welcome to [bright_yellow]the Cocktail Party Manager[/]!
 
@@ -122,7 +131,6 @@ if __name__ == "__main__":
         logging.exception("The application encountered a critical error.")
 
         print()
-        print_message("A critical error occurred. Please check the application log.", "red")
-        print()
+        print_message("A critical error occurred. Please check the application log.\n", "red")
         get_input("Press Enter to close the application.")
         print()

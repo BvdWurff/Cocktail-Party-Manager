@@ -98,14 +98,13 @@ Type [blue]Stop[/] to exit the registration process."""
 
                         if parsed_date.date() < datetime.date.today():
                             print()
-                            print_message("The event date cannot be in the past.", "red")
-                            print()
+                            print_message("The event date cannot be in the past.\n", "red")
                             continue
 
                         event_date = parsed_date.strftime("%d-%m-%Y")
 
                     except ValueError:
-                        print_message(INVALID_INPUT, "red")
+                        print_message(INVALID_INPUT)
                         continue
 
                 break
@@ -116,9 +115,8 @@ Type [blue]Stop[/] to exit the registration process."""
         for event in events.values():
             if event["date"] == event_date:
                 print()
-                print_message(f"An event is already registered for {event_date}.", "red")
-                print()
-                get_input("Press [blue]Enter[/] to return to the events menu.")
+                print_message(f"An event is already registered for {event_date}.\n", "red")
+                get_input()
 
                 return None, None
 
@@ -229,7 +227,8 @@ def select_event():
 
             if current_event is None:
                 print()
-                get_input("No event was created. Press [blue]Enter[/] to return to the previous menu.")
+                print_message("No event was created.\n", "red")
+                get_input()
 
                 return None, None
 
@@ -444,8 +443,7 @@ Event date:         [blue]{event["date"]}[/]"""
 
             elif menu_choice == 2:
                 if event["current"]:
-                    print_message("You cannot cancel the current event.", "red")
-                    print()
+                    print_message("You cannot cancel the current event.\n", "red")
                     get_input()
                     continue
 
@@ -457,8 +455,7 @@ Event date:         [blue]{event["date"]}[/]"""
 
                 update_record("events", event_id, "active", False)
                 update_record("events", event_id, "current", False)
-                print_message("The event was successfully cancelled.", "green")
-                print()
+                print_message("The event was successfully cancelled.\n", "green")
                 get_input()
                 break
 
@@ -542,7 +539,8 @@ def add_guest_to_event(event=None, event_id=None, guest_id=None):
         event, event_id = get_current_event()
 
     if event is None or event_id is None:
-        get_input("No event was selected.", color="red")
+        print_message("No event was selected.\n", "red")
+        get_input()
         return None
 
     if guest_id is None:

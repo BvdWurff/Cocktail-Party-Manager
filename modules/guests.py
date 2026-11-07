@@ -78,7 +78,7 @@ Type [blue]Stop[/] to exit the registration process."""
 
             if first_name.lower() == "stop":
                 print()
-                get_input("Press [blue]Enter[/] to exit the registration process.")
+                get_input()
                 return None
 
             surname = get_input("What is the surname of the guest? ").strip()
@@ -89,7 +89,7 @@ Type [blue]Stop[/] to exit the registration process."""
 
             if surname.lower() == "stop":
                 print()
-                get_input("Press [blue]Enter[/] to exit the registration process.")
+                get_input()
                 return None
 
             for guest in guests.values():
@@ -120,11 +120,10 @@ Type [blue]Stop[/] to exit the registration process."""
 
         save_data("guests", guest)
         print()
-        print_message("Guest successfully registered.", "green")
+        print_message("Guest successfully registered.\n", "green")
 
         if trigger == "new_order":
-            print()
-            get_input("Press [blue]Enter[/] to return to the order process.")
+            get_input()
 
             return guest["id"]
 
@@ -480,29 +479,25 @@ def add_guest_to_current_event(guest_id, name):
     event, event_id = get_current_event()
 
     if event is None or event_id is None:
-        print_message("No current event.", "red")
-        print()
+        print_message("No current event.\n", "red")
         get_input()
         return
 
     guests = event["guests"]
 
     if guests is None:
-        print_message("The event has no guests.", "red")
-        print()
+        print_message("The event has no guests.\n", "red")
         get_input()
         return
 
     if guest_id in guests:
-        print_message(f"{name} is already added to the current event.", "red")
-        print()
+        print_message(f"{name} is already added to the current event.\n", "red")
         get_input()
         return
 
     add_guest_to_event(event=event, event_id=event_id, guest_id=guest_id)
 
-    print_message(f"{name} successfully added to the current event.", "green")
-    print()
+    print_message(f"{name} successfully added to the current event.\n", "green")
     get_input()
 
 
@@ -524,8 +519,7 @@ def deactivate_guest(guest_id):
 
     update_record("guests", guest_id, "active", False)
 
-    print_message("Guest successfully deactivated.", "green")
-    print()
+    print_message("Guest successfully deactivated.\n", "green")
     get_input()
 
 

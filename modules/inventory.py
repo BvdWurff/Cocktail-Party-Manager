@@ -198,9 +198,8 @@ def show_inventory(trigger=None):
             columns["Shopping list"].append("Yes" if shopping_list else "No")
 
         if not item_ids:
-            print_message("No items found.", "red")
-            print()
-            get_input("Press [blue]Enter[/] to return to the inventory menu.")
+            print_message("No items found.\n", "red")
+            get_input()
             break
 
         columns["Name"].extend(["", "Back"])
@@ -310,7 +309,8 @@ Added to shopping list:   {add_to_shopping_list}"""
 
         elif menu_choice == 3:
             update_record("inventory", item_id, "shopping_list", not shopping_list)
-            get_input(f"Ingredient successfully {action} the shopping list.", color="green")
+            print_message(f"Ingredient successfully {action} the shopping list.\n", "green")
+            get_input()
             continue
 
         break
@@ -370,12 +370,11 @@ def add_low_stock_items_to_shopping_list():
             counter += 1
 
     if counter == 0:
-        print_message("All low-stock ingredients are already on the shopping list.", "red")
+        print_message("All low-stock ingredients are already on the shopping list.\n", "red")
 
     else:
-        print_message("Low-stock ingredients successfully added to the shopping list.", "green")
+        print_message("Low-stock ingredients successfully added to the shopping list.\n", "green")
 
-    print()
     get_input()
 
     return

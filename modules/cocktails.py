@@ -170,10 +170,8 @@ def select_cocktail(trigger=None):
                 continue
 
             if check_cocktail_availability(selected_cocktail_id):
-                get_input(
-                    "This cocktail cannot be ordered because not all ingredients are available.",
-                    color="red"
-                )
+                print_message("This cocktail cannot be ordered because not all ingredients are available.\n", "red")
+                get_input()
                 continue
 
             return selected_cocktail_id
@@ -265,10 +263,8 @@ def show_cocktail(cocktail_id, trigger=None):
 
             if menu_choice == 1:
                 if low_on_stock:
-                    get_input(
-                        "This cocktail cannot be ordered because not all ingredients are available.",
-                        color="red"
-                    )
+                    print_message("This cocktail cannot be ordered because not all ingredients are available.\n", "red")
+                    get_input()
                     break
 
                 from modules.orders import new_order
@@ -276,7 +272,7 @@ def show_cocktail(cocktail_id, trigger=None):
 
             elif menu_choice == 2:
                 show_cocktail_statistics(cocktail_id)
-                continue
+                break
 
             elif menu_choice == 3:
                 if deactivate_cocktail(cocktail_id):
@@ -288,9 +284,7 @@ def show_cocktail(cocktail_id, trigger=None):
                     update_record("inventory", item_id, "shopping_list", True)
 
                 print_message(
-                    "Ingredients successfully added to the shopping list.\n",
-                    "green"
-                )
+                    "Ingredients successfully added to the shopping list.\n", "green")
                 get_input()
 
             break

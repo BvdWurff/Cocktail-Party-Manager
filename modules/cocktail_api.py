@@ -16,6 +16,7 @@ from modules.inventory import add_item_to_inventory
 
 from utils.utils import (
     get_input,
+    print_message,
     save_data,
 )
 
@@ -68,22 +69,26 @@ def trigger_api(url):
     except requests.exceptions.ConnectionError:
         logger.exception("Could not connect to TheCocktailDB.")
         print()
-        get_input("Error: Cannot connect to TheCocktailDB.", color="red")
+        print_message("Error: Cannot connect to TheCocktailDB.\n", "red")
+        get_input()
 
     except requests.exceptions.Timeout:
         logger.warning("TheCocktailDB request timed out.", exc_info=True)
         print()
-        get_input("Error: The request to TheCocktailDB timed out.", color="red")
+        print_message("Error: The request to TheCocktailDB timed out.\n", "red")
+        get_input()
 
     except ValueError:
         logger.exception("TheCocktailDB returned an invalid JSON response.")
         print()
-        get_input("Error: Invalid API response.", color="red")
+        print_message("Error: Invalid API response.\n", "red")
+        get_input()
 
     except requests.exceptions.RequestException:
         logger.exception("TheCocktailDB request failed.")
         print()
-        get_input("Error: TheCocktailDB request failed.", color="red")
+        print_message("Error: TheCocktailDB request failed.\n", "red")
+        get_input()
 
     return None
 
@@ -120,13 +125,15 @@ def search_cocktails_in_db(params, search_type):
     if not isinstance(data, dict):
         logger.error("Unexpected response structure from TheCocktailDB.")
         print()
-        get_input("Error: Invalid API response.", color="red")
+        print_message("Error: Invalid API response.\n", "red")
+        get_input()
         return None
 
     # API request succeeded, but no cocktails were found.
     if not data.get("drinks"):
         print()
-        get_input(f"No cocktails matching that {search_type} were found.", color="red")
+        print_message(f"No cocktails matching that {search_type} were found.\n", "red")
+        get_input()
         return None
 
     cocktails = {}
@@ -178,13 +185,15 @@ def get_ingredient(trigger, ingredient):
     if not isinstance(data, dict):
         logger.error("Unexpected response structure from TheCocktailDB.")
         print()
-        get_input("Error: Invalid API response.", color="red")
+        print_message("Error: Invalid API response.\n", "red")
+        get_input()
         return None, None, None
 
     # API request succeeded, but no ingredient was found.
     if not data.get("ingredients"):
         print()
-        get_input("The ingredient was not found.", color="red")
+        print_message("The ingredient was not found.\n", "red")
+        get_input()
         return None, None, None
 
 
@@ -231,13 +240,15 @@ def add_cocktail_to_local_db(cocktail_id):
     if not isinstance(data, dict):
         logger.error("Unexpected response structure from TheCocktailDB.")
         print()
-        get_input("Error: Invalid API response.", color="red")
+        print_message("Error: Invalid API response.\n", "red")
+        get_input()
         return False
 
     # API request succeeded, but no cocktail was found.
     if not data.get("drinks"):
         print()
-        get_input("Cocktail was not found.", color="red")
+        print_message("Cocktail was not found.\n", "red")
+        get_input()
         return False
 
     drink = data["drinks"][0]
@@ -256,7 +267,8 @@ def add_cocktail_to_local_db(cocktail_id):
         ingredient_id, ingredient_name, _ = get_ingredient("name", ingredient)
 
         if not ingredient_id or not ingredient_name:
-            get_input(f"Could not retrieve ingredient: {ingredient}. The cocktail was not saved.", color="red")
+            print_message(f"Could not retrieve ingredient: {ingredient}. The cocktail was not saved.\n", "red")
+            get_input()
             return False
 
         measure = drink.get(f"strMeasure{counter}")
@@ -265,7 +277,8 @@ def add_cocktail_to_local_db(cocktail_id):
     # Ensure all ingredients are available in the local inventory.
     for ingredient_id in ingredients:
         if not add_item_to_inventory(ingredient_id):
-            get_input("Could not update the inventory. The cocktail was not saved.", color="red")
+            print_message("Could not update the inventory. The cocktail was not saved.\n", "red")
+            get_input()
             return False
 
     # Save the cocktail only after all ingredients have been processed.

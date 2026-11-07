@@ -257,14 +257,12 @@ def process_order(order_id):
 
                 if menu_choice == 1:
                     if serve_order(order_id):
-                        print_message("Order successfully updated.", "green")
-                        print()
+                        print_message("Order successfully updated.\n", "green")
                         get_input()
                         break
 
                     else:
-                        print_message("Not all ingredients are available or the order cannot be served.", "red")
-                        print()
+                        print_message("Not all ingredients are available or the order cannot be served.\n", "red")
                         get_input()
                         continue
 
@@ -273,8 +271,7 @@ def process_order(order_id):
                         continue
 
                     update_record("orders", order_id, "status", "cancelled")
-                    print_message("Order successfully cancelled.", "green")
-                    print()
+                    print_message("Order successfully cancelled.\n", "green")
                     get_input()
 
                 elif menu_choice == 3:
@@ -288,8 +285,7 @@ def process_order(order_id):
                 return
 
             update_record("orders", order_id, "status", "cancelled")
-            print_message("Order successfully cancelled.", "green")
-            print()
+            print_message("Order successfully cancelled.\n", "green")
             get_input()
 
     else:

@@ -20,6 +20,8 @@ DATA_FILES = (
     "rankings",
 )
 
+THEME_COLOR = "bright_magenta"
+
 
 # ==============================
 # USER INTERFACE

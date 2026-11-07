@@ -36,10 +36,13 @@ from utils.demo_data import (
     reset_application_data,
 )
 
+from utils import app_state
+
 from utils.utils import (
     get_menu_choice,
     display_table,
     display_page,
+    print_message,
 )
 
 
@@ -53,30 +56,26 @@ def main_menu():
     Displays the main menu and handles navigation to the different
     sections of the Cocktail Party Manager.
     """
-    demo = False
 
     while True:
         content = "Discover cocktails, take orders, manage events, keep track of your inventory, or explore the available features.\n\nSelect an option below to get started."
-        color = "bright_yellow"
 
-        if demo:
-            content += "\n\n**[i]The app is running in [blue b]DEMO mode[/].**"
-            color = "blue"
+        if app_state.DEMO_MODE:
+            content += "\n\n**[i]The app is currently running in [blue b]Demo mode[/].**"
 
         display_page(location="Cocktail Party Manager",
                      title="Main Menu",
                      content=content,
-                     color=color
                      )
 
         columns = {
             "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Guests", "Unit Converter"]
         }
 
-        if demo:
-            columns["Menu"].extend(["Disable Demo Mode", "Load Demo Data", "Reset Application Data"])
+        if app_state.DEMO_MODE and app_state.SHOW_DEMO_MENU:
+            columns["Menu"].extend(["Disable Demo Mode"])
 
-        else:
+        elif not app_state.DEMO_MODE and app_state.SHOW_DEMO_MENU:
             columns["Menu"].append("Enable Demo Mode")
 
         columns["Menu"].extend(["", "Exit"])
@@ -104,16 +103,47 @@ def main_menu():
             unit_converter()
 
         elif menu_choice == 7:
-            demo = not demo
+            if not app_state.DEMO_MODE:
+                load_demo_data()
 
-        elif menu_choice == 8:
-            load_demo_data()
+            if app_state.DEMO_MODE:
+                print_message("[i][red]Warning:[/] Demo data will be reset when you disable demo mode.[/]\n")
 
-        elif menu_choice == 9:
-            reset_application_data()
+                print_message("Are you sure you want to disable demo mode?\n", "bright_white")
+
+                columns = {
+                    "Action": ["Yes", "No"]
+                }
+
+                display_table(columns, auto_number=True)
+
+                menu_choice = get_menu_choice(range(1, len(columns["Action"]) + 1))
+
+                if menu_choice == 1:
+                    reset_application_data(trigger="demo_exit")
+
+            app_state.DEMO_MODE = not app_state.DEMO_MODE
 
         else:
+            if app_state.DEMO_MODE:
+                print_message("[i][red]Warning:[/] Demo data will be reset when you exit the application.[/]\n")
+
+            print_message("Are you sure you want to exit the application?\n", "bright_white")
+
+            columns = {
+                "Action": ["Yes", "No"]
+            }
+
+            display_table(columns, auto_number=True)
+
+            menu_choice = get_menu_choice(range(1, len(columns["Action"]) + 1))
+
+            if menu_choice == 2:
+                continue
             break
+
+    if app_state.DEMO_MODE:
+        reset_application_data(trigger="demo_exit")
 
     return
 
