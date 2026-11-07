@@ -1,0 +1,198 @@
+{
+    "1": {
+        "name": "Vodka",
+        "description": "A neutral distilled spirit commonly used in mixed drinks.",
+        "quantity": 18,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "2": {
+        "name": "Gin",
+        "description": "A juniper-flavoured spirit used in many classic cocktails.",
+        "quantity": 15,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "4": {
+        "name": "Tequila",
+        "description": "A distilled spirit produced from blue agave.",
+        "quantity": 14,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "43": {
+        "name": "Baileys Irish Cream",
+        "description": "An Irish cream liqueur made with whiskey and cream.",
+        "quantity": 12,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "67": {
+        "name": "Blue Curacao",
+        "description": "A blue-coloured orange liqueur made from citrus peels.",
+        "quantity": 4,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "89": {
+        "name": "Carbonated water",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "133": {
+        "name": "Coconut Liqueur",
+        "description": null,
+        "quantity": 11,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "212": {
+        "name": "Frangelico",
+        "description": null,
+        "quantity": 12,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "242": {
+        "name": "Grapefruit Juice",
+        "description": null,
+        "quantity": 13,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "250": {
+        "name": "Grenadine",
+        "description": "A sweet, tart, red syrup traditionally associated with pomegranate.",
+        "quantity": 3,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "270": {
+        "name": "Ice",
+        "description": null,
+        "quantity": 32,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "282": {
+        "name": "Kahlua",
+        "description": "A coffee-flavoured liqueur from Mexico.",
+        "quantity": 11,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "293": {
+        "name": "Lemon juice",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "308": {
+        "name": "Lime juice",
+        "description": null,
+        "quantity": 21,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "312": {
+        "name": "Lime",
+        "description": "A green citrus fruit frequently used in cocktails.",
+        "quantity": 13,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "319": {
+        "name": "Mango",
+        "description": null,
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "337": {
+        "name": "Mint",
+        "description": "An aromatic herb commonly used in mojitos.",
+        "quantity": 4,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "397": {
+        "name": "Pineapple",
+        "description": "A sweet tropical fruit often used in cocktails.",
+        "quantity": 3,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "409": {
+        "name": "Powdered sugar",
+        "description": null,
+        "quantity": 22,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "439": {
+        "name": "Salt",
+        "description": "A mineral seasoning used, among other things, to rim cocktail glasses.",
+        "quantity": 50,
+        "minimum_quantity": 0,
+        "shopping_list": false
+    },
+    "455": {
+        "name": "Soda Water",
+        "description": null,
+        "quantity": 19,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "466": {
+        "name": "Sprite",
+        "description": null,
+        "quantity": 18,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "470": {
+        "name": "Strawberries",
+        "description": "Sweet red berries used for garnishes and mixed drinks.",
+        "quantity": 12,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "483": {
+        "name": "Tabasco sauce",
+        "description": null,
+        "quantity": 15,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "492": {
+        "name": "Tomato juice",
+        "description": "Tomato juice is commonly used in a Bloody Mary.",
+        "quantity": 0,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "498": {
+        "name": "Triple sec",
+        "description": "An orange-flavoured liqueur commonly used in margaritas.",
+        "quantity": 7,
+        "minimum_quantity": 10,
+        "shopping_list": true
+    },
+    "523": {
+        "name": "White Rum",
+        "description": "A light rum made from sugarcane-derived ingredients.",
+        "quantity": 17,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "529": {
+        "name": "Worcestershire sauce",
+        "description": "A savoury fermented sauce used in Bloody Mary cocktails.",
+        "quantity": 11,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    }
+}

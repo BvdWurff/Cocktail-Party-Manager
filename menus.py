@@ -31,6 +31,11 @@ from modules.orders import (
 
 from modules.unit_converter import unit_converter
 
+from utils.demo_data import (
+    load_demo_data,
+    reset_application_data,
+)
+
 from utils.utils import (
     get_menu_choice,
     display_table,
@@ -42,22 +47,39 @@ from utils.utils import (
 # MAIN MENU
 # ==============================
 
+
 def main_menu():
     """
     Displays the main menu and handles navigation to the different
     sections of the Cocktail Party Manager.
     """
+    demo = False
+
     while True:
         content = "Discover cocktails, take orders, manage events, keep track of your inventory, or explore the available features.\n\nSelect an option below to get started."
+        color = "bright_yellow"
+
+        if demo:
+            content += "\n\n**[i]The app is running in [blue b]DEMO mode[/].**"
+            color = "blue"
 
         display_page(location="Cocktail Party Manager",
                      title="Main Menu",
-                     content=content
+                     content=content,
+                     color=color
                      )
 
         columns = {
-            "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Guests", "Unit Converter", "", "Exit"]
+            "Menu": ["Cocktails", "Orders", "Events", "Inventory", "Guests", "Unit Converter"]
         }
+
+        if demo:
+            columns["Menu"].extend(["Disable Demo Mode", "Load Demo Data", "Reset Application Data"])
+
+        else:
+            columns["Menu"].append("Enable Demo Mode")
+
+        columns["Menu"].extend(["", "Exit"])
 
         display_table(columns, auto_number=True)
 
@@ -80,6 +102,15 @@ def main_menu():
 
         elif menu_choice == 6:
             unit_converter()
+
+        elif menu_choice == 7:
+            demo = not demo
+
+        elif menu_choice == 8:
+            load_demo_data()
+
+        elif menu_choice == 9:
+            reset_application_data()
 
         else:
             break

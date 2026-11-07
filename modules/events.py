@@ -214,30 +214,31 @@ def select_event():
                      content=content
                      )
 
-        while True:
-            create_event = get_input("Would you like to create a new event? (Yes/No) ").strip().casefold()
+        print_message("Would you like to create a new event?\n", "bright_white")
 
-            if create_event not in ["yes", "no"]:
-                print_message(INVALID_INPUT)
-                continue
+        columns = {
+            "Action": ["Yes", "No"]
+        }
 
-            break
+        display_table(columns, auto_number=True)
 
-        if create_event == "yes":
+        menu_choice = get_menu_choice(range(1, len(columns["Action"]) + 1))
+
+        if menu_choice == 1:
             current_event, current_event_id = new_event("new_order")
 
             if current_event is None:
                 print()
-                get_input("No event was created. Press [blue]Enter[/] to return to the orders menu.")
+                get_input("No event was created. Press [blue]Enter[/] to return to the previous menu.")
+
                 return None, None
 
-        else:
-            return None, None
+        return None, None
 
     if current_event is None or current_event_id is None:
         return None, None
 
-    current_event["current"] = True
+    # current_event["current"] = True
     update_record("events", current_event_id, "current", True)
 
     return current_event, current_event_id
@@ -425,11 +426,11 @@ Event date:         [blue]{event["date"]}[/]"""
 
         if event_date.date() >= today.date():
             columns = {
-                "Action": ["Add guest"]
+                "Action": ["Add Guest"]
             }
 
             if trigger != "current_event":
-                columns["Action"].append("Cancel event")
+                columns["Action"].append("Cancel Event")
 
             columns["Action"].extend(["", "Back"])
 

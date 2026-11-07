@@ -63,9 +63,7 @@ def new_guest(trigger=""):
         while True:
             content = f"""Here you can register new guests.
 
-Type [red]Stop[/] to exit the registration process."""
-
-            confirmation_choice = ""
+Type [blue]Stop[/] to exit the registration process."""
 
             display_page(location="Guests",
                          title="Register Guest",
@@ -94,29 +92,24 @@ Type [red]Stop[/] to exit the registration process."""
                 get_input("Press [blue]Enter[/] to exit the registration process.")
                 return None
 
-            duplicate = False
-
             for guest in guests.values():
                 if guest["first_name"].lower() == first_name.lower() and guest["surname"].lower() == surname.lower():
-                    duplicate = True
                     print()
-                    print_message(f"A guest named {first_name} {surname} already exists.", "red")
+                    print_message(f"A guest named {first_name} {surname} already exists.\n", "red")
+                    print_message("Are you sure you want to create another guest with this name?\n", "bright_white")
 
-                    while True:
-                        print()
-                        confirmation_choice = get_input(
-                            "Are you sure you want to create another guest with this name? (Yes/No) ").strip().casefold()
+                    columns = {
+                        "Action": ["Yes", "No"]
+                    }
 
-                        if confirmation_choice not in ("yes", "no"):
-                            print_message(INVALID_INPUT, "red")
-                            continue
+                    display_table(columns, auto_number=True)
 
+                    menu_choice = get_menu_choice(range(1, len(columns["Action"]) + 1))
+
+                    if menu_choice == 1:
                         break
 
-            if confirmation_choice == "yes" or not duplicate:
-                break
-
-            continue
+                    continue
 
         guest = {
             "id": str(len(guests) + 1),
@@ -278,8 +271,7 @@ def show_guest(guest_id):
         display_guest_rankings(name, rankings_list, cocktails)
 
         columns = {
-            "Action": ["Rate a Cocktail", "Add to Current Event", "Order a Cocktail", "Show Orders", "Deactivate Guest",
-                       "", "Back"]
+            "Action": ["Rate a Cocktail", "Add to Current Event", "Order a Cocktail", "Show Orders", "Deactivate Guest", "", "Back"]
         }
 
         display_table(columns, auto_number=True)

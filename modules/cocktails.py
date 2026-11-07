@@ -149,7 +149,7 @@ def select_cocktail(trigger=None):
 
         if trigger == "new_order":
             search_option = len(cocktail_ids) + 1
-            columns["Cocktail"].extend(["Cocktail not on list", "", "Back"])
+            columns["Cocktail"].extend(["Cocktail Not on List", "", "Back"])
             valid_choices = range(0, search_option + 1)
 
         else:
@@ -206,7 +206,7 @@ def show_cocktail(cocktail_id, trigger=None):
     cocktails = load_data("cocktails")
 
     cocktail = cocktails[cocktail_id]
-    cocktail_name = cocktail["name"]
+    cocktail_name = str(cocktail["name"]).capitalize()
     ingredients = cocktail["ingredients"]
     instructions = cocktail["instructions"]
 
@@ -279,7 +279,9 @@ def show_cocktail(cocktail_id, trigger=None):
                 continue
 
             elif menu_choice == 3:
-                deactivate_cocktail(cocktail_id)
+                if deactivate_cocktail(cocktail_id):
+                    break
+                continue
 
             elif menu_choice == 4 and shopping_list_ids:
                 for item_id in shopping_list_ids:
@@ -330,7 +332,7 @@ def search_cocktail(search_method="", for_order=False):
 
         display_page(
             location="Cocktails",
-            title=f"Search by {search_method}",
+            title=f"Search by {str(search_method).capitalize()}",
             content=content
         )
 
@@ -381,7 +383,7 @@ def search_cocktail(search_method="", for_order=False):
 
         display_page(
             location="Cocktails",
-            title=f"Search by {search_method}",
+            title=f"Search by {str(search_method).capitalize()}",
             content=content
         )
 
@@ -723,7 +725,7 @@ def deactivate_cocktail(cocktail_id):
         cocktail_id (str): The ID of the cocktail to deactivate.
     """
     if not confirm_action("deactivate", "cocktail"):
-        return
+        return False
 
     from modules.orders import cancel_order
     cancel_order(cocktail_id=cocktail_id)
@@ -733,3 +735,5 @@ def deactivate_cocktail(cocktail_id):
     print_message("Cocktail successfully deactivated.", "green")
     print()
     get_input()
+
+    return True

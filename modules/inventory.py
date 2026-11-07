@@ -277,15 +277,15 @@ Added to shopping list:   {add_to_shopping_list}"""
         display_table(columns)
 
         columns = {
-            "Action": ["Update quantity", "Update minimum quantity"]
+            "Action": ["Update Quantity", "Update Minimum Quantity"]
         }
 
         if shopping_list:
-            columns["Action"].extend(["Remove from shopping list"])
+            columns["Action"].extend(["Remove From Shopping List"])
             action = "removed from"
 
         else:
-            columns["Action"].extend(["Add to shopping list"])
+            columns["Action"].extend(["Add to Shopping List"])
             action = "added to"
 
         columns["Action"].extend(["", "Back"])

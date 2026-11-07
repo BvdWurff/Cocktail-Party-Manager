@@ -92,7 +92,7 @@ def new_order(cocktail_id=None, guest_id=None):
                      )
 
         columns = {
-            "Action": ["Place another order", "", "Back"]
+            "Action": ["Place Another Order", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -233,7 +233,7 @@ def process_order(order_id):
     if order["status"] == "ordered":
 
         columns = {
-            "Action": ["Prepare cocktail", "Cancel order", "", "Back"]
+            "Action": ["Prepare Cocktail", "Cancel Order", "", "Back"]
         }
 
         display_table(columns, auto_number=True)
@@ -248,7 +248,7 @@ def process_order(order_id):
                 show_cocktail(order["cocktail"], trigger="process_order")
 
                 columns = {
-                    "Action": ["Cocktail served", "Order cancelled", "Unit converter", "", "Back"]
+                    "Action": ["Cocktail Served", "Order Cancelled", "Unit Converter", "", "Back"]
                 }
 
                 display_table(columns, auto_number=True)
@@ -257,7 +257,7 @@ def process_order(order_id):
 
                 if menu_choice == 1:
                     if serve_order(order_id):
-                        print_message("Order successfully served.", "green")
+                        print_message("Order successfully updated.", "green")
                         print()
                         get_input()
                         break

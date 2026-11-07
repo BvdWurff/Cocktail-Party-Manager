@@ -224,17 +224,21 @@ def confirm_action(action, record_type):
     Returns:
         bool: True if the user confirms, or False if the user declines.
     """
-    print()
-    while True:
-        answer = get_input(f"Are you sure you want to {action} the {record_type}? (Yes/No) ").strip().casefold()
 
-        if answer == "yes":
-            return True
-        elif answer == "no":
-            return False
-        else:
-            print_message(INVALID_INPUT)
+    print_message(f"Are you sure you want to {action} the {record_type}?\n", "bright_white")
 
+    columns = {
+        "Action": ["Yes", "No"]
+    }
+
+    display_table(columns, auto_number=True)
+
+    menu_choice = get_menu_choice(range(1, len(columns["Action"]) + 1))
+
+    if menu_choice == 1:
+        return True
+
+    return False
 
 # ==============================
 # TERMINAL AND MESSAGE UTILITIES
@@ -271,7 +275,7 @@ def print_message(message, color="", end="\n", indent=5):
 # DISPLAY UTILITIES
 # ==============================
 
-def display_page(location, title, content):
+def display_page(location, title, content, color="bright_yellow"):
     """
     Clears the terminal and displays a formatted page using a Rich Panel.
 
@@ -279,6 +283,7 @@ def display_page(location, title, content):
         location (str): The location displayed in the panel title.
         title (str): The title of the current page.
         content (str or Rich renderable): The content to display.
+        color (Rich renderable): The color of the border.
     """
     clear_terminal()
 
@@ -288,7 +293,7 @@ def display_page(location, title, content):
                 content,
                 title=f"[bold bright_yellow]{location}[/] [bold bright_white]- {title}[/]",
                 title_align="left",
-                border_style="bright_yellow",
+                border_style=color,
                 padding=(1, 2),
             ),
             (1, 5))

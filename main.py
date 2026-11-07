@@ -15,10 +15,6 @@ from menus import main_menu
 
 from modules.events import update_events
 
-from utils.constants import (
-    CONTINUE_PROMPT,
-)
-
 from utils.utils import (
     display_page,
     display_table,
@@ -26,6 +22,12 @@ from utils.utils import (
     get_input,
     print_message,
 )
+
+# ==============================
+# CONSTANTS
+# ==============================
+
+from utils.constants import CONTINUE_PROMPT
 
 
 # ==============================
@@ -71,6 +73,7 @@ def main():
 For the best experience, it is recommended to run the program
 in a [green]terminal[/] or to enable [green]Emulate terminal in output console[/]
 in PyCharm."""
+
 
     display_page(location="Cocktail Party Manager",
                  title="Welcome",

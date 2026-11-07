@@ -8,6 +8,20 @@ from dotenv import load_dotenv
 
 
 # ==============================
+# APP CONFIGURATION
+# ==============================
+
+DATA_FILES = (
+    "cocktails",
+    "events",
+    "guests",
+    "inventory",
+    "orders",
+    "rankings",
+)
+
+
+# ==============================
 # USER INTERFACE
 # ==============================
 

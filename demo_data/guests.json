@@ -1,0 +1,52 @@
+{
+    "1": {
+        "first_name": "Bart",
+        "surname": "van der Wurff",
+        "active": true
+    },
+    "2": {
+        "first_name": "Bill",
+        "surname": "Clinton",
+        "active": true
+    },
+    "3": {
+        "first_name": "Oprah",
+        "surname": "Winfrey",
+        "active": true
+    },
+    "4": {
+        "first_name": "Keanu",
+        "surname": "Reeves",
+        "active": true
+    },
+    "5": {
+        "first_name": "Britney",
+        "surname": "Spears",
+        "active": true
+    },
+    "6": {
+        "first_name": "Arnold",
+        "surname": "Schwarzenegger",
+        "active": true
+    },
+    "7": {
+        "first_name": "Neil",
+        "surname": "deGrasse Tyson",
+        "active": true
+    },
+    "8": {
+        "first_name": "Beyoncé",
+        "surname": "Knowles",
+        "active": true
+    },
+    "9": {
+        "first_name": "Dwayne",
+        "surname": "Johnson",
+        "active": false
+    },
+    "10": {
+        "first_name": "Shakira",
+        "surname": "Mebarak",
+        "active": true
+    }
+}
