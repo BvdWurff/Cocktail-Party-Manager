@@ -314,11 +314,16 @@ def serve_order(order_id):
 
     # Validate that the order exists and has not already been processed.
     if order_id not in orders:
+        print_message("Order was not found.\n", "red")
+        get_input()
+
         return False
 
     order = orders[order_id]
 
     if order["status"] != "ordered":
+        print_message(f"Order cannot be processed, status is {order["status"]}.\n", "red")
+        get_input()
         return False
 
     cocktail_id = order["cocktail"]
@@ -327,6 +332,8 @@ def serve_order(order_id):
 
     # Check ingredient availability while accounting for the current order.
     if check_cocktail_availability(cocktail_id, for_existing_order=True):
+        print_message(f"Order cannot be processed, not all ingredients are available.\n", "red")
+        get_input()
         return False
 
     inventory = load_data("inventory")
@@ -334,9 +341,13 @@ def serve_order(order_id):
     # Validate all quantities before changing the inventory.
     for ingredient_id in ingredients:
         if ingredient_id not in inventory:
+            print_message(f"Order cannot be processed, not all ingredients are available.\n", "red")
+            get_input()
             return False
 
         if inventory[ingredient_id]["quantity"] <= 0:
+            print_message(f"Order cannot be processed, not all ingredients are available.\n", "red")
+            get_input()
             return False
 
     # Deduct one unit of each ingredient.

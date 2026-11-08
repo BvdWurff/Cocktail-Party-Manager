@@ -17,7 +17,10 @@ from modules.events import update_events
 
 from utils import app_state
 
-from utils.demo_data import load_demo_data
+from utils.demo_data import (
+    load_demo_data,
+    reset_application_data,
+)
 
 from utils.utils import (
     display_page,
@@ -95,12 +98,16 @@ in PyCharm."""
     while True:
         main_menu()
 
+
         content = "Are you sure you want to exit [bright_yellow]the Cocktail Party Manager[/]?"
 
         display_page(location="Cocktail Party Manager",
                      title="Exit Confirmation",
                      content=content
                      )
+
+        if app_state.DEMO_MODE:
+            print_message("[i][red]Warning:[/] Demo data will be reset when you exit the application.[/]\n")
 
         columns = {
             "Action": ["Yes", "No"]
@@ -133,5 +140,5 @@ if __name__ == "__main__":
 
         print()
         print_message("A critical error occurred. Please check the application log.\n", "red")
-        get_input("Press Enter to close the application.")
+        get_input("Press [blue]Enter[/] to close the application.")
         print()

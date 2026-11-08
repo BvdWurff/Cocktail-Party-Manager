@@ -125,25 +125,7 @@ def main_menu():
             app_state.DEMO_MODE = not app_state.DEMO_MODE
 
         else:
-            if app_state.DEMO_MODE:
-                print_message("[i][red]Warning:[/] Demo data will be reset when you exit the application.[/]\n")
-
-            print_message("Are you sure you want to exit the application?\n", "bright_white")
-
-            columns = {
-                "Action": ["Yes", "No"]
-            }
-
-            display_table(columns, auto_number=True)
-
-            menu_choice = get_menu_choice(range(1, len(columns["Action"]) + 1))
-
-            if menu_choice == 2:
-                continue
             break
-
-    if app_state.DEMO_MODE:
-        reset_application_data(trigger="demo_exit")
 
     return
 

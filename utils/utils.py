@@ -74,7 +74,7 @@ def load_data(data_type):
         raise
 
 
-def save_data(data_type, data, record_id=""):
+def save_data(data_type, data, record_id=None):
     """
     Adds or updates a record in the specified JSON file.
 
@@ -165,6 +165,7 @@ def get_input(message=CONTINUE_PROMPT, data_type: type | str = str, color="brigh
         value = console.input(f"{' ' * 5}[{color}]{message}[/]")
 
         try:
+            #Allow float input with a comma and a period.
             if data_type == float:
                 value = value.replace(",", ".")
                 value = round(float(value), 1)

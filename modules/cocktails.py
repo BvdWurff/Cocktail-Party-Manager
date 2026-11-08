@@ -201,53 +201,54 @@ def show_cocktail(cocktail_id, trigger=None):
     Returns:
         None: Returns after the user leaves the cocktail details.
     """
-    cocktails = load_data("cocktails")
+    while True:
 
-    cocktail = cocktails[cocktail_id]
-    cocktail_name = str(cocktail["name"]).capitalize()
-    ingredients = cocktail["ingredients"]
-    instructions = cocktail["instructions"]
+        cocktails = load_data("cocktails")
 
-    page_content = f"Ingredients and instructions for a [blue]{cocktail_name}[/].\n\n"
-    page_content += "Ingredients marked in [red]red[/] are unavailable."
+        cocktail = cocktails[cocktail_id]
+        cocktail_name = str(cocktail["name"]).capitalize()
+        ingredients = cocktail["ingredients"]
+        instructions = cocktail["instructions"]
 
-    display_page(
-        location="Cocktails",
-        title=cocktail_name,
-        content=page_content
-    )
+        page_content = f"Ingredients and instructions for a [blue]{cocktail_name}[/].\n\n"
+        page_content += "Ingredients marked in [red]red[/] are unavailable."
 
-    low_on_stock = check_cocktail_availability(cocktail_id, for_existing_order=trigger == "process_order")
-    inventory = load_data("inventory")
+        display_page(
+            location="Cocktails",
+            title=cocktail_name,
+            content=page_content
+        )
 
-    columns = {
-        "Ingredient": [],
-        "Measure": []
-    }
+        low_on_stock = check_cocktail_availability(cocktail_id, for_existing_order=trigger == "process_order")
+        inventory = load_data("inventory")
 
-    for ingredient_id, measure in ingredients.items():
-        ingredient_name = (inventory[ingredient_id]["name"] if ingredient_id in inventory else f"Unknown ingredient ({ingredient_id})")
+        columns = {
+            "Ingredient": [],
+            "Measure": []
+        }
 
-        if ingredient_id in low_on_stock:
-            ingredient_name = f"[red]{ingredient_name}[/]"
+        for ingredient_id, measure in ingredients.items():
+            ingredient_name = (inventory[ingredient_id]["name"] if ingredient_id in inventory else f"Unknown ingredient ({ingredient_id})")
 
-        columns["Ingredient"].append(ingredient_name)
-        columns["Measure"].append(measure if measure is not None else "-")
+            if ingredient_id in low_on_stock:
+                ingredient_name = f"[red]{ingredient_name}[/]"
 
-    display_table(columns)
+            columns["Ingredient"].append(ingredient_name)
+            columns["Measure"].append(measure if measure is not None else "-")
 
-    panel_content = "- " + instructions.replace(". ", ".\n- ")
-    display_panel(panel_content, title="Instructions")
+        display_table(columns)
 
-    # Only existing inventory items can be added to the shopping list.
-    shopping_list_ids = [
-        ingredient_id
-        for ingredient_id in low_on_stock
-        if ingredient_id in inventory
-    ]
+        panel_content = "- " + instructions.replace(". ", ".\n- ")
+        display_panel(panel_content, title="Instructions")
 
-    if trigger != "process_order":
-        while True:
+        # Only existing inventory items can be added to the shopping list.
+        shopping_list_ids = [
+            ingredient_id
+            for ingredient_id in low_on_stock
+            if ingredient_id in inventory
+        ]
+
+        if trigger != "process_order":
             columns = {
                 "Action": ["Order Cocktail", "Statistics", "Deactivate Cocktail"]
             }
@@ -265,28 +266,27 @@ def show_cocktail(cocktail_id, trigger=None):
                 if low_on_stock:
                     print_message("This cocktail cannot be ordered because not all ingredients are available.\n", "red")
                     get_input()
-                    break
+                    continue
 
                 from modules.orders import new_order
                 new_order(cocktail_id)
 
             elif menu_choice == 2:
                 show_cocktail_statistics(cocktail_id)
-                break
 
             elif menu_choice == 3:
-                if deactivate_cocktail(cocktail_id):
-                    break
-                continue
+                deactivate_cocktail(cocktail_id)
 
             elif menu_choice == 4 and shopping_list_ids:
                 for item_id in shopping_list_ids:
                     update_record("inventory", item_id, "shopping_list", True)
 
-                print_message(
-                    "Ingredients successfully added to the shopping list.\n", "green")
-                get_input()
+                print_message("Ingredients successfully added to the shopping list.\n", "green")
 
+            else:
+                break
+
+        else:
             break
 
     return
@@ -611,13 +611,13 @@ def show_cocktail_statistics(cocktail_id):
         if order["cocktail"] == cocktail_id and order["status"] == "served":
             times_served += 1
 
-    panel_content = f"Times served:     {times_served}\n"
+    panel_content = f"Times served:     {times_served}"
 
     average_ratings = calculate_average_ratings(rankings.values())
 
     if cocktail_id in average_ratings:
         rating = average_ratings[cocktail_id]
-
+        panel_content += "\n"
         panel_content += f"Average rating:    {rating["average"]}\n"
         panel_content += f"Number of votes:  {rating["votes"]}"
 

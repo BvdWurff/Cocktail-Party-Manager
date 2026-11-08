@@ -32,7 +32,7 @@
         "description": "A blue-coloured orange liqueur made from citrus peels.",
         "quantity": 4,
         "minimum_quantity": 10,
-        "shopping_list": true
+        "shopping_list": false
     },
     "89": {
         "name": "Carbonated water",
