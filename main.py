@@ -77,19 +77,20 @@ def main():
     else:
         update_events()
 
-    content = """Welcome to [bright_yellow]the Cocktail Party Manager[/]!
+    if app_state.SHOW_WELCOME_SCREEN:
 
+        content = """Welcome to [bright_yellow]the Cocktail Party Manager[/]!\n
 For the best experience, it is recommended to run the program
 in a [green]terminal[/] or to enable [green]Emulate terminal in output console[/]
 in PyCharm."""
 
 
-    display_page(location="Cocktail Party Manager",
-                 title="Welcome",
-                 content=content
-                 )
+        display_page(location="Cocktail Party Manager",
+                     title="Welcome",
+                     content=content
+                     )
 
-    get_input(CONTINUE_PROMPT)
+        get_input(CONTINUE_PROMPT)
 
     while True:
         main_menu()

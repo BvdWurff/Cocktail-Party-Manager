@@ -88,8 +88,6 @@ Type [blue]Stop[/] to exit the registration process."""
                 continue
 
             if surname.lower() == "stop":
-                print()
-                get_input()
                 return None
 
             for guest in guests.values():
@@ -108,8 +106,9 @@ Type [blue]Stop[/] to exit the registration process."""
 
                     if menu_choice == 1:
                         break
-
                     continue
+                break
+            break
 
         guest = {
             "id": str(len(guests) + 1),

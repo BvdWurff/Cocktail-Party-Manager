@@ -431,6 +431,9 @@ Event date:         [blue]{event["date"]}[/]"""
             if trigger != "current_event":
                 columns["Action"].append("Cancel Event")
 
+            else:
+                columns["Action"].extend(["Open Orders", "New Order"])
+
             columns["Action"].extend(["", "Back"])
 
             display_table(columns, auto_number=True)
@@ -438,13 +441,16 @@ Event date:         [blue]{event["date"]}[/]"""
             menu_choice = get_menu_choice(range(0, len(columns["Action"]) - 1))
 
             if menu_choice == 1:
-                _ = add_guest_to_event(event, event_id)
+                add_guest_to_event(event, event_id)
                 continue
 
             elif menu_choice == 2:
                 if event["current"]:
-                    print_message("You cannot cancel the current event.\n", "red")
-                    get_input()
+                    from modules.orders import all_open_orders
+                    order_id, orders[order_id] = all_open_orders()
+                    if order_id:
+                        from modules.orders import process_order
+                        process_order(order_id)
                     continue
 
                 if not confirm_action("cancel", "event"):
@@ -458,6 +464,11 @@ Event date:         [blue]{event["date"]}[/]"""
                 print_message("The event was successfully cancelled.\n", "green")
                 get_input()
                 break
+
+            elif menu_choice == 3:
+                from modules.orders import new_order
+                new_order()
+                continue
 
         else:
             get_input()

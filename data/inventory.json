@@ -16,7 +16,7 @@
     "4": {
         "name": "Tequila",
         "description": "A distilled spirit produced from blue agave.",
-        "quantity": 14,
+        "quantity": 13,
         "minimum_quantity": 10,
         "shopping_list": false
     },
@@ -93,7 +93,7 @@
     "308": {
         "name": "Lime juice",
         "description": null,
-        "quantity": 21,
+        "quantity": 20,
         "minimum_quantity": 10,
         "shopping_list": false
     },
@@ -135,7 +135,7 @@
     "439": {
         "name": "Salt",
         "description": "A mineral seasoning used, among other things, to rim cocktail glasses.",
-        "quantity": 50,
+        "quantity": 49,
         "minimum_quantity": 0,
         "shopping_list": false
     },
@@ -177,7 +177,7 @@
     "498": {
         "name": "Triple sec",
         "description": "An orange-flavoured liqueur commonly used in margaritas.",
-        "quantity": 7,
+        "quantity": 6,
         "minimum_quantity": 10,
         "shopping_list": true
     },
@@ -192,6 +192,13 @@
         "name": "Worcestershire sauce",
         "description": "A savoury fermented sauce used in Bloody Mary cocktails.",
         "quantity": 11,
+        "minimum_quantity": 10,
+        "shopping_list": false
+    },
+    "352": {
+        "name": "Orange Juice",
+        "description": null,
+        "quantity": 0,
         "minimum_quantity": 10,
         "shopping_list": false
     }
